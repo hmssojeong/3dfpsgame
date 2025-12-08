@@ -22,7 +22,7 @@ public class ErrorTest : MonoBehaviour
 
         // 초기화시에 null 검사하는 방어코드
         // 방어코드 => null 검사
-        Rigidbody2D rigidbody2D = TryGetComponent<Rigidbody2D>();
+        Rigidbody2D rigidbody2D = GetComponent<Rigidbody2D>();
         if (rigidbody2D != null)
         {
             // 적절한 처리
