@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class ErrorTest2 : MonoBehaviour
 {
@@ -6,8 +7,8 @@ public class ErrorTest2 : MonoBehaviour
     public void Start()
     {
         // MissingReferenceException : 보통 삭제한 게임 오브젝트를 참조/접근(필드,메서드) 하려고 할 때 뜹니다.
-        Destroy(gameobject);
-        Debug.Log(gameobject.name);
+        Destroy(gameObject);
+        Debug.Log(gameObject.name);
 
         // IndexOutOfRangeException : 배열(리스트)에서 유효하지 않은 인덱스에 접근할 때
         int[] numbers = new int[10];

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class TryCatchFinallyTest : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class TryCatchFinallyTest : MonoBehaviour
         // -> 다른 컴포넌트나 게임 오브젝트에도 영향을 줌으로써 프로그램이 정상적으로 동작 안할 수 있다.
 
         // 베스트: 알고리즘을 잘 처리하는 것
-        
+
         int[] numbers = new int[32];
 
         try
@@ -27,7 +28,7 @@ public class TryCatchFinallyTest : MonoBehaviour
             int index = 75; // 실제로는 내가 문제를 해결하기 위해 반복문이나 수식을 통해 얻은 인덱스
             numbers[75] = 1;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Debug.Log(e);
 
@@ -51,6 +52,6 @@ public class TryCatchFinallyTest : MonoBehaviour
         // 2. 파일 접근
         //    - 용량 충분?, 파일명 괜춘?, 권한 있나?
         // 3. DB 접근
-        //    - 용
+        //
     }
 }
