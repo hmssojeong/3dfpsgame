@@ -14,7 +14,7 @@ public class CameraRotate : MonoBehaviour
     {
         // 게임 시작하면 y축이 0도에서 -> -1도
 
-        if (Input.GetMouseButtonDown(1))
+        if (!Input.GetMouseButton(1))
         {
             return;
         }
@@ -31,7 +31,7 @@ public class CameraRotate : MonoBehaviour
         _accumulationY = Mathf.Clamp(_accumulationY, -90f, 90f);
 
         // 4. 누적한 회전 방향으로 카메라 회전하기
-        transform.eulerAngles = new Vector3(-_accumulationY, _accumulationX);
+        transform.eulerAngles = new Vector3(_accumulationY, _accumulationX);
 
         // 쿼터니언: 사원수 : 쓰는 이유는 짐벌락 현상 방지
         // 공부: 짐벌락, 쿼터니언을 왜 쓰냐 (게임 수학/물리)
