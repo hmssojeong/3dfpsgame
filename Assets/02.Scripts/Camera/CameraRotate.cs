@@ -13,6 +13,8 @@ public class CameraRotate : MonoBehaviour
         Debug.Log($"{mouseX}, {mouseY}");
 
         // 2. 입력에 따른 회전 방향 만들기
+        Vector3 Direction = new Vector3(mouseX, mouseY, 0);
+
         // 3. 회전방향으로 카메라 회전하기
     }
 
