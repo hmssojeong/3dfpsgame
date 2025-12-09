@@ -1324,7 +1324,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stats: {fileID: 368773329}
   _healthSlider: {fileID: 1654965734}
-  _staminaSlider: {fileID: 0}
+  _staminaSlider: {fileID: 1219213751}
 --- !u!114 &836989114
 MonoBehaviour:
   m_ObjectHideFlags: 0
