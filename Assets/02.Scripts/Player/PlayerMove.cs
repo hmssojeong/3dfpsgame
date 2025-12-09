@@ -52,11 +52,13 @@ public class PlayerMove : MonoBehaviour
         Vector3 direction = new Vector3(x, 0, y);
         direction.Normalize();
 
-        // - 점프! : 점프 키를 누르고 && 땅이라면
+         // - 점프! : 점프 키를 누르고 && 땅이라면
         if (Input.GetButtonDown("Jump") && _controller.isGrounded)
         {
             _yVelocity = _stats.JumpPower.Value;
+            _jumpCount = 1;  // 첫 점프
         }
+
 
         if (Input.GetButtonDown("Jump") && _jumpCount < _maxJumps && !_controller.isGrounded)
         {

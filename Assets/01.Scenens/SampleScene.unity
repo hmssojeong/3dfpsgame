@@ -635,7 +635,7 @@ MonoBehaviour:
   _config:
     Gravity: -9.81
     RunStamina: 20
-    JumpStamina: 30
+    JumpStamina: 15
   _maxJumps: 2
 --- !u!143 &368773328
 CharacterController:
