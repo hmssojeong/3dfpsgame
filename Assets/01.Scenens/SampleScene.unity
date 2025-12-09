@@ -343,9 +343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbcba8e87b70dc54cb911f847ebd151d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 7
   Gravity: -9.81
-  JumpPower: 5
 --- !u!143 &368773328
 CharacterController:
   m_ObjectHideFlags: 0
@@ -383,12 +381,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1adb105d1b5ffa04d876b63db03818c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxStamina: 100
-  Stamina: 100
-  StaminaRegen: 5
-  MaxHealth: 100
-  Health: 100
-  HealthRegen: 20
+  Health:
+    _maxValue: 100
+    _value: 100
+    _regenValue: 5
+  Stamina:
+    _maxValue: 100
+    _value: 100
+    _regenValue: 20
+  Damage:
+    _value: 10
+  MoveSpeed:
+    _value: 7
+  RunSpeed:
+    _value: 14
+  JumpPower:
+    _value: 5
 --- !u!1 &388997287
 GameObject:
   m_ObjectHideFlags: 0
