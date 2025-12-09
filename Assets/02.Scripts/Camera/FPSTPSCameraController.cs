@@ -54,20 +54,17 @@ public class FPSTPSCameraController : MonoBehaviour
         if (player == null && transform.parent != null)
         {
             player = transform.parent;
-            Debug.Log($"[FPS/TPS Camera] Player 자동 할당: {player.name}");
         }
 
         // 검증
         if (player == null)
-        {
-            Debug.LogError("[FPS/TPS Camera] ❌ Player가 없습니다! Inspector에서 할당하세요!");
+        {   
             enabled = false;
             return;
         }
 
         if (cam == null)
         {
-            Debug.LogError("[FPS/TPS Camera] ❌ Camera를 찾을 수 없습니다!");
             enabled = false;
             return;
         }
@@ -88,8 +85,6 @@ public class FPSTPSCameraController : MonoBehaviour
         // 커서 잠금
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        Debug.Log("✅ [FPS/TPS Camera] 초기화 완료! T키로 카메라 전환하세요.");
     }
 
     void Update()
@@ -199,13 +194,13 @@ public class FPSTPSCameraController : MonoBehaviour
         {
             targetPosition = player.position + player.TransformDirection(fpsOffset);
             targetFOV = fpsFOV;
-            Debug.Log("📹 FPS 모드 (1인칭)");
+            Debug.Log("FPS 모드 (1인칭)");
         }
         else
         {
             targetPosition = player.position + player.TransformDirection(tpsOffset);
             targetFOV = tpsFOV;
-            Debug.Log("🎯 TPS 모드 (3인칭)");
+            Debug.Log("TPS 모드 (3인칭)");
         }
 
         // DOTween 시퀀스로 부드러운 전환
