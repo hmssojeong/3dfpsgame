@@ -7,54 +7,31 @@ using DG.Tweening;
 /// </summary>
 public class FPSTPSCameraController : MonoBehaviour
 {
-<<<<<<< HEAD
     [Header("필수 설정")]
     [Tooltip("플레이어 Transform")]
     public Transform player;
 
-    [Header("FPS 설정 1인칭")]
-=======
-    [Header("=== 필수 설정 ===")]
-    [Tooltip("플레이어 Transform (자동으로 부모를 찾습니다)")]
-    public Transform player;
-
-    [Header("=== FPS 설정 (1인칭) ===")]
->>>>>>> 8086d4ff9e20fdc65be39194b9d8187b0da82c97
+    [Header("FPS 설정 (1인칭)")]
     [Tooltip("플레이어 눈 위치")]
     public Vector3 fpsOffset = new Vector3(0f, 1.6f, 0f);
     public float fpsFOV = 60f;
 
-<<<<<<< HEAD
-    [Header("TPS 설정 3인칭")]
-=======
-    [Header("=== TPS 설정 (3인칭) ===")]
->>>>>>> 8086d4ff9e20fdc65be39194b9d8187b0da82c97
+    [Header("TPS 설정 (3인칭)")]
     [Tooltip("플레이어 뒤쪽 위치")]
     public Vector3 tpsOffset = new Vector3(0f, 1.5f, -3f);
     public float tpsFOV = 70f;
 
-<<<<<<< HEAD
     [Header("마우스 회전")]
-=======
-    [Header("=== 마우스 회전 ===")]
->>>>>>> 8086d4ff9e20fdc65be39194b9d8187b0da82c97
     public float mouseSensitivity = 200f;
     [Range(-89f, 0f)]
     public float minVerticalAngle = -80f;
     [Range(0f, 89f)]
     public float maxVerticalAngle = 80f;
 
-<<<<<<< HEAD
     [Header("전환 애니메이션")]
     [Tooltip("카메라 전환 시간")]
     public float transitionDuration = 0.5f;
     [Tooltip("전환")]
-=======
-    [Header("=== 전환 애니메이션 ===")]
-    [Tooltip("카메라 전환 시간")]
-    public float transitionDuration = 0.5f;
-    [Tooltip("전환 이징 (부드러운 정도)")]
->>>>>>> 8086d4ff9e20fdc65be39194b9d8187b0da82c97
     public Ease transitionEase = Ease.OutCubic;
 
     // 내부 변수
@@ -81,7 +58,7 @@ public class FPSTPSCameraController : MonoBehaviour
 
         // 검증
         if (player == null)
-        {   
+        {
             enabled = false;
             return;
         }
@@ -217,17 +194,13 @@ public class FPSTPSCameraController : MonoBehaviour
         {
             targetPosition = player.position + player.TransformDirection(fpsOffset);
             targetFOV = fpsFOV;
-            Debug.Log("FPS 모드 (1인칭)");
+            Debug.Log("FPS 1인칭");
         }
         else
         {
             targetPosition = player.position + player.TransformDirection(tpsOffset);
             targetFOV = tpsFOV;
-<<<<<<< HEAD
-            Debug.Log("TPS 모드 3인칭");
-=======
-            Debug.Log("TPS 모드 (3인칭)");
->>>>>>> 8086d4ff9e20fdc65be39194b9d8187b0da82c97
+            Debug.Log("TPS 3인칭");
         }
 
         // DOTween 시퀀스로 부드러운 전환
@@ -264,11 +237,7 @@ public class FPSTPSCameraController : MonoBehaviour
         style.fontStyle = FontStyle.Bold;
 
         GUI.Label(new Rect(10, 10, 400, 25),
-<<<<<<< HEAD
             $"카메라 모드: {(isFPS ? "FPS 1인칭" : "TPS 3인칭")}", style);
-=======
-            $"카메라 모드: {(isFPS ? "FPS (1인칭)" : "TPS (3인칭)")}", style);
->>>>>>> 8086d4ff9e20fdc65be39194b9d8187b0da82c97
         GUI.Label(new Rect(10, 35, 400, 25),
             $"FOV: {cam.fieldOfView:F0}", style);
         GUI.Label(new Rect(10, 60, 400, 25),
