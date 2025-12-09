@@ -1284,20 +1284,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 095bdbbb4a7b62a4e80e37dad21340a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 368773325}
-  _camera: {fileID: 767215994}
-  _fpsOffset: {x: 0, y: 1.6, z: 0}
-  _fpsFOV: 60
-  _tpsOffset: {x: 0, y: 1.5, z: -3}
-  _tpsFOV: 70
-  _mouseSensitivity: 200
-  _minVerticalAngle: -80
-  _maxVerticalAngle: 80
-  _transitionDuration: 0.5
-  _transitionEase: 9
-  _isFPS: 1
-  _verticalRotation: 0
-  _horizontalRotation: 0
 --- !u!114 &767216000
 MonoBehaviour:
   m_ObjectHideFlags: 0
