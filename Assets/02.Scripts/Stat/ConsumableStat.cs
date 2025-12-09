@@ -1,16 +1,41 @@
+using System;
 using UnityEngine;
 
-[Serializeable]
-public class CosumeableStat
+[Serializable]
+public class ConsumableStat
 {
     [SerializeField] private float _maxValue;
-
     [SerializeField] private float _value;
     [SerializeField] private float _regenValue;
+
+    public void Initialize()
+    {
+        SetValue(_maxValue);
+    }
 
     public void Regenerate(float time)
     {
         _value += _regenValue * time;
+
+        if (_value > _maxValue)
+        {
+            _value = _maxValue;
+        }
+    }
+
+    public bool TryConsume(float amount)
+    {
+        if (_value < amount) return false;
+
+        Consume(amount);
+
+        return true;
+    }
+
+
+    public void Consume(float amount)
+    {
+        _value -= amount;
     }
 
     public void IncreaseMax(float amount)
@@ -19,24 +44,31 @@ public class CosumeableStat
     }
     public void Increase(float amount)
     {
-        _value += amount;
+        SetValue(_value + amount);
     }
 
     public void DecreaseMax(float amount)
     {
-        _maxValue += amount;
+        _maxValue -= amount;
     }
     public void Decrease(float amount)
     {
         _value -= amount;
     }
 
-    public void SetValueMax(float amount)
+
+    public void SetMaxValue(float value)
     {
-        _maxValue += amount;
+        _maxValue = value;
     }
     public void SetValue(float value)
     {
         _value = value;
+
+        if (_value > _maxValue)
+        {
+            _value = _maxValue;
+        }
     }
+
 }
