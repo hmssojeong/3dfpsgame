@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 // 키보드를 누르면 캐릭터를 그 방향으로 이동 시키고 싶다.
@@ -5,10 +6,15 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerStats))]
 public class PlayerMove : MonoBehaviour
 {
-    // 필요 속성
-    // - 중력
-    public float Gravity = -9.81f;
+    [Serializable] // json, sciptableObject 혹은 DB에서 읽어오게 하면된다.
+    public class MoveConfig
+    {
+        public float Gravity;
+        public float RunStamina;
+        public float JumpStamina;
+    }
 
+    public MoveConfig _config;
     private CharacterController _controller;
     private PlayerStats _stats;
 
@@ -23,7 +29,7 @@ public class PlayerMove : MonoBehaviour
     private void Update()
     {
         // 0. 중력을 누적한다.
-        _yVelocity += Gravity * Time.deltaTime;
+        _yVelocity += _config.Gravity * Time.deltaTime;
 
         // 1. 키보드 입력 받기
         float x = Input.GetAxis("Horizontal");
@@ -49,6 +55,17 @@ public class PlayerMove : MonoBehaviour
         direction = Camera.main.transform.TransformDirection(direction);
         direction.y = _yVelocity; // 중력 적용
 
+        float moveSpeed = _stats.MoveSpeed.Value;
+        if (Input.GetKey(KeyCode.LeftShift) && _stats.Stamina.TryConsume(_config.RunStamina *Time.deltaTime))
+        {
+            moveSpeed = _stats.RunSpeed.Value;
+        }
+
+        else
+        {
+            // 걷기
+            direction *= _stats.MoveSpeed.Value;
+        }
 
         // 3. 방향으로 이동시키기  
         _controller.Move(direction * _stats.MoveSpeed.Value * Time.deltaTime);
