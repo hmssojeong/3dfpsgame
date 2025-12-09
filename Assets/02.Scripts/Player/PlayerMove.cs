@@ -15,6 +15,7 @@ public class PlayerMove : MonoBehaviour
     }
 
     public MoveConfig _config;
+
     private CharacterController _controller;
     private PlayerStats _stats;
 
@@ -61,14 +62,8 @@ public class PlayerMove : MonoBehaviour
             moveSpeed = _stats.RunSpeed.Value;
         }
 
-        else
-        {
-            // 걷기
-            direction *= _stats.MoveSpeed.Value;
-        }
-
         // 3. 방향으로 이동시키기  
-        _controller.Move(direction * _stats.MoveSpeed.Value * Time.deltaTime);
+        _controller.Move(direction * moveSpeed * Time.deltaTime);
     }
 
 }

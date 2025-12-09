@@ -10,6 +10,6 @@ public class UI_PlayerStats : MonoBehaviour
     private void Update()
     {
         _healthSlider.value = _stats.Health.Value / _stats.Health.MaxValue;
-        _healthSlider.value = _stats.Health.Value / _stats.Health.MaxValue;
+        _staminaSlider.value = _stats.Stamina.Value / _stats.Stamina.MaxValue;
     }
 }

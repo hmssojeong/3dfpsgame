@@ -634,7 +634,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _config:
     Gravity: -9.81
-    RunStamina: 3
+    RunStamina: 20
     JumpStamina: 3
 --- !u!143 &368773328
 CharacterController:
@@ -680,7 +680,7 @@ MonoBehaviour:
   Stamina:
     _maxValue: 100
     _value: 100
-    _regenValue: 20
+    _regenValue: 1
   Damage:
     _value: 10
   MoveSpeed:
@@ -1281,6 +1281,7 @@ GameObject:
   - component: {fileID: 836989114}
   - component: {fileID: 836989113}
   - component: {fileID: 836989116}
+  - component: {fileID: 836989117}
   m_Layer: 5
   m_Name: UI_PlayerStats
   m_TagString: Untagged
@@ -1388,6 +1389,21 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &836989117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 836989111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60444958a487f2947848ef2e97f274c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stats: {fileID: 368773329}
+  _healthSlider: {fileID: 1654965734}
+  _staminaSlider: {fileID: 1219213751}
 --- !u!1 &866387504
 GameObject:
   m_ObjectHideFlags: 0
