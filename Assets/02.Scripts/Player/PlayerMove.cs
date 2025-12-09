@@ -21,6 +21,9 @@ public class PlayerMove : MonoBehaviour
 
     private float _yVelocity = 0f;   // 중력에 의해 누적될 y값 변수
 
+    [SerializeField] private int _maxJumps = 2; // 2단 점프
+    private int _jumpCount = 0;
+
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
@@ -31,6 +34,11 @@ public class PlayerMove : MonoBehaviour
     {
         // 0. 중력을 누적한다.
         _yVelocity += _config.Gravity * Time.deltaTime;
+
+        if (_controller.isGrounded && _yVelocity <= 0f)
+        {
+            _jumpCount = 0;    // 점프 카운트 리셋
+        }
 
         // 1. 키보드 입력 받기
         float x = Input.GetAxis("Horizontal");
@@ -44,12 +52,27 @@ public class PlayerMove : MonoBehaviour
         Vector3 direction = new Vector3(x, 0, y);
         direction.Normalize();
 
-
-
-        // - 점프! : 점프 키를 누르고 && 땅이라면
+         // - 점프! : 점프 키를 누르고 && 땅이라면
         if (Input.GetButtonDown("Jump") && _controller.isGrounded)
         {
             _yVelocity = _stats.JumpPower.Value;
+            _jumpCount = 1;  // 첫 점프
+        }
+
+
+        if (Input.GetButtonDown("Jump") && _jumpCount < _maxJumps && !_controller.isGrounded)
+        {
+            // 점프 시 스태미나가 있다면 소모 체크
+            if (_stats.Stamina.TryConsume(_config.JumpStamina))
+            {
+                _yVelocity = _stats.JumpPower.Value;
+                _jumpCount++;  // 점프 횟수 증가
+            }
+            else
+            {
+                _jumpCount = 0;
+                _yVelocity = 0f;
+            }
         }
 
         // - 카메라가 쳐다보는 방향으로 변환한다. (월드 -> 로컬)
