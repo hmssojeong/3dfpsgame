@@ -9,7 +9,7 @@ using TMPro;
 public class BombAmmoUI : MonoBehaviour
 {
     [Header("UI 요소들")]
-    [SerializeField] private TextMeshProUGUI _ammoText;           // "5/5" 같은 텍스트
+    [SerializeField] private TextMeshProUGUI _ammoText; // "5/5" 같은 텍스트
     [SerializeField] private Image _reloadBar;         // 재장전 바 (선택사항)
     [SerializeField] private GameObject _reloadPanel;  // 재장전 중 표시 (선택사항)
 

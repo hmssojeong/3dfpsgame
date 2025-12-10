@@ -92,8 +92,6 @@ public class PlayerBombFire : MonoBehaviour
         _currentBombCount--;
         UpdateUI();
 
-        Debug.Log($"폭탄 발사! 남은 개수: {_currentBombCount}/{_maxBombCount}");
-
         // 폭탄이 0개가 되면 자동 재장전
         if (_currentBombCount <= 0)
         {

@@ -6,6 +6,9 @@ public class PlayerGunFire : MonoBehaviour
     [SerializeField] private Transform _fireTransform; // 총알이 발사될 위치
     [SerializeField] private ParticleSystem _hitEffect; // 피격 이펙트 프리팹
 
+    private float fireTimer = 2f;
+    private float fireTime = 0f;
+
     private void Update()
     {
         // 1. 마우스 왼쪽 버튼이 눌린다면..
@@ -13,6 +16,13 @@ public class PlayerGunFire : MonoBehaviour
         {
             // 2. Ray를 생성하고 발사할 위치, 방향, 거리를 설정한다. (쏜다.)
             Ray ray = new Ray(_fireTransform.position, Camera.main.transform.forward);
+
+            fireTimer -= Time.deltaTime;
+
+            if(fireTimer<=0f)
+            {
+                fireTimer = fireTime;
+            }
 
             // 3. RayCastHit(충돌한 대상의 정보)를 저장할 변수를 생성한다.
             RaycastHit hitInfo = new RaycastHit();
