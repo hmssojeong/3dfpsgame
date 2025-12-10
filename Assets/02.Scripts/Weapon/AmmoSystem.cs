@@ -132,10 +132,3 @@ public class AmmoSystem : MonoBehaviour
     public bool IsReloading => _isReloading;
 }
 
-
-    
- 
-
-
-
-}
