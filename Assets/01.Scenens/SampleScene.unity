@@ -119,6 +119,53 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &71524389
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 71524391}
+  - component: {fileID: 71524390}
+  m_Layer: 0
+  m_Name: BombPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &71524390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 71524389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4d08dd8efe5c9b4c90cba2dd81cec49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bombPrefab: {fileID: 7005814305861660453, guid: e4fb2e2b8e4f9ef4fa683b5a2a59112e, type: 3}
+  _poolSize: 10
+  _expandable: 1
+--- !u!4 &71524391
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 71524389}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &111865760
 GameObject:
   m_ObjectHideFlags: 0
@@ -531,6 +578,7 @@ GameObject:
   - component: {fileID: 368773328}
   - component: {fileID: 368773329}
   - component: {fileID: 368773330}
+  - component: {fileID: 368773331}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -704,8 +752,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fireTransform: {fileID: 497673894}
-  _bombPrefab: {fileID: 7005814305861660453, guid: e4fb2e2b8e4f9ef4fa683b5a2a59112e, type: 3}
   _throwPower: 15
+  _maxBombCount: 5
+  _reloadTime: 2
+--- !u!114 &368773331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368773321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1d53881ea6c474da0f4af248e4656e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _showDebugInfo: 1
 --- !u!1 &388997287
 GameObject:
   m_ObjectHideFlags: 0
@@ -2150,3 +2212,4 @@ SceneRoots:
   - {fileID: 1662179422}
   - {fileID: 111865764}
   - {fileID: 1535958485}
+  - {fileID: 71524391}
