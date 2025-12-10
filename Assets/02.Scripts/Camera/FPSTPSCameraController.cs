@@ -209,6 +209,6 @@ public class FPSTPSCameraController : MonoBehaviour
         // FOV 전환
         sequence.Join(cam.DOFieldOfView(targetFOV, transitionDuration).SetEase(transitionEase));
 
-        currentTween = sequence;
+        currentTween = sequence; // 새 애니메이션으로 교체, 저장해서 다음 전환 시 중단 가능하게
     }
 }
