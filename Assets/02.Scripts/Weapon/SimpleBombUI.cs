@@ -9,15 +9,15 @@ public class SimpleBombUI : MonoBehaviour
     [Header("설정")]
     [SerializeField] private bool _showDebugInfo = true;
 
-    private PlayerFire _playerFire;
+    private PlayerBombFire _playerFire;
 
     private void Start()
     {
-        _playerFire = GetComponent<PlayerFire>();
+        _playerFire = GetComponent<PlayerBombFire>();
 
         if (_playerFire == null)
         {
-            _playerFire = FindObjectOfType<PlayerFire>();
+            _playerFire = FindObjectOfType<PlayerBombFire>();
         }
 
         if (_playerFire == null)

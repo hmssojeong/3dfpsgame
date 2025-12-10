@@ -17,12 +17,12 @@ public class BombAmmoUI : MonoBehaviour
     [SerializeField] private Color _emptyColor = Color.red;
     [SerializeField] private Color _reloadingColor = Color.yellow;
 
-    private PlayerFire _playerFire;
+    private PlayerBombFire _playerFire;
 
     private void Start()
     {
         // PlayerFire 찾기
-        _playerFire = FindObjectOfType<PlayerFire>();
+        _playerFire = FindObjectOfType<PlayerBombFire>();
 
         if (_playerFire == null)
         {
@@ -32,7 +32,7 @@ public class BombAmmoUI : MonoBehaviour
         }
 
         // 이벤트 구독
-        PlayerFire.OnBombCountChanged += UpdateAmmoDisplay;
+        PlayerBombFire.OnBombCountChanged += UpdateAmmoDisplay;
 
         // 초기 표시
         UpdateAmmoDisplay(_playerFire.CurrentBombCount, _playerFire.MaxBombCount);
@@ -47,7 +47,7 @@ public class BombAmmoUI : MonoBehaviour
     private void OnDestroy()
     {
         // 이벤트 구독 해제
-        PlayerFire.OnBombCountChanged -= UpdateAmmoDisplay;
+        PlayerBombFire.OnBombCountChanged -= UpdateAmmoDisplay;
     }
 
     private void Update()
