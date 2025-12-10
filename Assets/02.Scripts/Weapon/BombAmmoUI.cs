@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 /// <summary>
 /// 폭탄 개수를 화면에 표시하는 UI 시스템
@@ -8,7 +9,7 @@ using UnityEngine.UI;
 public class BombAmmoUI : MonoBehaviour
 {
     [Header("UI 요소들")]
-    [SerializeField] private Text _ammoText;           // "5/5" 같은 텍스트
+    [SerializeField] private TextMeshProUGUI _ammoText;           // "5/5" 같은 텍스트
     [SerializeField] private Image _reloadBar;         // 재장전 바 (선택사항)
     [SerializeField] private GameObject _reloadPanel;  // 재장전 중 표시 (선택사항)
 
@@ -22,7 +23,7 @@ public class BombAmmoUI : MonoBehaviour
     private void Start()
     {
         // PlayerFire 찾기
-        _playerFire = FindObjectOfType<PlayerBombFire>();
+        _playerFire = FindAnyObjectByType<PlayerBombFire>();
 
         if (_playerFire == null)
         {

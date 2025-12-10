@@ -25,7 +25,7 @@ public class TryCatchFinallyTest : MonoBehaviour
         try
         {
             // 예외가 발생할만한 코드 작성
-            int index = 75; // 실제로는 내가 문제를 해결하기 위해 반복문이나 수식을 통해 얻은 인덱스
+           /* int index = 75; // 실제로는 내가 문제를 해결하기 위해 반복문이나 수식을 통해 얻은 인덱스*/
             numbers[75] = 1;
         }
         catch (Exception e)

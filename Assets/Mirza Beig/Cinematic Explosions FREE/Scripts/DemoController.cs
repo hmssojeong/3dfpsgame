@@ -16,7 +16,7 @@ namespace MirzaBeig.CinematicExplosionsFree
             Day,
             Night,
         }
-        Camera camera;
+        new Camera camera;
 
         List<ParticleSystem> particleSystems;
         public Transform particleSystemsContainer;
@@ -123,7 +123,7 @@ namespace MirzaBeig.CinematicExplosionsFree
         {
             currentScene = Scene.Night;
 
-            camera.clearFlags = CameraClearFlags.SolidColor;
+            GetComponent<Camera>().clearFlags = CameraClearFlags.SolidColor;
 
             RenderSettings.ambientIntensity = 0.8f;
             RenderSettings.reflectionIntensity = 0.5f;
@@ -138,7 +138,7 @@ namespace MirzaBeig.CinematicExplosionsFree
         {
             currentScene = Scene.Day;
 
-            camera.clearFlags = CameraClearFlags.Skybox;
+            GetComponent<Camera>().clearFlags = CameraClearFlags.Skybox;
 
             RenderSettings.ambientIntensity = 1.0f;
             RenderSettings.reflectionIntensity = 1.0f;

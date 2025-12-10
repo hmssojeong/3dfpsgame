@@ -17,7 +17,7 @@ public class SimpleBombUI : MonoBehaviour
 
         if (_playerFire == null)
         {
-            _playerFire = FindObjectOfType<PlayerBombFire>();
+            _playerFire = FindAnyObjectByType<PlayerBombFire>();
         }
 
         if (_playerFire == null)
