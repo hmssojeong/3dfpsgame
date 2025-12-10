@@ -8,6 +8,9 @@ public class PlayerGunFire : MonoBehaviour
 
     [SerializeField] private float _fireRate = 0.2f;
 
+    [Header("탄약 시스템")]
+    [SerializeField] private AmmoSystem _ammo;
+
     private float _fireTimer = 0f; // 남은 쿨타임
 
     private void Update()
@@ -22,9 +25,11 @@ public class PlayerGunFire : MonoBehaviour
         // 1. 마우스 왼쪽 버튼이 눌린다면..
         if (Input.GetMouseButton(0) && _fireTimer <= 0f)
         {
-            Fire();
-
-            _fireTimer = _fireRate;
+            if (_ammo != null && _ammo.TryConsume())
+            {
+                Fire();                    
+                _fireTimer = _fireRate;
+            }
         }
     }
 
