@@ -6,23 +6,32 @@ public class PlayerGunFire : MonoBehaviour
     [SerializeField] private Transform _fireTransform; // 총알이 발사될 위치
     [SerializeField] private ParticleSystem _hitEffect; // 피격 이펙트 프리팹
 
-    private float fireTimer = 2f;
-    private float fireTime = 0f;
+    [SerializeField] private float _fireRate = 0.2f;
+
+    private float _fireTimer = 0f; // 남은 쿨타임
 
     private void Update()
     {
-        // 1. 마우스 왼쪽 버튼이 눌린다면..
-        if (Input.GetMouseButton(0))
+
+        if (_fireTimer > 0f)
         {
+            _fireTimer -= Time.deltaTime;
+
+        }
+
+        // 1. 마우스 왼쪽 버튼이 눌린다면..
+        if (Input.GetMouseButton(0) && _fireTimer <= 0f)
+        {
+            Fire();
+
+            _fireTimer = _fireRate;
+        }
+    }
+
+        private void Fire()
+        { 
             // 2. Ray를 생성하고 발사할 위치, 방향, 거리를 설정한다. (쏜다.)
             Ray ray = new Ray(_fireTransform.position, Camera.main.transform.forward);
-
-            fireTimer -= Time.deltaTime;
-
-            if(fireTimer<=0f)
-            {
-                fireTimer = fireTime;
-            }
 
             // 3. RayCastHit(충돌한 대상의 정보)를 저장할 변수를 생성한다.
             RaycastHit hitInfo = new RaycastHit();
@@ -54,5 +63,4 @@ public class PlayerGunFire : MonoBehaviour
         // RayCast: 레이저를 발사
         // RayCastHit: 레이저가 물체와 충돌했다면 그 정보를 저장하는 구조체
 
-    }
-}
+ }
