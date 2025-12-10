@@ -56,7 +56,7 @@ public class FPSTPSCameraController : MonoBehaviour
             player = transform.parent;
         }
 
-        // 검증
+        // 요소가 없으면 스크립트 비활성화
         if (player == null)
         {
             enabled = false;
@@ -70,7 +70,7 @@ public class FPSTPSCameraController : MonoBehaviour
         }
     }
 
-    void Start()
+    private void Start()
     {
         if (player == null || cam == null) return;
 
@@ -80,14 +80,14 @@ public class FPSTPSCameraController : MonoBehaviour
 
         // 초기 설정
         cam.fieldOfView = fpsFOV;
-        horizontalRotation = player.eulerAngles.y;
+        horizontalRotation = player.eulerAngles.y; // 플레이어 방향 동기화
 
         // 커서 잠금
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-    void Update()
+    private void Update()
     {
         if (player == null || cam == null) return;
 
@@ -137,23 +137,20 @@ public class FPSTPSCameraController : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
 
-        // 수평 회전 (플레이어 Y축)
+        // 수평 회전 (플레이어 Y축) -좌우
         horizontalRotation += mouseX * mouseSensitivity * Time.deltaTime;
 
-        // 수직 회전 (카메라 X축)
+        // 수직 회전 (카메라 X축) -상하
         verticalRotation -= mouseY * mouseSensitivity * Time.deltaTime;
-        verticalRotation = Mathf.Clamp(verticalRotation, minVerticalAngle, maxVerticalAngle);
+        verticalRotation = Mathf.Clamp(verticalRotation, minVerticalAngle, maxVerticalAngle); // clamp: -80 ~ 80도 사이로 제한 (고개를 뒤로 꺽을 수 없게)
 
-        // 플레이어 회전 적용
+        // 플레이어 회전 적용 (좌우만)
         player.rotation = Quaternion.Euler(0f, horizontalRotation, 0f);
 
-        // 카메라 회전 적용
+        // 카메라 회전 적용 (상하 + 플레이어 방향)
         cam.transform.rotation = player.rotation * Quaternion.Euler(verticalRotation, 0f, 0f);
     }
 
-    /// <summary>
-    /// 현재 모드에 맞게 카메라 위치 업데이트
-    /// </summary>
     private void UpdateCameraPosition()
     {
         Vector3 targetPosition;
@@ -207,40 +204,11 @@ public class FPSTPSCameraController : MonoBehaviour
         Sequence sequence = DOTween.Sequence();
 
         // 카메라 위치 전환
-        sequence.Join(
-            cam.transform.DOMove(targetPosition, transitionDuration)
-                .SetEase(transitionEase)
-        );
+        sequence.Join(cam.transform.DOMove(targetPosition, transitionDuration).SetEase(transitionEase));
 
         // FOV 전환
-        sequence.Join(
-            cam.DOFieldOfView(targetFOV, transitionDuration)
-                .SetEase(transitionEase)
-        );
+        sequence.Join(cam.DOFieldOfView(targetFOV, transitionDuration).SetEase(transitionEase));
 
         currentTween = sequence;
-    }
-
-    /// <summary>
-    /// 현재 카메라 모드 확인 (외부 접근용)
-    /// </summary>
-    public bool IsFPSMode => isFPS;
-
-    // 디버그: 화면에 현재 상태 표시
-    void OnGUI()
-    {
-        if (player == null) return;
-
-        GUIStyle style = new GUIStyle(GUI.skin.label);
-        style.fontSize = 16;
-        style.normal.textColor = Color.white;
-        style.fontStyle = FontStyle.Bold;
-
-        GUI.Label(new Rect(10, 10, 400, 25),
-            $"카메라 모드: {(isFPS ? "FPS 1인칭" : "TPS 3인칭")}", style);
-        GUI.Label(new Rect(10, 35, 400, 25),
-            $"FOV: {cam.fieldOfView:F0}", style);
-        GUI.Label(new Rect(10, 60, 400, 25),
-            "T키: 카메라 전환", style);
     }
 }
