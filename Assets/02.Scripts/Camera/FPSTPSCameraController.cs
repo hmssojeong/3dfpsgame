@@ -32,12 +32,12 @@ public class FPSTPSCameraController : MonoBehaviour
 
     [Header("총기 반동")]
     [Tooltip("위로 올라가는 반동")]
-    [Range(0.5f, 10f)]
-    public float GunVertical = 3.0f;
+    [Range(0.5f, 5f)]
+    public float GunVertical = 2.0f;
 
-/*    [Tooltip("총 가로 반동")]
-    [Range(0f, 5f)]
-    public float GunHorizontal = 1.5f;*/
+    [Tooltip("총 가로 반동")]
+    [Range(0f, 2f)]
+    public float GunHorizontal = 2f;
 
     [Tooltip("반동복구속도")]
     [Range(5f, 30f)]
@@ -66,7 +66,7 @@ public class FPSTPSCameraController : MonoBehaviour
 
     // 반동 변수
     private float _currentGunVertical = 0f;
-/*    private float _currentGunHorizontal = 0f;*/
+    private float _currentGunHorizontal = 0f;
     private float _gunAccumulation = 0f;
 
 
@@ -177,10 +177,10 @@ public class FPSTPSCameraController : MonoBehaviour
         player.rotation = Quaternion.Euler(0f, _horizontalRotation, 0f);
 
         // 카메라 회전 적용 (상하 + 플레이어 방향 + 반동)
-        float finalVertical = _verticalRotation + _currentGunVertical;
-    /*    float finalHorizontal = _currentGunHorizontal;*/
+        float finalVertical = _verticalRotation - _currentGunVertical;
+        float finalHorizontal = _currentGunHorizontal;
 
-        _cam.transform.rotation = player.rotation * Quaternion.Euler(finalVertical, 0f, 0f);
+        _cam.transform.rotation = player.rotation * Quaternion.Euler(finalVertical, finalHorizontal, 0f);
     }
 
     private void HandleGunRebound()
@@ -188,15 +188,15 @@ public class FPSTPSCameraController : MonoBehaviour
         float returnSpeed = GunReturnSpeed * (1f + GunSnapiness * 2f);
 
         _currentGunVertical = Mathf.Lerp(_currentGunVertical, 0f, Time.deltaTime * returnSpeed);
-        /* _currentGunHorizontal = Mathf.Lerp(_currentGunHorizontal, 0f, Time.deltaTime * returnSpeed);*/
+        _currentGunHorizontal = Mathf.Lerp(_currentGunHorizontal, 0f, Time.deltaTime * returnSpeed);
 
         // 거의 0에 가까우면 완전히 0으로 스냅
         if (Mathf.Abs(_currentGunVertical) < 0.01f)
         {
             _currentGunVertical = 0f;
         }
-/*        if (Mathf.Abs(_currentGunHorizontal) < 0.01f)
-            _currentGunHorizontal = 0f;*/
+        if (Mathf.Abs(_currentGunHorizontal) < 0.01f)
+            _currentGunHorizontal = 0f;
 
         // 누적 반동 감소 (시간이 지나면 자연스럽게 줄어듦)
         _gunAccumulation = Mathf.Lerp(_gunAccumulation, 0f, Time.deltaTime * 3f);
@@ -212,13 +212,13 @@ public class FPSTPSCameraController : MonoBehaviour
         float verticalUp = GunVertical * accumulationFactor;
         _currentGunVertical += verticalUp;
 
-/*        // 가로 반동 (좌우 랜덤) - 즉시 추가!
+        // 가로 반동 (좌우 랜덤) - 즉시 추가!
         float horizontalUp = Random.Range(-GunHorizontal, GunHorizontal) * accumulationFactor;
-        _currentGunHorizontal += horizontalUp;*/
+        _currentGunHorizontal += horizontalUp;
 
         // 반동 제한 (너무 많이 올라가지 않게)
         _currentGunVertical = Mathf.Clamp(_currentGunVertical, 0f, 25f);
-  /*      _currentGunHorizontal = Mathf.Clamp(_currentGunHorizontal, -15f, 15f);*/
+        _currentGunHorizontal = Mathf.Clamp(_currentGunHorizontal, -15f, 15f);
     }
 
 

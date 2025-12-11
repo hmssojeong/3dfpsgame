@@ -6,7 +6,7 @@ public class PlayerGunFire : MonoBehaviour
     [SerializeField] private Transform _fireTransform; // 총알이 발사될 위치
     [SerializeField] private ParticleSystem _hitEffect; // 피격 이펙트 프리팹
 
-    [SerializeField] private float _fireRate = 0.2f;
+    [SerializeField] private float _fireRate = 0.1f;
 
     [Header("탄약 시스템")]
     [SerializeField] private AmmoSystem _ammo;
