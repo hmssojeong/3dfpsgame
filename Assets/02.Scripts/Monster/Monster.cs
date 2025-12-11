@@ -83,7 +83,7 @@ public class Monster : MonoBehaviour
                 break;
 
             case EMonsterState.Patrol:
-                Idle();
+                Patrol();
                 break;
 
             case EMonsterState.Trace:
