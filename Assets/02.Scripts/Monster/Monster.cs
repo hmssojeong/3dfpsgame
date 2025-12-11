@@ -1,5 +1,7 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
+using static UnityEngine.UI.Image;
 
 public class Monster : MonoBehaviour
 {
@@ -33,6 +35,8 @@ public class Monster : MonoBehaviour
     [SerializeField] private GameObject _player;
     [SerializeField] private CharacterController _controller;
 
+    private Vector3 _originPos;
+
     public float DetectDistance = 4f;
     public float AttackDistance = 1.2f;
 
@@ -40,6 +44,10 @@ public class Monster : MonoBehaviour
     public float AttackSpeed = 2f;
     public float AttackTimer = 0f;
 
+    private void Start()
+    {
+        _originPos = transform.position;
+    }
 
     private void Update()
     {
@@ -98,12 +106,29 @@ public class Monster : MonoBehaviour
         {
             State = EMonsterState.Attack;
         }
+
+        if (distance > DetectDistance)
+        {
+            State = EMonsterState.Comeback;
+            Debug.Log("집에 돌아왔습니다");
+        }
     }
 
     private void Comeback()
     {
         // 과제 1. 제자리로 복귀하는 상태
 
+        float distance = Vector3.Distance(transform.position, _player.transform.position);
+        // 원래 위치로 돌아가기  현재위치에서 원래있던자리로 돌아가기
+
+        Vector3 direction = (_originPos - transform.position).normalized;
+        _controller.Move(direction * MoveSpeed * Time.deltaTime);
+
+        if (distance <= DetectDistance)
+        {
+            State = EMonsterState.Trace;
+            Debug.Log("다시 쫒아갑니다.");
+        }
     }
 
     private void Attack()
