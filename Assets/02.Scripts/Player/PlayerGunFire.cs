@@ -79,6 +79,12 @@ public class PlayerGunFire : MonoBehaviour
 
                 _hitEffect.Play();
 
+                Monster monster = hitInfo.collider.gameObject.GetComponent<Monster>();
+                if(monster != null)
+                {
+                     monster.TryTakeDamage(10);
+                }
+
             }
         }
 
