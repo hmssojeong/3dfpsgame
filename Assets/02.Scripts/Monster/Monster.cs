@@ -32,9 +32,10 @@ public class Monster : MonoBehaviour
 
     public EMonsterState State = EMonsterState.Idle;
     private PlayerStats _playerStats;
-
+    private MonsterKnockBack _monsterKnockback;
     [SerializeField] private GameObject _player;
     [SerializeField] private CharacterController _controller;
+    [SerializeField] private MonsterKnockBack _knockback;
 
     private Vector3 _originPos;
 
@@ -50,6 +51,7 @@ public class Monster : MonoBehaviour
     {
         _originPos = transform.position;
         _playerStats = FindAnyObjectByType<PlayerStats>();
+        _knockback = FindAnyObjectByType<MonsterKnockBack>();
     }
 
     private void Update()
@@ -161,7 +163,7 @@ public class Monster : MonoBehaviour
             if(_playerStats != null)
             {
                 // 과제 2번. 플레이어 공격하기
-               /* _playerStats.Damage(AttackDamage);*/
+                _playerStats.PlayerTakeDamage(AttackDamage);
             }
 
         }
@@ -170,7 +172,9 @@ public class Monster : MonoBehaviour
 
     public float Health = 100;
 
-    public bool TryTakeDamage(float damage)
+    private Vector3 _lastAttackerPos;
+
+    public bool TryTakeDamage(float damage, Vector3 attackerPos)
     {
         if (State == EMonsterState.Hit || State == EMonsterState.Death)
         {
@@ -179,15 +183,19 @@ public class Monster : MonoBehaviour
 
         Health -= damage;
 
+        _lastAttackerPos = attackerPos; // 공격자 위치저장
+
         if (Health > 0)
         {
             // 히트상태
             State = EMonsterState.Hit;
             StartCoroutine(Hit_Coroutine());
+            Debug.Log("히트중입니다");
         }
         else
         {
             // 데스상태
+            Debug.Log($"상태 전환: {State} -> Death");
             State = EMonsterState.Death;
             StartCoroutine(Death_Coroutine());
         }
@@ -198,14 +206,18 @@ public class Monster : MonoBehaviour
 
     private IEnumerator Hit_Coroutine()
     {
+        _knockback.ApplyKnockback(_player.transform.position);
+        Debug.Log("넉백당했습니다");
+
         yield return new WaitForSeconds(0.2F);
         State = EMonsterState.Idle;
-
     }
 
     private IEnumerator Death_Coroutine()
     {
         yield return new WaitForSeconds(2F);
         State = EMonsterState.Idle;
+        Debug.Log("몬스터 죽음");
+        Destroy(gameObject);
     }
 }

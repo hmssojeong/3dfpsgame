@@ -28,4 +28,20 @@ public class PlayerStats : MonoBehaviour
         Health.Regenerate(deltaTime);
         Stamina.Regenerate(deltaTime);
     }
+
+    public void PlayerTakeDamage(float amount)
+    {
+        Health.Consume(amount);
+        Debug.Log($"플레이어가 {amount}만큼 데미지를 입었습니다.");
+        if(Health.Value < 0)
+        {
+            Die();
+        }
+
+    }
+
+    private void Die()
+    {
+        Debug.Log("플레이어가 사망했습니다.");
+    }
 }

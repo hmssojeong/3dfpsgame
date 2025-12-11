@@ -7,6 +7,7 @@ public class PlayerGunFire : MonoBehaviour
     [SerializeField] private ParticleSystem _hitEffect; // 피격 이펙트 프리팹
 
     [SerializeField] private float _fireRate = 0.1f;
+    private float _playerAttackDamage = 10f;
 
     [Header("탄약 시스템")]
     [SerializeField] private AmmoSystem _ammo;
@@ -82,7 +83,7 @@ public class PlayerGunFire : MonoBehaviour
                 Monster monster = hitInfo.collider.gameObject.GetComponent<Monster>();
                 if(monster != null)
                 {
-                     monster.TryTakeDamage(10);
+                     monster.TryTakeDamage(_playerAttackDamage, transform.position);
                 }
 
             }
