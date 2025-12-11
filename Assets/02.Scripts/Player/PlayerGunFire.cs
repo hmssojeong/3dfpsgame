@@ -11,7 +11,18 @@ public class PlayerGunFire : MonoBehaviour
     [Header("탄약 시스템")]
     [SerializeField] private AmmoSystem _ammo;
 
+    [Header("반동")]
+    [SerializeField] private FPSTPSCameraController _cameraController;
+
     private float _fireTimer = 0f; // 남은 쿨타임
+
+    private void Start()
+    {
+        if(_cameraController == null)
+        {
+            _cameraController = FindAnyObjectByType<FPSTPSCameraController>();
+        }
+    }
 
     private void Update()
     {
@@ -34,9 +45,16 @@ public class PlayerGunFire : MonoBehaviour
     }
 
         private void Fire()
-        { 
+        {
+            // 반동
+            if (_cameraController != null)
+            {
+                 _cameraController.ApplyGunRebound();
+            }
+
             // 2. Ray를 생성하고 발사할 위치, 방향, 거리를 설정한다. (쏜다.)
-            Ray ray = new Ray(_fireTransform.position, Camera.main.transform.forward);
+            /*Ray ray = new Ray(_fireTransform.position, Camera.main.transform.forward);*/
+             Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
 
             // 3. RayCastHit(충돌한 대상의 정보)를 저장할 변수를 생성한다.
             RaycastHit hitInfo = new RaycastHit();
