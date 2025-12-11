@@ -601,6 +601,11 @@ MonoBehaviour:
   AttackSpeed: 2
   AttackTimer: 0
   AttackDamage: 10
+  _usePatrol: 1
+  _patrolPointCount: 3
+  _patrolRadius: 5
+  _patrolWaitTime: 2
+  _patrolSpeed: 2
   Health: 100
 --- !u!143 &173441644
 CharacterController:

@@ -1,20 +1,16 @@
 using UnityEngine;
 
-/// <summary>
-/// 폭탄 오브젝트 (오브젝트 풀링 지원)
-/// 충돌 시 폭발하고 풀로 돌아갑니다
-/// </summary>
 public class Bomb : MonoBehaviour
 {
     [Header("폭발 설정")]
     public GameObject _explosionEffectPrefab;
-    [SerializeField] private float _explosionDelay = 0f;  // 폭발 지연 시간 (선택사항)
+    [SerializeField] private float _explosionDelay = 0f;
+    [SerializeField] private float _explosionRadius = 5f;  
+    [SerializeField] private float _explosionDamage = 50f; 
 
-    private BombPool _pool;  // 소속된 풀
 
-    /// <summary>
-    /// 풀 설정 (BombPool에서 호출)
-    /// </summary>
+    private BombPool _pool;
+
     public void SetPool(BombPool pool)
     {
         _pool = pool;
@@ -28,6 +24,8 @@ public class Bomb : MonoBehaviour
             GameObject effectObject = Instantiate(_explosionEffectPrefab);
             effectObject.transform.position = transform.position;
         }
+
+        ExplosionDamage();
 
         // 풀로 반환 (Destroy 대신)
         if (_pool != null)
@@ -44,14 +42,29 @@ public class Bomb : MonoBehaviour
         }
         else
         {
-            // 풀이 없으면 기존 방식대로 파괴
+            // 풀이 없으면 파괴
             Destroy(gameObject);
         }
     }
 
-    /// <summary>
-    /// 풀로 돌아가기
-    /// </summary>
+    private void ExplosionDamage()
+    {
+        // 폭발 범위 내의 모든 콜라이더 검색
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, _explosionRadius);
+
+        foreach (Collider hitCollider in hitColliders)
+        {
+            // Monster 컴포넌트 확인
+            Monster monster = hitCollider.GetComponent<Monster>();
+
+            if (monster != null)
+            {
+                // 폭탄 위치를 공격자 위치로 전달
+                bool damaged = monster.TryTakeDamage(_explosionDamage, transform.position);
+
+            }
+        }
+    }
     private void ReturnToPool()
     {
         if (_pool != null)
@@ -60,9 +73,6 @@ public class Bomb : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 수동으로 폭탄 반환 (시간 경과 후 등)
-    /// </summary>
     public void Explode()
     {
         if (_explosionEffectPrefab != null)
@@ -70,6 +80,8 @@ public class Bomb : MonoBehaviour
             GameObject effectObject = Instantiate(_explosionEffectPrefab);
             effectObject.transform.position = transform.position;
         }
+
+        ExplosionDamage();
 
         ReturnToPool();
     }
