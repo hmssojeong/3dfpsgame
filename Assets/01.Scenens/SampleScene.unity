@@ -845,8 +845,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fireTransform: {fileID: 497673894}
   _hitEffect: {fileID: 2047500379}
-  _fireRate: 0.2
+  _fireRate: 0.1
   _ammo: {fileID: 368773334}
+  _cameraController: {fileID: 0}
 --- !u!114 &368773333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1609,15 +1610,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 497673894}
-  fpsOffset: {x: 0, y: 0, z: 0}
-  fpsFOV: 60
-  tpsOffset: {x: 0, y: 1.5, z: -3}
-  tpsFOV: 70
-  mouseSensitivity: 200
-  minVerticalAngle: -80
-  maxVerticalAngle: 80
-  transitionDuration: 0.5
-  transitionEase: 9
+  FpsOffset: {x: 0, y: 1.6, z: 0}
+  FpsFOV: 60
+  TpsOffset: {x: 0, y: 1.5, z: -3}
+  TpsFOV: 70
+  MouseSensitivity: 200
+  MinVerticalAngle: -80
+  MaxVerticalAngle: 80
+  TransitionDuration: 0.5
+  TransitionEase: 9
+  GunVertical: 0.8
+  GunHorizontal: 0.8
+  GunReturnSpeed: 5
+  GunSnapiness: 0.3
+  GunAccumulationRate: 1.3
+  MaxGunAccumulation: 5
 --- !u!1 &772161322
 GameObject:
   m_ObjectHideFlags: 0
