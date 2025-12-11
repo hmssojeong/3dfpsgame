@@ -31,6 +31,7 @@ public class Monster : MonoBehaviour
     #endregion
 
     public EMonsterState State = EMonsterState.Idle;
+    private PlayerStats _playerStats;
 
     [SerializeField] private GameObject _player;
     [SerializeField] private CharacterController _controller;
@@ -43,10 +44,12 @@ public class Monster : MonoBehaviour
     public float MoveSpeed = 5f;
     public float AttackSpeed = 2f;
     public float AttackTimer = 0f;
+    public float AttackDamage = 10f;
 
     private void Start()
     {
         _originPos = transform.position;
+        _playerStats = FindAnyObjectByType<PlayerStats>();
     }
 
     private void Update()
@@ -150,7 +153,17 @@ public class Monster : MonoBehaviour
             AttackTimer = 0f;
             Debug.Log("플레이어 공격!");
 
-            // 과제 2번. 플레이어 공격하기
+            if(_playerStats == null)
+            {
+                Debug.Log("playerStat이 없습니다.");
+            }
+
+            if(_playerStats != null)
+            {
+                // 과제 2번. 플레이어 공격하기
+               /* _playerStats.Damage(AttackDamage);*/
+            }
+
         }
 
     }

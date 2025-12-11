@@ -28,5 +28,4 @@ public class PlayerStats : MonoBehaviour
         Health.Regenerate(deltaTime);
         Stamina.Regenerate(deltaTime);
     }
-
 }
