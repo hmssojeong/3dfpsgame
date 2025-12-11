@@ -503,6 +503,7 @@ GameObject:
   - component: {fileID: 173441640}
   - component: {fileID: 173441644}
   - component: {fileID: 173441643}
+  - component: {fileID: 173441645}
   m_Layer: 0
   m_Name: Zombie
   m_TagString: Untagged
@@ -593,11 +594,13 @@ MonoBehaviour:
   State: 0
   _player: {fileID: 368773321}
   _controller: {fileID: 173441644}
+  _knockback: {fileID: 0}
   DetectDistance: 3
   AttackDistance: 1.2
   MoveSpeed: 5
   AttackSpeed: 2
   AttackTimer: 0
+  AttackDamage: 10
   Health: 100
 --- !u!143 &173441644
 CharacterController:
@@ -624,6 +627,20 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &173441645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 173441639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c77b161cbfc9e94aa9cc1263b2f2cbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _knockbackForce: 5
+  _knockbackTime: 0.3
 --- !u!1 &177752351
 GameObject:
   m_ObjectHideFlags: 0
