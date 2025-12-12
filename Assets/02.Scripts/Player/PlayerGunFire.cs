@@ -86,7 +86,13 @@ public class PlayerGunFire : MonoBehaviour
                      monster.TryTakeDamage(_playerAttackDamage, transform.position);
                 }
 
-            }
+                Drum drum = hitInfo.collider.gameObject.GetComponent<Drum>();
+                if (drum != null)
+                {
+                    drum.TryTakeDamage(10);
+                }
+
+        }
         }
 
         // Ray: 레이저(시작위치, 방향, 거리)
