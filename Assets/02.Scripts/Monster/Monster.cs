@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 using static UnityEngine.UI.Image;
@@ -32,7 +33,6 @@ public class Monster : MonoBehaviour
 
     public EMonsterState State = EMonsterState.Idle;
     private PlayerStats _playerStats;
-    private MonsterKnockBack _monsterKnockback;
     [SerializeField] private GameObject _player;
     [SerializeField] private CharacterController _controller;
     [SerializeField] private MonsterKnockBack _knockback;
@@ -47,11 +47,34 @@ public class Monster : MonoBehaviour
     public float AttackTimer = 0f;
     public float AttackDamage = 10f;
 
+    private const float _patrolNearby = 1.5f;
+
+    private float _originNearby = 0.5f;
+
+    [Header("순찰 시스템")]
+    [SerializeField] private bool _usePatrol = true;
+    [SerializeField] private int _patrolPointCount = 3;
+    [SerializeField] private float _patrolRadius = 5f;
+    [SerializeField] private float _patrolWaitTime = 2f;
+    [SerializeField] private float _patrolSpeed = 2f;
+
+    private List<Vector3> _patrolPoints;
+    private int _currentPatrolIndex = 0;
+    private float _patrolTimer = 0f;
+    private bool _isWaitingAtPatrolPoint = false;
+
     private void Start()
     {
         _originPos = transform.position;
         _playerStats = FindAnyObjectByType<PlayerStats>();
         _knockback = FindAnyObjectByType<MonsterKnockBack>();
+
+        // 순찰 시스템 초기화
+        if (_usePatrol)
+        {
+            InitializePatrolPoints();
+            State = EMonsterState.Patrol; // 시작 시 순찰 상태로
+        }
     }
 
     private void Update()
@@ -61,6 +84,10 @@ public class Monster : MonoBehaviour
         {
             case EMonsterState.Idle:
                 Idle();
+                break;
+
+            case EMonsterState.Patrol:
+                Patrol();
                 break;
 
             case EMonsterState.Trace:
@@ -75,6 +102,95 @@ public class Monster : MonoBehaviour
                 Attack();
                 break;
         }
+    }
+
+    private void InitializePatrolPoints()
+    {
+        // 가능한 순찰 오프셋 위치들 (원점 기준)
+        List<Vector3> possibleOffsets = new List<Vector3>
+        {
+            new Vector3(0, 0, 0),
+            new Vector3(_patrolRadius, 0, _patrolRadius),
+            new Vector3(-_patrolRadius, 0, -_patrolRadius),
+            new Vector3(_patrolRadius, 0, -_patrolRadius),
+            new Vector3(-_patrolRadius, 0, _patrolRadius),
+            new Vector3(_patrolRadius * _patrolNearby, 0, 0),
+            new Vector3(-_patrolRadius * _patrolNearby, 0, 0),
+            new Vector3(0, 0, _patrolRadius * _patrolNearby),
+            new Vector3(0, 0, -_patrolRadius * _patrolNearby),
+        };
+
+        // 랜덤하게 순찰 지점 선택
+        _patrolPoints = new List<Vector3>();
+        List<Vector3> offsetsCopy = new List<Vector3>(possibleOffsets);
+
+        for (int i = 0; i < _patrolPointCount && offsetsCopy.Count > 0; i++)
+        {
+            int randomIndex = Random.Range(0, offsetsCopy.Count);
+            Vector3 worldPosition = _originPos + offsetsCopy[randomIndex];
+            _patrolPoints.Add(worldPosition);
+            offsetsCopy.RemoveAt(randomIndex);
+        }
+
+        _currentPatrolIndex = 0;
+    }
+
+    private void Patrol()
+    {
+        // 순찰 지점이 없으면 Idle로 전환
+        if (_patrolPoints == null || _patrolPoints.Count == 0)
+        {
+            State = EMonsterState.Idle;
+            return;
+        }
+
+        // 플레이어가 탐지범위 안에 있다면 추적 시작
+        if (Vector3.Distance(transform.position, _player.transform.position) <= DetectDistance)
+        {
+            State = EMonsterState.Trace;
+            _isWaitingAtPatrolPoint = false;
+            _patrolTimer = 0f;
+            Debug.Log("상태 전환: Patrol -> Trace");
+            return;
+        }
+
+        // 순찰 지점에서 대기 중이라면
+        if (_isWaitingAtPatrolPoint)
+        {
+            _patrolTimer += Time.deltaTime;
+
+            if (_patrolTimer >= _patrolWaitTime)
+            {
+                // 대기 완료, 다음 지점으로
+                _isWaitingAtPatrolPoint = false;
+                _patrolTimer = 0f;
+                
+                _currentPatrolIndex++;
+
+                if (_currentPatrolIndex >= _patrolPoints.Count)
+                {
+                    _currentPatrolIndex = 0;
+                }
+            }
+            return;
+        }
+
+        // 현재 목표 지점으로 이동
+        Vector3 targetPoint = _patrolPoints[_currentPatrolIndex];
+        float distanceToTarget = Vector3.Distance(transform.position, targetPoint);
+
+        // 목표 지점에 도착했다면
+        if (distanceToTarget <= _originNearby)
+        {
+            _isWaitingAtPatrolPoint = true;
+            _patrolTimer = 0f;
+            Debug.Log($"순찰 지점 {_currentPatrolIndex} 도착, 대기 시작");
+            return;
+        }
+
+        // 목표 지점으로 이동
+        Vector3 direction = (targetPoint - transform.position).normalized;
+        _controller.Move(direction * _patrolSpeed * Time.deltaTime);
     }
 
     // 1. 함수는 한 가지 일만 잘해야 한다.
@@ -123,13 +239,35 @@ public class Monster : MonoBehaviour
     {
         // 과제 1. 제자리로 복귀하는 상태
 
-        float distance = Vector3.Distance(transform.position, _player.transform.position);
-        // 원래 위치로 돌아가기  현재위치에서 원래있던자리로 돌아가기
+        float distanceToPlayer = Vector3.Distance(transform.position, _player.transform.position);
+        float distanceToOrigin = Vector3.Distance(transform.position, _originPos);
 
+        // 원래 위치에 도착했다면
+        if (distanceToOrigin <= 0.5f)
+        {
+            // 순찰을 사용한다면 순찰 상태로, 아니면 Idle로
+            if (_usePatrol)
+            {
+                State = EMonsterState.Patrol;
+                _currentPatrolIndex = 0; // 순찰 경로 처음부터 다시
+                _isWaitingAtPatrolPoint = false;
+                _patrolTimer = 0f;
+                Debug.Log("상태 전환: Comeback -> Patrol");
+            }
+            else
+            {
+                State = EMonsterState.Idle;
+                Debug.Log("상태 전환: Comeback -> Idle");
+            }
+            return;
+        }
+
+        // 원래 위치로 돌아가기
         Vector3 direction = (_originPos - transform.position).normalized;
         _controller.Move(direction * MoveSpeed * Time.deltaTime);
 
-        if (distance <= DetectDistance)
+        // 복귀 중에 플레이어가 다시 가까워지면 추적 재개
+        if (distanceToPlayer <= DetectDistance)
         {
             State = EMonsterState.Trace;
             Debug.Log("다시 쫒아갑니다.");

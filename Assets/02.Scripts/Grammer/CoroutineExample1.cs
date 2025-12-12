@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 using System.Collections;
 
 public class CoroutineExample1 : MonoBehaviour
@@ -49,3 +49,4 @@ public class CoroutineExample1 : MonoBehaviour
         Debug.Log("Test3");
     }
 }
+*/

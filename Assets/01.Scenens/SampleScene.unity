@@ -601,6 +601,11 @@ MonoBehaviour:
   AttackSpeed: 2
   AttackTimer: 0
   AttackDamage: 10
+  _usePatrol: 1
+  _patrolPointCount: 3
+  _patrolRadius: 5
+  _patrolWaitTime: 2
+  _patrolSpeed: 2
   Health: 100
 --- !u!143 &173441644
 CharacterController:
@@ -1761,7 +1766,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 497673894}
-  FpsOffset: {x: 0, y: 1.6, z: 0}
+  FpsOffset: {x: 0, y: 0, z: 0}
   FpsFOV: 60
   TpsOffset: {x: 0, y: 1.5, z: -3}
   TpsFOV: 70
@@ -3364,6 +3369,7 @@ MonoBehaviour:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 767215995}
   - {fileID: 895691036}
   - {fileID: 1750035192}
   - {fileID: 368773325}
@@ -3375,6 +3381,5 @@ SceneRoots:
   - {fileID: 1535958485}
   - {fileID: 71524391}
   - {fileID: 1161892615}
-  - {fileID: 767215995}
   - {fileID: 1427172542}
   - {fileID: 173441642}

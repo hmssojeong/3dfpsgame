@@ -1,9 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// 플레이어 폭탄 발사 시스템 (오브젝트 풀링 버전)
-/// 마우스 우클릭으로 폭탄을 던지며, 풀에서 가져와 재사용합니다
-/// </summary>
 public class PlayerBombFire : MonoBehaviour
 {
     [Header("폭탄 설정")]
@@ -47,9 +43,6 @@ public class PlayerBombFire : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 폭탄 던지기 시도
-    /// </summary>
     private void TryThrowBomb()
     {
         // 폭탄이 없거나 재장전 중이면 불가
@@ -99,9 +92,6 @@ public class PlayerBombFire : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 재장전 시작
-    /// </summary>
     private void StartReload()
     {
         // 이미 최대치면 재장전 불필요
@@ -122,9 +112,6 @@ public class PlayerBombFire : MonoBehaviour
         Debug.Log($"재장전 시작... ({_reloadTime}초)");
     }
 
-    /// <summary>
-    /// 재장전 처리
-    /// </summary>
     private void HandleReload()
     {
         if (!_isReloading) return;
@@ -143,27 +130,18 @@ public class PlayerBombFire : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// UI 업데이트
-    /// </summary>
     private void UpdateUI()
     {
         OnBombCountChanged?.Invoke(_currentBombCount, _maxBombCount);
     }
 
-    /// <summary>
-    /// 외부에서 현재 폭탄 개수 확인
-    /// </summary>
+
     public int CurrentBombCount => _currentBombCount;
 
-    /// <summary>
-    /// 외부에서 최대 폭탄 개수 확인
-    /// </summary>
+
     public int MaxBombCount => _maxBombCount;
 
-    /// <summary>
-    /// 재장전 진행도 (0~1)
-    /// </summary>
+
     public float ReloadProgress
     {
         get
@@ -173,8 +151,5 @@ public class PlayerBombFire : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 재장전 중인지 확인
-    /// </summary>
     public bool IsReloading => _isReloading;
 }

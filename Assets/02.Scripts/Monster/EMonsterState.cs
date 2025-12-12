@@ -8,4 +8,5 @@ public enum EMonsterState
     Attack,
     Hit,
     Death,
+    Patrol,
 }
