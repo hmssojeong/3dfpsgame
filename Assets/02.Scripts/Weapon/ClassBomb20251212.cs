@@ -34,7 +34,7 @@ public class ClassBomb20251212 : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(transform.position, ExplosionRadius, LayerMask.NameToLayer("Monster"));
         for (int i = 0; i < colliders.Length; i++)
         {
-            Monster monster = collision.gameObject.GetComponent<Monster>();
+            Monster monster = colliders[i].gameObject.GetComponent<Monster>();
 
             float distance = Vector3.Distance(transform.position, monster.transform.position);
             distance = Mathf.Min(1f, distance);

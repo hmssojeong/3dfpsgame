@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2860374183680136256}
   - component: {fileID: 7277383513178320822}
   - component: {fileID: -6387914628345189764}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Drum
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,3 +151,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 208457c0ebba6e6458249bcd4c7c1ed4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DamageLayer:
+    serializedVersion: 2
+    m_Bits: 1664
+  _health:
+    _maxValue: 100
+    _value: 100
+    _regenValue: 0
+  _damage:
+    _value: 100
+  _explosionRadius:
+    _value: 0
+  _explosionParticePrefab: {fileID: 3352391191284423539, guid: 9571e0e1b1e65834cbba759493c171d3, type: 3}
