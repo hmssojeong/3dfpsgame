@@ -47,6 +47,10 @@ public class Monster : MonoBehaviour
     public float AttackTimer = 0f;
     public float AttackDamage = 10f;
 
+    private const float _patrolNearby = 1.5f;
+
+    private float _originNearby = 0.5f;
+
     [Header("순찰 시스템")]
     [SerializeField] private bool _usePatrol = true;
     [SerializeField] private int _patrolPointCount = 3;
@@ -110,10 +114,10 @@ public class Monster : MonoBehaviour
             new Vector3(-_patrolRadius, 0, -_patrolRadius),
             new Vector3(_patrolRadius, 0, -_patrolRadius),
             new Vector3(-_patrolRadius, 0, _patrolRadius),
-            new Vector3(_patrolRadius * 1.5f, 0, 0),
-            new Vector3(-_patrolRadius * 1.5f, 0, 0),
-            new Vector3(0, 0, _patrolRadius * 1.5f),
-            new Vector3(0, 0, -_patrolRadius * 1.5f),
+            new Vector3(_patrolRadius * _patrolNearby, 0, 0),
+            new Vector3(-_patrolRadius * _patrolNearby, 0, 0),
+            new Vector3(0, 0, _patrolRadius * _patrolNearby),
+            new Vector3(0, 0, -_patrolRadius * _patrolNearby),
         };
 
         // 랜덤하게 순찰 지점 선택
@@ -129,7 +133,6 @@ public class Monster : MonoBehaviour
         }
 
         _currentPatrolIndex = 0;
-        Debug.Log($"순찰 지점 {_patrolPoints.Count}개 생성 완료");
     }
 
     private void Patrol()
@@ -161,8 +164,13 @@ public class Monster : MonoBehaviour
                 // 대기 완료, 다음 지점으로
                 _isWaitingAtPatrolPoint = false;
                 _patrolTimer = 0f;
-                _currentPatrolIndex = (_currentPatrolIndex + 1) % _patrolPoints.Count;
-                Debug.Log($"다음 순찰 지점으로 이동: {_currentPatrolIndex}");
+                
+                _currentPatrolIndex++;
+
+                if (_currentPatrolIndex >= _patrolPoints.Count)
+                {
+                    _currentPatrolIndex = 0;
+                }
             }
             return;
         }
@@ -172,7 +180,7 @@ public class Monster : MonoBehaviour
         float distanceToTarget = Vector3.Distance(transform.position, targetPoint);
 
         // 목표 지점에 도착했다면
-        if (distanceToTarget <= 0.5f)
+        if (distanceToTarget <= _originNearby)
         {
             _isWaitingAtPatrolPoint = true;
             _patrolTimer = 0f;
