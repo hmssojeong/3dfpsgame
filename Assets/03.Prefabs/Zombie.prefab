@@ -129,7 +129,7 @@ MonoBehaviour:
   State: 0
   _player: {fileID: 6914402241721318999, guid: b870e971667e95444991bb1696788374, type: 3}
   _controller: {fileID: 4030999293760258691}
-  _knockback: {fileID: 0}
+  _knockback: {fileID: 695690177666721642}
   DetectDistance: 3
   AttackDistance: 1.2
   MoveSpeed: 5
