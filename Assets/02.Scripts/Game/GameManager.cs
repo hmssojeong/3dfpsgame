@@ -5,8 +5,8 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    private static GameManager instance;
-    public static GameManager Instance;
+    private static GameManager _instance;
+    public static GameManager Instance => _instance;
 
     private EGameState _state = EGameState.Ready;
     public EGameState State => _state;
@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;    
+        _instance = this;    
     }
     private void Start()
     {
