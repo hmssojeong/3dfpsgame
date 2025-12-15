@@ -1607,7 +1607,6 @@ GameObject:
   - component: {fileID: 767215996}
   - component: {fileID: 767215997}
   - component: {fileID: 767215998}
-  - component: {fileID: 767215999}
   - component: {fileID: 767216000}
   m_Layer: 0
   m_Name: Main Camera
@@ -1760,18 +1759,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!114 &767215999
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 767215992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 095bdbbb4a7b62a4e80e37dad21340a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &767216000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2461,7 +2448,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1142705779}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1316921156}
+        m_TargetAssemblyTypeName: UI_Minimap, Assembly-CSharp
+        m_MethodName: ZoomIn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1142705779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2644,9 +2643,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 100000, guid: 54dd9cb5740188a488b8baebbf19207c, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 100002, guid: 54dd9cb5740188a488b8baebbf19207c, type: 3}
       propertyPath: m_Name
       value: Stone_BulletImpact
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 54dd9cb5740188a488b8baebbf19207c, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 54dd9cb5740188a488b8baebbf19207c, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 54dd9cb5740188a488b8baebbf19207c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2850,6 +2861,7 @@ GameObject:
   - component: {fileID: 1316921153}
   - component: {fileID: 1316921152}
   - component: {fileID: 1316921155}
+  - component: {fileID: 1316921156}
   m_Layer: 0
   m_Name: MinimapCamera
   m_TagString: Untagged
@@ -2936,7 +2948,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -2981,6 +2993,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 368773339}
   _offsetY: 10
+--- !u!114 &1316921156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316921151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbd4a4b499733b543a5f57a8f369911a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _minimapCamera: {fileID: 1316921153}
+  _defaultZoom: 10
+  _minZoom: 5
+  _maxZoom: 30
+  _zoomStep: 2
+  _zoomSpeed: 5
+  _zoomInButton: {fileID: 1142705778}
+  _zoomOutButton: {fileID: 1759203250}
 --- !u!1 &1427172540
 GameObject:
   m_ObjectHideFlags: 0
@@ -3628,7 +3660,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1759203251}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1316921156}
+        m_TargetAssemblyTypeName: UI_Minimap, Assembly-CSharp
+        m_MethodName: ZoomOut
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1759203251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3879,6 +3923,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1907788692}
   m_CullTransparentMesh: 1
+--- !u!114 &1913569404 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7817236660363891133, guid: c48d199a5053765468236a67a8e1daac, type: 3}
+  m_PrefabInstance: {fileID: 4643638813202847061}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2004129387
 GameObject:
   m_ObjectHideFlags: 0
@@ -4196,6 +4251,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 534760252327745474, guid: c48d199a5053765468236a67a8e1daac, type: 3}
+      propertyPath: _guageImage
+      value: 
+      objectReference: {fileID: 1913569404}
     - target: {fileID: 576940573938785933, guid: c48d199a5053765468236a67a8e1daac, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.19
@@ -4252,6 +4311,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Zombie
       objectReference: {fileID: 0}
+    - target: {fileID: 4843277506794073804, guid: c48d199a5053765468236a67a8e1daac, type: 3}
+      propertyPath: m_FillAmount
+      value: 0.926
+      objectReference: {fileID: 0}
+    - target: {fileID: 4869165248585971335, guid: c48d199a5053765468236a67a8e1daac, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7817236660363891133, guid: c48d199a5053765468236a67a8e1daac, type: 3}
+      propertyPath: m_FillAmount
+      value: 0.926
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4265,6 +4336,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1852300711527123719, guid: b870e971667e95444991bb1696788374, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5648607271247935253, guid: b870e971667e95444991bb1696788374, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
