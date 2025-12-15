@@ -70,7 +70,7 @@ public class FPSTPSCameraController : MonoBehaviour
     private float _gunAccumulation = 0f;
 
 
-    void Awake()
+    private void Awake()
     {
         // 카메라 찾기
         _cam = GetComponent<Camera>();
@@ -101,7 +101,13 @@ public class FPSTPSCameraController : MonoBehaviour
 
     private void Start()
     {
+
         if (player == null || _cam == null) return;
+
+        if (GameManager.Instance == null || GameManager.Instance.State != EGameState.Playing)
+        {
+            return;
+        }
 
         // Transform 초기화
         transform.localPosition = Vector3.zero;
