@@ -137,8 +137,8 @@ MonoBehaviour:
     _maxValue: 0
     _value: 0
     _regenValue: 0
-  DetectDistance: 3
-  AttackDistance: 1.2
+  DetectDistance: 4
+  AttackDistance: 2
   MoveSpeed: 5
   AttackSpeed: 2
   AttackTimer: 0
