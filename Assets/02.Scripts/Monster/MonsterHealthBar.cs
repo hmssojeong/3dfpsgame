@@ -11,11 +11,21 @@ public class MonsterHealthBar : MonoBehaviour
     [SerializeField] private Image _guageImage;
     [SerializeField] private Image _guageImageDelayLate;
 
+    [SerializeField] private float _shakeDuration = 0.2f;
+    [SerializeField] private float _shakeAmount = 10f;
+
+    private Vector3 _originalPosition;
+
     private float _lastHealth = -1;
 
     private void Awake()
     {
         _monster = gameObject.GetComponent<Monster>();
+
+        if (_healthBarTransform != null)
+        {
+            _originalPosition = _healthBarTransform.localPosition;
+        }
     }
 
     private void LateUpdate()
@@ -28,6 +38,7 @@ public class MonsterHealthBar : MonoBehaviour
             _guageImage.fillAmount = _monster.Health.Value / _monster.Health.MaxValue;
             StartCoroutine(HitDelayGuage_Coroutine());
             StartCoroutine(HitDelayLateGuage_Coroutine());
+            StartCoroutine(ShakeHealthBar());
         }
 
         // 빌보드 기법: 카메라의 위치와 회전에 상관없이 항상 정면을 바라보게하는 기법
@@ -45,5 +56,24 @@ public class MonsterHealthBar : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         _guageImageDelayLate.fillAmount = _monster.Health.Value / _monster.Health.MaxValue;
+    }
+
+    private IEnumerator ShakeHealthBar()
+    {
+        if (_healthBarTransform == null) yield break;
+
+        float _shakeTime = 0f;
+
+        while (_shakeTime < _shakeDuration)
+        {
+            float offsetX = Random.Range(-_shakeAmount, _shakeAmount);
+            float offsetY = Random.Range(-_shakeAmount, _shakeAmount);
+
+            _healthBarTransform.localPosition = _originalPosition + new Vector3(offsetX, offsetY, 0);
+
+            _shakeTime += Time.deltaTime;
+            yield return null;
+        }
+        _healthBarTransform.localPosition = _originalPosition;
     }
 }
