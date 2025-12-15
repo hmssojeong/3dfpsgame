@@ -132,19 +132,6 @@ public class FPSTPSCameraController : MonoBehaviour
             ToggleCameraMode();
         }
 
-        // ESC로 커서 해제
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-
-        // 좌클릭으로 커서 다시 잠금
-        if (Input.GetMouseButtonDown(0) && Cursor.visible)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
 
         // 마우스 회전 처리
         HandleMouseRotation();

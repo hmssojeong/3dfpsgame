@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerGunFire : MonoBehaviour
 {
@@ -27,6 +28,10 @@ public class PlayerGunFire : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.Instance.State != EGameState.Playing)
+        {
+            return;
+        }
 
         if (_fireTimer > 0f)
         {
@@ -34,12 +39,17 @@ public class PlayerGunFire : MonoBehaviour
 
         }
 
-        // 1. 마우스 왼쪽 버튼이 눌린다면..
+        // 1. 마우스 왼쪽 버튼이 눌린다면.. 
         if (Input.GetMouseButton(0) && _fireTimer <= 0f)
         {
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
+
             if (_ammo != null && _ammo.TryConsume())
             {
-                Fire();                    
+                Fire();
                 _fireTimer = _fireRate;
             }
         }
