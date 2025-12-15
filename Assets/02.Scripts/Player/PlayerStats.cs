@@ -14,6 +14,7 @@ public class PlayerStats : MonoBehaviour
     public ValueStat RunSpeed;
     public ValueStat JumpPower;
 
+    public event System.Action OnDamaged;
 
     private void Start()
     {
@@ -33,6 +34,7 @@ public class PlayerStats : MonoBehaviour
     {
         Health.Consume(amount);
         Debug.Log($"플레이어가 {amount}만큼 데미지를 입었습니다.");
+        OnDamaged?.Invoke();
         if(Health.Value < 0)
         {
             Die();
