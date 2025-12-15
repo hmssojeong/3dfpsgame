@@ -49,22 +49,29 @@ public class Bomb : MonoBehaviour
 
     private void ExplosionDamage()
     {
-        // 폭발 범위 내의 모든 콜라이더 검색
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, _explosionRadius);
+        // 가상의 구를 만들어서 그 구 영역 안에 있는 Monster 레이어의 모든 콜라이더를 찾아서 배열로 반환
+        Collider[] colliders = Physics.OverlapSphere(transform.position, _explosionRadius, 1 << LayerMask.NameToLayer("Monster"));
 
-        foreach (Collider hitCollider in hitColliders)
+        for (int i = 0; i < colliders.Length; i++)
         {
-            // Monster 컴포넌트 확인
-            Monster monster = hitCollider.GetComponent<Monster>();
+            Monster monster = colliders[i].gameObject.GetComponent<Monster>();
 
             if (monster != null)
             {
-                // 폭탄 위치를 공격자 위치로 전달
-                bool damaged = monster.TryTakeDamage(_explosionDamage, transform.position);
+                // 폭발 원점과의 거리 계산
+                float distance = Vector3.Distance(transform.position, monster.transform.position);
+                // 거리가 너무 가까우면 최소 1로 설정 (0으로 나누기 방지)
+                distance = Mathf.Max(1f, distance);
 
+                // 거리에 따라 데미지 감쇠 (가까울수록 높은 데미지)
+                float finalDamage = _explosionDamage / distance;
+
+                // 몬스터에게 데미지 적용
+                monster.TryTakeDamage(finalDamage, transform.position);
             }
         }
     }
+
     private void ReturnToPool()
     {
         if (_pool != null)

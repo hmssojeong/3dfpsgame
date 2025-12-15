@@ -67,7 +67,7 @@ public class Monster : MonoBehaviour
     {
         _originPos = transform.position;
         _playerStats = FindAnyObjectByType<PlayerStats>();
-        _knockback = FindAnyObjectByType<MonsterKnockBack>();
+        _knockback = GetComponent<MonsterKnockBack>();
 
         // 순찰 시스템 초기화
         if (_usePatrol)
@@ -100,6 +100,12 @@ public class Monster : MonoBehaviour
 
             case EMonsterState.Attack:
                 Attack();
+                break;
+
+            case EMonsterState.Hit:
+                break;
+
+            case EMonsterState.Death:
                 break;
         }
     }
