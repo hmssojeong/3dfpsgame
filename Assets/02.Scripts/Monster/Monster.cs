@@ -37,6 +37,8 @@ public class Monster : MonoBehaviour
     [SerializeField] private CharacterController _controller;
     [SerializeField] private MonsterKnockBack _knockback;
 
+    public ConsumableStat Health;
+
     private Vector3 _originPos;
 
     public float DetectDistance = 4f;
@@ -79,6 +81,12 @@ public class Monster : MonoBehaviour
 
     private void Update()
     {
+
+        if(GameManager.Instance.State != EGameState.Playing)
+        {
+            return;
+        }
+
         // 몬스터의 상태에 따라 다른 행동을한다. (다른 메서드를 호출한다.)
         switch (State)
         {
@@ -314,8 +322,6 @@ public class Monster : MonoBehaviour
 
     }
 
-    public float Health = 100;
-
     private Vector3 _lastAttackerPos;
 
     public bool TryTakeDamage(float damage, Vector3 attackerPos)
@@ -325,11 +331,11 @@ public class Monster : MonoBehaviour
             return false;
         }
 
-        Health -= damage;
+        Health.Consume(damage);
 
         _lastAttackerPos = attackerPos; // 공격자 위치저장
 
-        if (Health > 0)
+        if (Health.Value > 0)
         {
             // 히트상태
             State = EMonsterState.Hit;
