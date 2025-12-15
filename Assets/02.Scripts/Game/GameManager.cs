@@ -2,6 +2,7 @@ using System.Collections;
 using System.IO;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
