@@ -43,5 +43,10 @@ public class PlayerStats : MonoBehaviour
     private void Die()
     {
         Debug.Log("플레이어가 사망했습니다.");
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.TriggerGameOver();
+        }
+        
     }
 }

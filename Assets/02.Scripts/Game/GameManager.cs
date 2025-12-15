@@ -28,6 +28,14 @@ public class GameManager : MonoBehaviour
         StartCoroutine(StartToPlay_Coroutine());
     }
 
+    public void TriggerGameOver()
+    {
+        if (_state != EGameState.GameOver)
+        {
+            StartCoroutine(GameOver_Coroutine());
+        }
+    }
+
     private IEnumerator StartToPlay_Coroutine()
     {
         yield return new WaitForSeconds(2f);
@@ -39,5 +47,14 @@ public class GameManager : MonoBehaviour
         _state = EGameState.Playing;
 
         _stateTextUI.gameObject.SetActive(false);
+    }
+
+    private IEnumerator GameOver_Coroutine()
+    {
+        _state = EGameState.GameOver;
+        _stateTextUI.gameObject.SetActive(true);
+        _stateTextUI.text = "GameOver";
+
+        yield return null;
     }
 }
