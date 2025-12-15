@@ -10,10 +10,15 @@ public class MonsterHealthBar : MonoBehaviour
     [SerializeField] private Image _guageImageDelay;
     [SerializeField] private Image _guageImage;
     [SerializeField] private Image _guageImageDelayLate;
+    [SerializeField] private Image _healthBarFillImage;
+
+    [Header("하얀색 효과")]
+    [SerializeField] private float _flashDuration = 0.1f;
 
     [SerializeField] private float _shakeDuration = 0.2f;
     [SerializeField] private float _shakeAmount = 10f;
 
+    private Color _originalColor;
     private Vector3 _originalPosition;
 
     private float _lastHealth = -1;
@@ -21,6 +26,12 @@ public class MonsterHealthBar : MonoBehaviour
     private void Awake()
     {
         _monster = gameObject.GetComponent<Monster>();
+
+        // 체력바의 원래 색상 저장
+        if (_healthBarFillImage != null)
+        {
+            _originalColor = _healthBarFillImage.color;
+        }
 
         if (_healthBarTransform != null)
         {
@@ -39,6 +50,7 @@ public class MonsterHealthBar : MonoBehaviour
             StartCoroutine(HitDelayGuage_Coroutine());
             StartCoroutine(HitDelayLateGuage_Coroutine());
             StartCoroutine(ShakeHealthBar());
+            StartCoroutine(WhiteFlash());
         }
 
         // 빌보드 기법: 카메라의 위치와 회전에 상관없이 항상 정면을 바라보게하는 기법
@@ -75,5 +87,18 @@ public class MonsterHealthBar : MonoBehaviour
             yield return null;
         }
         _healthBarTransform.localPosition = _originalPosition;
+    }
+
+    private IEnumerator WhiteFlash()
+    {
+        if (_healthBarFillImage == null) yield break;
+
+        _healthBarFillImage.color = Color.white;
+
+        yield return new WaitForSeconds(_flashDuration);
+
+        _healthBarFillImage.fillAmount = _monster.Health.Value / _monster.Health.MaxValue;
+
+        _healthBarFillImage.color = _originalColor;
     }
 }
