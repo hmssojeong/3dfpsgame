@@ -96,7 +96,6 @@ public class MonsterHealthBar : MonoBehaviour
         _healthBarFillImage.color = Color.white;
 
         yield return new WaitForSeconds(_flashDuration);
-
         _healthBarFillImage.fillAmount = _monster.Health.Value / _monster.Health.MaxValue;
 
         _healthBarFillImage.color = _originalColor;
