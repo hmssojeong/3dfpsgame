@@ -44,8 +44,8 @@ public class Monster : MonoBehaviour
 
     private Vector3 _originPos;
 
-    public float DetectDistance = 4f;
-    public float AttackDistance = 2f;
+    public float DetectDistance = 5f;
+    public float AttackDistance = 2.5f;
 
     public float MoveSpeed = 5f;
     public float AttackSpeed = 2f;
@@ -68,6 +68,9 @@ public class Monster : MonoBehaviour
     private float _patrolTimer = 0f;
     private bool _isWaitingAtPatrolPoint = false;
 
+    private Vector3 _jumpStartPosition;
+    private Vector3 _jumpEndPosition;
+
     private void Start()
     {
         _originPos = transform.position;
@@ -75,6 +78,7 @@ public class Monster : MonoBehaviour
         _knockback = GetComponent<MonsterKnockBack>();
 
         _agent.speed = MoveSpeed;
+        _agent.stoppingDistance = AttackDistance;
 
         // 순찰 시스템 초기화
         if (_usePatrol)
@@ -105,6 +109,10 @@ public class Monster : MonoBehaviour
 
             case EMonsterState.Trace:
                 Trace();
+                break;
+
+            case EMonsterState.Jump:
+                Jump();
                 break;
 
             case EMonsterState.Comeback:
@@ -250,11 +258,65 @@ public class Monster : MonoBehaviour
             State = EMonsterState.Attack;
         }
 
+        if (_agent.isOnOffMeshLink)
+        {
+            Debug.Log("링크를 만남");
+            OffMeshLinkData linkData = _agent.currentOffMeshLinkData;
+            _jumpStartPosition= linkData.startPos;
+            _jumpEndPosition = linkData.endPos;
+
+            if (_jumpEndPosition.y > _jumpStartPosition.y)
+            {
+                Debug.Log("상태 전환: Trace -> Jump");
+                State = EMonsterState.Jump;
+                return;
+            }
+        }
+
         if (distance > DetectDistance)
         {
             State = EMonsterState.Comeback;
             Debug.Log("집에 돌아왔습니다");
         }
+    }
+
+    private void Jump()
+    {
+        // 순간이동
+        _agent.isStopped = true;
+        _agent.ResetPath();
+        _agent.CompleteOffMeshLink();
+
+        StartCoroutine(Jump_Coroutine());
+
+        // 1. 점프 거리와 내 이동속도를 계산해서 점프 시간을 구한다.
+        // 2. 점프 시간동안 포물선으로 이동한다.
+        // 3. 이동 후 다시 Trace
+    }
+
+    private IEnumerator Jump_Coroutine()
+    {
+        float distance = Vector3.Distance(_player.transform.position, _jumpEndPosition);
+        float jumpTime = distance/MoveSpeed;
+        float jumpHeight = Mathf.Max(1f, distance * 0.3f);
+
+        float elapsedTime = 0f;
+        while (elapsedTime < jumpTime)
+        {
+            float t = elapsedTime / jumpTime;
+
+            Vector3 newPosition = Vector3.Lerp(_jumpStartPosition, _jumpEndPosition, t);
+            newPosition.y += Mathf.Sin(t * Mathf.PI) * jumpHeight;
+            transform.position = newPosition;
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = _jumpEndPosition;
+        State = EMonsterState.Trace;
+
+
     }
 
     private void Comeback()
@@ -342,6 +404,9 @@ public class Monster : MonoBehaviour
         }
 
         Health.Consume(damage);
+
+        _agent.isStopped = true; // 이동 일시정지
+        _agent.ResetPath();      // 경로(=목적지) 삭제
 
         _lastAttackerPos = attackerPos; // 공격자 위치저장
 
