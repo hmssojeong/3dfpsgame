@@ -1,9 +1,11 @@
 using System;
 using UnityEngine;
+using UnityEngine.AI;
 
 // 키보드를 누르면 캐릭터를 그 방향으로 이동 시키고 싶다.
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(PlayerStats))]
+[RequireComponent(typeof(NavMeshAgent))]
 public class PlayerMove : MonoBehaviour
 {
     [Serializable] // json, sciptableObject 혹은 DB에서 읽어오게 하면된다.
@@ -23,6 +25,7 @@ public class PlayerMove : MonoBehaviour
 
     [SerializeField] private int _maxJumps = 2; // 2단 점프
     private int _jumpCount = 0;
+
 
     private void Awake()
     {

@@ -988,9 +988,8 @@ GameObject:
   - component: {fileID: 321093973}
   - component: {fileID: 321093972}
   - component: {fileID: 321093971}
-  - component: {fileID: 321093974}
   m_Layer: 0
-  m_Name: Cube (5)
+  m_Name: Cube_JumpGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1085,31 +1084,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 321093969}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &321093974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 321093969}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6eeb5dc026fdf4b488bc7ae0138ab719, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SerializedVersion: 1
-  m_AgentTypeID: -1372625422
-  m_StartPoint: {x: -2, y: -2, z: -8}
-  m_EndPoint: {x: 0, y: 0, z: -3}
-  m_StartTransform: {fileID: 0}
-  m_EndTransform: {fileID: 0}
-  m_Activated: 1
-  m_Width: 4
-  m_CostModifier: 1
-  m_IsOverridingCost: 0
-  m_Bidirectional: 1
-  m_AutoUpdatePosition: 0
-  m_Area: 0
 --- !u!1 &341981874
 GameObject:
   m_ObjectHideFlags: 0
@@ -1123,7 +1097,7 @@ GameObject:
   - component: {fileID: 341981878}
   - component: {fileID: 341981877}
   m_Layer: 0
-  m_Name: Cube (4)
+  m_Name: Cube_JumpGround_Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1239,6 +1213,22 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5648607271247935253, guid: b870e971667e95444991bb1696788374, type: 3}
   m_PrefabInstance: {fileID: 5205512089796498519}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &368773349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368773321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5b6b1dd06e5e284c9f03aa389948483, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 4096
+  _stoppingDistance: 0.5
 --- !u!1 &388997287
 GameObject:
   m_ObjectHideFlags: 0
@@ -2467,7 +2457,7 @@ GameObject:
   - component: {fileID: 895261961}
   - component: {fileID: 895261960}
   m_Layer: 0
-  m_Name: Cube (3)
+  m_Name: Cube_Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2722,7 +2712,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   m_UseGeometry: 0
   m_DefaultArea: 0
-  m_GenerateLinks: 0
+  m_GenerateLinks: 1
   m_IgnoreNavMeshAgent: 1
   m_IgnoreNavMeshObstacle: 1
   m_OverrideTileSize: 0
@@ -4101,7 +4091,7 @@ GameObject:
   - component: {fileID: 1750035191}
   - component: {fileID: 1750035190}
   - component: {fileID: 1750035189}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4344,7 +4334,7 @@ GameObject:
   - component: {fileID: 1811133075}
   - component: {fileID: 1811133074}
   m_Layer: 0
-  m_Name: Cube (6)
+  m_Name: Cube_Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4670,7 +4660,7 @@ GameObject:
   - component: {fileID: 1984022470}
   - component: {fileID: 1984022473}
   m_Layer: 0
-  m_Name: Cube (7)
+  m_Name: Cube_Mud
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4911,7 +4901,7 @@ GameObject:
   - component: {fileID: 2017017803}
   - component: {fileID: 2017017806}
   m_Layer: 0
-  m_Name: Cube (8)
+  m_Name: Cube_Water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5393,6 +5383,10 @@ PrefabInstance:
       propertyPath: DetectDistance
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 1577900590452005981, guid: c48d199a5053765468236a67a8e1daac, type: 3}
+      propertyPath: m_AutoTraverseOffMeshLink
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2400928593390294703, guid: c48d199a5053765468236a67a8e1daac, type: 3}
       propertyPath: m_Name
       value: Zombie
@@ -5468,7 +5462,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5648607271247935253, guid: b870e971667e95444991bb1696788374, type: 3}
       insertIndex: -1
       addedObject: {fileID: 686007699}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6914402241721318999, guid: b870e971667e95444991bb1696788374, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 368773349}
   m_SourcePrefab: {fileID: 100100000, guid: b870e971667e95444991bb1696788374, type: 3}
 --- !u!1001 &7751489566302398157
 PrefabInstance:
