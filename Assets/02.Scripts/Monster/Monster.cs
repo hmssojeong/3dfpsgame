@@ -42,7 +42,7 @@ public class Monster : MonoBehaviour
     private Vector3 _originPos;
 
     public float DetectDistance = 4f;
-    public float AttackDistance = 1.2f;
+    public float AttackDistance = 2f;
 
     public float MoveSpeed = 5f;
     public float AttackSpeed = 2f;

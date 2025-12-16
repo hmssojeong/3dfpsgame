@@ -1980,6 +1980,9 @@ MonoBehaviour:
   _stats: {fileID: 368773329}
   _healthSlider: {fileID: 1654965734}
   _staminaSlider: {fileID: 1219213751}
+  _image: {fileID: 1907788694}
+  _flashSpeed: 1
+  _startAlpha: 0.8
 --- !u!114 &836989114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2059,6 +2062,9 @@ MonoBehaviour:
   _stats: {fileID: 368773329}
   _healthSlider: {fileID: 1654965734}
   _staminaSlider: {fileID: 1219213751}
+  _image: {fileID: 1907788694}
+  _flashSpeed: 2
+  _startAlpha: 0.8
 --- !u!1 &866387504
 GameObject:
   m_ObjectHideFlags: 0
@@ -3942,14 +3948,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.15566039, b: 0.15566039, a: 0.61960787}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: dcbf8e9e7dc859242921e4b7fa2d18c9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3967,17 +3973,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1907788692}
   m_CullTransparentMesh: 1
---- !u!114 &1913569404 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7817236660363891133, guid: c48d199a5053765468236a67a8e1daac, type: 3}
-  m_PrefabInstance: {fileID: 4643638813202847061}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2004129387
 GameObject:
   m_ObjectHideFlags: 0
@@ -4295,10 +4290,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 534760252327745474, guid: c48d199a5053765468236a67a8e1daac, type: 3}
-      propertyPath: _guageImage
-      value: 
-      objectReference: {fileID: 1913569404}
     - target: {fileID: 576940573938785933, guid: c48d199a5053765468236a67a8e1daac, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.19
@@ -4343,29 +4334,9 @@ PrefabInstance:
       propertyPath: _player
       value: 
       objectReference: {fileID: 368773321}
-    - target: {fileID: 829581925701347787, guid: c48d199a5053765468236a67a8e1daac, type: 3}
-      propertyPath: Health._value
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 829581925701347787, guid: c48d199a5053765468236a67a8e1daac, type: 3}
-      propertyPath: Health._maxValue
-      value: 100
-      objectReference: {fileID: 0}
     - target: {fileID: 2400928593390294703, guid: c48d199a5053765468236a67a8e1daac, type: 3}
       propertyPath: m_Name
       value: Zombie
-      objectReference: {fileID: 0}
-    - target: {fileID: 4843277506794073804, guid: c48d199a5053765468236a67a8e1daac, type: 3}
-      propertyPath: m_FillAmount
-      value: 0.926
-      objectReference: {fileID: 0}
-    - target: {fileID: 4869165248585971335, guid: c48d199a5053765468236a67a8e1daac, type: 3}
-      propertyPath: m_FillAmount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7817236660363891133, guid: c48d199a5053765468236a67a8e1daac, type: 3}
-      propertyPath: m_FillAmount
-      value: 0.926
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
