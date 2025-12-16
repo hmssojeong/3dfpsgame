@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 using static UnityEngine.UI.Image;
 
@@ -37,6 +38,8 @@ public class Monster : MonoBehaviour
     [SerializeField] private CharacterController _controller;
     [SerializeField] private MonsterKnockBack _knockback;
 
+    [SerializeField] private NavMeshAgent _agent;
+
     public ConsumableStat Health;
 
     private Vector3 _originPos;
@@ -70,6 +73,8 @@ public class Monster : MonoBehaviour
         _originPos = transform.position;
         _playerStats = FindAnyObjectByType<PlayerStats>();
         _knockback = GetComponent<MonsterKnockBack>();
+
+        _agent.speed = MoveSpeed;
 
         // 순찰 시스템 초기화
         if (_usePatrol)
@@ -231,10 +236,13 @@ public class Monster : MonoBehaviour
 
         float distance = Vector3.Distance(transform.position, _player.transform.position);
 
-        // 1. 플레이어를 향하는 방향을 구한다.
-        Vector3 direction = (_player.transform.position - transform.position).normalized;
-        // 2. 방향에 따라 이동한다.
-        _controller.Move(direction * MoveSpeed * Time.deltaTime);
+        /*        // 1. 플레이어를 향하는 방향을 구한다.
+                Vector3 direction = (_player.transform.position - transform.position).normalized;
+                // 2. 방향에 따라 이동한다.
+                _controller.Move(direction * MoveSpeed * Time.deltaTime);*/
+
+        // 방향 설정 필요 없이 도착지만 설정해주면 네비게이션 시스템에 의해 자동으로 이동한다.
+        _agent.SetDestination(_player.transform.position);
 
         // 플레이어와의 거리가 공격범위내라면
         if (distance <= AttackDistance)
@@ -276,9 +284,11 @@ public class Monster : MonoBehaviour
             return;
         }
 
-        // 원래 위치로 돌아가기
-        Vector3 direction = (_originPos - transform.position).normalized;
-        _controller.Move(direction * MoveSpeed * Time.deltaTime);
+        /*        // 원래 위치로 돌아가기
+                Vector3 direction = (_originPos - transform.position).normalized;
+                _controller.Move(direction * MoveSpeed * Time.deltaTime);*/
+
+        _agent.SetDestination(_originPos);
 
         // 복귀 중에 플레이어가 다시 가까워지면 추적 재개
         if (distanceToPlayer <= DetectDistance)
