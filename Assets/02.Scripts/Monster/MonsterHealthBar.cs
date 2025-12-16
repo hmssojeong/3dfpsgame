@@ -7,9 +7,9 @@ public class MonsterHealthBar : MonoBehaviour
 {
     private Monster _monster;
     [SerializeField] private Transform _healthBarTransform;
-    [SerializeField] private Image _guageImageDelay;
-    [SerializeField] private Image _guageImage;
-    [SerializeField] private Image _guageImageDelayLate;
+    [SerializeField] private Image _gaugeImageDelay;
+    [SerializeField] private Image _gaugeImage;
+    [SerializeField] private Image _gaugeImageDelayLate;
     [SerializeField] private Image _healthBarFillImage;
 
     [Header("하얀색 효과")]
@@ -18,14 +18,19 @@ public class MonsterHealthBar : MonoBehaviour
     [SerializeField] private float _shakeDuration = 0.2f;
     [SerializeField] private float _shakeAmount = 10f;
 
+    [SerializeField] private float _shortDelay = 0.2f;
+    [SerializeField] private float _longDelay = 0.5f;
+
     private Color _originalColor;
     private Vector3 _originalPosition;
+    private Camera _mainCamera;
 
     private float _lastHealth = -1;
 
     private void Awake()
     {
         _monster = gameObject.GetComponent<Monster>();
+        _mainCamera = Camera.main; // 카메라 캐싱.
 
         // 체력바의 원래 색상 저장
         if (_healthBarFillImage != null)
@@ -41,33 +46,32 @@ public class MonsterHealthBar : MonoBehaviour
 
     private void LateUpdate()
     {
-        // 0 ~ 1
-        // UI가 알고있는 몬스터 체력값과 다를 경우에만 fillAmount를 수정한다.
         if(_lastHealth != _monster.Health.Value)
         {
             _lastHealth = _monster.Health.Value;
-            _guageImage.fillAmount = _monster.Health.Value / _monster.Health.MaxValue;
-            StartCoroutine(HitDelayGuage_Coroutine());
-            StartCoroutine(HitDelayLateGuage_Coroutine());
+            _gaugeImage.fillAmount = _monster.Health.Value / _monster.Health.MaxValue;
+
+            StartCoroutine(HitDelayGauge_Coroutine(_gaugeImageDelay, _shortDelay));
+            StartCoroutine(HitDelayGauge_Coroutine(_gaugeImageDelayLate, _longDelay));
             StartCoroutine(ShakeHealthBar());
             StartCoroutine(WhiteFlash());
         }
 
         // 빌보드 기법: 카메라의 위치와 회전에 상관없이 항상 정면을 바라보게하는 기법
-        _healthBarTransform.forward = Camera.main.transform.forward;
+        if (_mainCamera != null && _healthBarTransform != null)
+        {
+            _healthBarTransform.forward = _mainCamera.transform.forward;
+        }
 
     }
 
-    private IEnumerator HitDelayGuage_Coroutine()
+    private IEnumerator HitDelayGauge_Coroutine(Image gaugeImage, float delay)
     {
-        yield return new WaitForSeconds(0.2f);
-        _guageImageDelay.fillAmount = _monster.Health.Value / _monster.Health.MaxValue;
-    }
-
-    private IEnumerator HitDelayLateGuage_Coroutine()
-    {
-        yield return new WaitForSeconds(0.5f);
-        _guageImageDelayLate.fillAmount = _monster.Health.Value / _monster.Health.MaxValue;
+        yield return new WaitForSeconds(delay);
+        if (gaugeImage != null)
+        {
+            gaugeImage.fillAmount = _monster.Health.Value / _monster.Health.MaxValue;
+        }
     }
 
     private IEnumerator ShakeHealthBar()
