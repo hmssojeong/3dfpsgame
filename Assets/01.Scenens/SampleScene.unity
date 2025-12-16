@@ -988,6 +988,7 @@ GameObject:
   - component: {fileID: 321093973}
   - component: {fileID: 321093972}
   - component: {fileID: 321093971}
+  - component: {fileID: 321093974}
   m_Layer: 0
   m_Name: Cube_JumpGround
   m_TagString: Untagged
@@ -1084,6 +1085,31 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 321093969}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &321093974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321093969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eeb5dc026fdf4b488bc7ae0138ab719, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 1
+  m_AgentTypeID: -1372625422
+  m_StartPoint: {x: 6.61, y: -1.84, z: -0.04}
+  m_EndPoint: {x: 4.57, y: 0.53, z: -0.06}
+  m_StartTransform: {fileID: 0}
+  m_EndTransform: {fileID: 0}
+  m_Activated: 1
+  m_Width: 10.56277
+  m_CostModifier: 1
+  m_IsOverridingCost: 0
+  m_Bidirectional: 1
+  m_AutoUpdatePosition: 0
+  m_Area: 0
 --- !u!1 &341981874
 GameObject:
   m_ObjectHideFlags: 0
@@ -1096,6 +1122,7 @@ GameObject:
   - component: {fileID: 341981879}
   - component: {fileID: 341981878}
   - component: {fileID: 341981877}
+  - component: {fileID: 341981880}
   m_Layer: 0
   m_Name: Cube_JumpGround_Red
   m_TagString: Untagged
@@ -1192,6 +1219,31 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 341981874}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &341981880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 341981874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eeb5dc026fdf4b488bc7ae0138ab719, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 1
+  m_AgentTypeID: -1372625422
+  m_StartPoint: {x: 7.68, y: -1.53, z: -0.26}
+  m_EndPoint: {x: 4.53, y: 0.49, z: -0.16}
+  m_StartTransform: {fileID: 0}
+  m_EndTransform: {fileID: 0}
+  m_Activated: 1
+  m_Width: 10.18
+  m_CostModifier: 1
+  m_IsOverridingCost: 0
+  m_Bidirectional: 1
+  m_AutoUpdatePosition: 0
+  m_Area: 0
 --- !u!1 &368773321 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6914402241721318999, guid: b870e971667e95444991bb1696788374, type: 3}
@@ -1213,7 +1265,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5648607271247935253, guid: b870e971667e95444991bb1696788374, type: 3}
   m_PrefabInstance: {fileID: 5205512089796498519}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &368773349
+--- !u!114 &368773351
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1227,8 +1279,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _groundLayer:
     serializedVersion: 2
-    m_Bits: 4096
+    m_Bits: 0
   _stoppingDistance: 0.5
+  _clickMarkerPrefab: {fileID: 0}
+  _markerLifetime: 1
+  _showDebugInfo: 0
 --- !u!1 &388997287
 GameObject:
   m_ObjectHideFlags: 0
@@ -2080,6 +2135,9 @@ MonoBehaviour:
   FpsFOV: 60
   TpsOffset: {x: 0, y: 1.5, z: -3}
   TpsFOV: 70
+  TopViewOffset: {x: 0, y: 10, z: -3}
+  TopViewFOV: 60
+  TopViewAngle: 60
   MouseSensitivity: 200
   MinVerticalAngle: -80
   MaxVerticalAngle: 80
@@ -4091,7 +4149,7 @@ GameObject:
   - component: {fileID: 1750035191}
   - component: {fileID: 1750035190}
   - component: {fileID: 1750035189}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4334,7 +4392,7 @@ GameObject:
   - component: {fileID: 1811133075}
   - component: {fileID: 1811133074}
   m_Layer: 0
-  m_Name: Cube_Ground
+  m_Name: Cube_Green
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4566,6 +4624,70 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1851795179}
   m_CullTransparentMesh: 1
+--- !u!1 &1875774672
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1875774674}
+  - component: {fileID: 1875774673}
+  m_Layer: 0
+  m_Name: NavMesh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1875774673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875774672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: 55708136d22cd5f48a8b9c8c0b27e803, type: 2}
+  m_BuildHeightMesh: 0
+--- !u!4 &1875774674
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875774672}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1884382313 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8176160624232411561, guid: 08f33a4fcea8fcb4a9e9cc042a777203, type: 3}
@@ -5465,7 +5587,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6914402241721318999, guid: b870e971667e95444991bb1696788374, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 368773349}
+      addedObject: {fileID: 368773351}
   m_SourcePrefab: {fileID: 100100000, guid: b870e971667e95444991bb1696788374, type: 3}
 --- !u!1001 &7751489566302398157
 PrefabInstance:
@@ -5541,3 +5663,4 @@ SceneRoots:
   - {fileID: 132969215}
   - {fileID: 1316921154}
   - {fileID: 1057741969}
+  - {fileID: 1875774674}
