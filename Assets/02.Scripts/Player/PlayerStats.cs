@@ -35,7 +35,7 @@ public class PlayerStats : MonoBehaviour
         Health.Consume(amount);
         Debug.Log($"플레이어가 {amount}만큼 데미지를 입었습니다.");
         OnDamaged?.Invoke();
-        if(Health.Value < 0)
+        if(Health.Value <= 0)
         {
             Die();
         }
@@ -48,7 +48,20 @@ public class PlayerStats : MonoBehaviour
         if (GameManager.Instance != null)
         {
             GameManager.Instance.TriggerGameOver();
-        }
-        
+        }        
     }
+
+    public float GetHealthPercentage()
+    {
+        if (Health.MaxValue == 0) return 0;
+        return Health.Value / Health.MaxValue;
+    }
+
+    public float GetStaminaPercentage()
+    {
+        if (Stamina.MaxValue == 0) return 0;
+        return Stamina.Value / Stamina.MaxValue;
+    }
+
+
 }

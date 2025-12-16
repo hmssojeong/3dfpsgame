@@ -21,16 +21,35 @@ public class UI_PlayerStats : MonoBehaviour
         {
             _image.enabled = false;
         }
+
+        UpdateHealthUI();
+        UpdateStaminaUI();
     }
 
     private void Update()
     {
-        _healthSlider.value = _stats.Health.Value / _stats.Health.MaxValue;
-        _staminaSlider.value = _stats.Stamina.Value / _stats.Stamina.MaxValue;
+        UpdateStaminaUI();
     }
 
+    private void UpdateHealthUI()
+    {
+        if (_stats != null && _healthSlider != null)
+        {
+            _healthSlider.value = _stats.GetHealthPercentage();
+        }
+    }
+
+    private void UpdateStaminaUI()
+    {
+        if (_stats != null && _staminaSlider != null)
+        {
+            _staminaSlider.value = _stats.GetStaminaPercentage();
+        }
+    }
     private void Flash()
     {
+        UpdateHealthUI();
+
         if (_coroutine != null)
         {
             StopCoroutine(_coroutine);
@@ -45,9 +64,11 @@ public class UI_PlayerStats : MonoBehaviour
         float alpha = _startAlpha;
         Color color = _image.color;
 
+        float fadePerSecond = _startAlpha / _flashSpeed;
+
         while (alpha > 0.0f)
         {
-            alpha -= (_startAlpha / _flashSpeed) * Time.deltaTime;
+            alpha -= fadePerSecond * Time.deltaTime;
             color.a = alpha;
             _image.color = color;
             yield return null;
@@ -61,11 +82,17 @@ public class UI_PlayerStats : MonoBehaviour
 
     private void OnEnable()
     {
-        _stats.OnDamaged += Flash;
+        if (_stats != null)
+        {
+            _stats.OnDamaged += Flash;
+        }
     }
 
     private void OnDisable()
     {
-        _stats.OnDamaged -= Flash;
+        if (_stats != null)
+        {
+            _stats.OnDamaged -= Flash;
+        }
     }
 }
