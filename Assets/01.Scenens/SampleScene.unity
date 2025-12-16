@@ -4422,8 +4422,32 @@ PrefabInstance:
       propertyPath: m_Name
       value: Zombie
       objectReference: {fileID: 0}
+    - target: {fileID: 2630819283889610172, guid: c48d199a5053765468236a67a8e1daac, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4178399292906983684, guid: c48d199a5053765468236a67a8e1daac, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5803153875505321157, guid: c48d199a5053765468236a67a8e1daac, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5803153875505321157, guid: c48d199a5053765468236a67a8e1daac, type: 3}
+      propertyPath: m_Color.g
+      value: 0.63529414
+      objectReference: {fileID: 0}
+    - target: {fileID: 5803153875505321157, guid: c48d199a5053765468236a67a8e1daac, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7817236660363891133, guid: c48d199a5053765468236a67a8e1daac, type: 3}
       propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8392863367347129629, guid: c48d199a5053765468236a67a8e1daac, type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
