@@ -49,8 +49,7 @@ public class MonsterHealthBar : MonoBehaviour
         if(_lastHealth != _monster.Health.Value)
         {
             _lastHealth = _monster.Health.Value;
-            _gaugeImage.fillAmount = _monster.Health.Value / _monster.Health.MaxValue;
-
+            _gaugeImage.fillAmount = GetHealthPercentage();
             StartCoroutine(HitDelayGauge_Coroutine(_gaugeImageDelay, _shortDelay));
             StartCoroutine(HitDelayGauge_Coroutine(_gaugeImageDelayLate, _longDelay));
             StartCoroutine(ShakeHealthBar());
@@ -65,12 +64,21 @@ public class MonsterHealthBar : MonoBehaviour
 
     }
 
+    private float GetHealthPercentage()
+    {
+        if (_monster == null || _monster.Health.MaxValue == 0)
+        {
+            return 0f;
+        }
+        return _monster.Health.Value / _monster.Health.MaxValue;
+    }
+
     private IEnumerator HitDelayGauge_Coroutine(Image gaugeImage, float delay)
     {
         yield return new WaitForSeconds(delay);
         if (gaugeImage != null)
         {
-            gaugeImage.fillAmount = _monster.Health.Value / _monster.Health.MaxValue;
+            gaugeImage.fillAmount = GetHealthPercentage();
         }
     }
 
@@ -100,7 +108,7 @@ public class MonsterHealthBar : MonoBehaviour
         _healthBarFillImage.color = Color.white;
 
         yield return new WaitForSeconds(_flashDuration);
-        _healthBarFillImage.fillAmount = _monster.Health.Value / _monster.Health.MaxValue;
+        _healthBarFillImage.fillAmount = GetHealthPercentage();
 
         _healthBarFillImage.color = _originalColor;
     }

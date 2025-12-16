@@ -64,6 +64,14 @@ public class UI_PlayerStats : MonoBehaviour
         float alpha = _startAlpha;
         Color color = _image.color;
 
+        if (_flashSpeed <= 0f)
+        {
+            color.a = 0f;
+            _image.color = color;
+            _image.enabled = false;
+            yield break;
+        }
+
         float fadePerSecond = _startAlpha / _flashSpeed;
 
         while (alpha > 0.0f)
@@ -77,7 +85,6 @@ public class UI_PlayerStats : MonoBehaviour
         color.a = 0f;
         _image.color = color;
         _image.enabled = false;
-
     }
 
     private void OnEnable()
