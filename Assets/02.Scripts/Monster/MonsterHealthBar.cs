@@ -21,7 +21,6 @@ public class MonsterHealthBar : MonoBehaviour
     [SerializeField] private float _shortDelay = 0.2f;
     [SerializeField] private float _longDelay = 0.5f;
 
-    private Color _originalColor;
     private Vector3 _originalPosition;
     private Camera _mainCamera;
 
@@ -35,7 +34,7 @@ public class MonsterHealthBar : MonoBehaviour
         // 체력바의 원래 색상 저장
         if (_healthBarFillImage != null)
         {
-            _originalColor = _healthBarFillImage.color;
+            //_originalColor = _healthBarFillImage.color;
         }
 
         if (_healthBarTransform != null)
@@ -53,7 +52,9 @@ public class MonsterHealthBar : MonoBehaviour
             StartCoroutine(HitDelayGauge_Coroutine(_gaugeImageDelay, _shortDelay));
             StartCoroutine(HitDelayGauge_Coroutine(_gaugeImageDelayLate, _longDelay));
             StartCoroutine(ShakeHealthBar());
-            StartCoroutine(WhiteFlash());
+            StartCoroutine(WhiteFlash(_gaugeImage, _gaugeImage.color));
+            StartCoroutine(WhiteFlash(_gaugeImageDelay, _gaugeImageDelay.color));
+            StartCoroutine(WhiteFlash(_gaugeImageDelayLate, _gaugeImageDelayLate.color));
         }
 
         // 빌보드 기법: 카메라의 위치와 회전에 상관없이 항상 정면을 바라보게하는 기법
@@ -101,15 +102,15 @@ public class MonsterHealthBar : MonoBehaviour
         _healthBarTransform.localPosition = _originalPosition;
     }
 
-    private IEnumerator WhiteFlash()
+    private IEnumerator WhiteFlash(Image _gauge, Color _originalColor)
     {
-        if (_healthBarFillImage == null) yield break;
+        if (_gauge == null) yield break;
 
-        _healthBarFillImage.color = Color.white;
+        _gauge.color = Color.white;
 
         yield return new WaitForSeconds(_flashDuration);
-        _healthBarFillImage.fillAmount = GetHealthPercentage();
+       // _gauge.fillAmount = GetHealthPercentage();
 
-        _healthBarFillImage.color = _originalColor;
+        _gauge.color = _originalColor;
     }
 }
