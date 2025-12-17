@@ -28,7 +28,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private int _maxJumps = 2; // 2단 점프
     private int _jumpCount = 0;
 
-    Animator _animator;
+    [SerializeField] private Animator _animator;
 
 
     private void Awake()
@@ -61,7 +61,7 @@ public class PlayerMove : MonoBehaviour
         }
 
         // 1. 키보드 입력 받기
-        float x = Input.GetAxis("Horizontal"); // -1 ~ q
+        float x = Input.GetAxis("Horizontal"); // -1 ~ 1
         float y = Input.GetAxis("Vertical");
 
         // 2. 입력에 따른 방향 구하기 
@@ -78,6 +78,7 @@ public class PlayerMove : MonoBehaviour
         {
             _yVelocity = _stats.JumpPower.Value;
             _jumpCount = 1;  // 첫 점프
+            _animator.SetTrigger("Jump");
         }
 
 

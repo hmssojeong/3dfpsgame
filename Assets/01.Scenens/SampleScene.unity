@@ -1394,7 +1394,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 368773321}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: fcb334eb247ae3e488abb081c847cf09, type: 3}
   m_Controller: {fileID: 9100000, guid: 31affa3ecd5f0dc47b6205db9c99ed71, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -2497,6 +2497,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: fcb334eb247ae3e488abb081c847cf09, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 31affa3ecd5f0dc47b6205db9c99ed71, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4904,7 +4908,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.083333336
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 55708136d22cd5f48a8b9c8c0b27e803, type: 2}
   m_BuildHeightMesh: 0
@@ -5854,6 +5858,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 451790400952763190, guid: b870e971667e95444991bb1696788374, type: 3}
+      propertyPath: m_Radius
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 630832403764200938, guid: b870e971667e95444991bb1696788374, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -5861,6 +5869,10 @@ PrefabInstance:
     - target: {fileID: 1852300711527123719, guid: b870e971667e95444991bb1696788374, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2786003968048768161, guid: b870e971667e95444991bb1696788374, type: 3}
+      propertyPath: m_Radius
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 2786003968048768161, guid: b870e971667e95444991bb1696788374, type: 3}
       propertyPath: m_BaseOffset
