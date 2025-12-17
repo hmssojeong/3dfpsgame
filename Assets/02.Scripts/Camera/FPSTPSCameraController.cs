@@ -3,6 +3,13 @@ using DG.Tweening;
 
 public class FPSTPSCameraController : MonoBehaviour
 {
+    public enum CameraMode
+    {
+        FPS,   
+        TPS,    
+        TopView 
+    }
+
     [Header("필수 설정")]
     [Tooltip("플레이어 Transform")]
     public Transform player;
@@ -16,6 +23,13 @@ public class FPSTPSCameraController : MonoBehaviour
     [Tooltip("플레이어 뒤쪽 위치")]
     public Vector3 TpsOffset = new Vector3(0f, 1.5f, -3f);
     public float TpsFOV = 70f;
+
+    [Header("탑뷰 설정")]
+    public Vector3 TopViewOffset = new Vector3(0f, 10f, -3f);
+    public float TopViewFOV = 60f;
+    [Tooltip("탑뷰에서 카메라가 바라보는 각도 (X축)")]
+    [Range(0f, 90f)]
+    public float TopViewAngle = 60f;
 
     [Header("마우스 회전")]
     public float MouseSensitivity = 200f;
@@ -59,10 +73,12 @@ public class FPSTPSCameraController : MonoBehaviour
 
     // 내부 변수
     private Camera _cam;
-    private bool _isFPS = true;
+    private CameraMode _currentMode = CameraMode.FPS;
     private float _verticalRotation = 0f;
     private float _horizontalRotation = 0f;
     private Tween _currentTween;
+
+    public CameraMode CurrentMode => _currentMode;
 
     // 반동 변수
     private float _currentGunVertical = 0f;
@@ -133,8 +149,15 @@ public class FPSTPSCameraController : MonoBehaviour
         }
 
 
-        // 마우스 회전 처리
-        HandleMouseRotation();
+        // 마우스 회전 처리 (탑뷰가 아닐 때만)
+        if (_currentMode != CameraMode.TopView)
+        {
+            HandleMouseRotation();
+        }
+        else
+        {
+            HandleTopViewRotation();
+        }
 
         // 반동 처리
         HandleGunRebound();
@@ -174,6 +197,21 @@ public class FPSTPSCameraController : MonoBehaviour
         float finalHorizontal = _currentGunHorizontal;
 
         _cam.transform.rotation = player.rotation * Quaternion.Euler(finalVertical, finalHorizontal, 0f);
+    }
+
+    private void HandleTopViewRotation()
+    {
+        if (Cursor.lockState != CursorLockMode.Locked) return;
+
+        // 탑뷰에서는 좌우 회전만 가능 (플레이어 Y축)
+        float mouseX = Input.GetAxis("Mouse X");
+        _horizontalRotation += mouseX * MouseSensitivity * Time.deltaTime;
+
+        // 플레이어 회전 적용
+        player.rotation = Quaternion.Euler(0f, _horizontalRotation, 0f);
+
+        // 카메라는 위에서 내려다보는 각도로 고정
+        _cam.transform.rotation = player.rotation * Quaternion.Euler(TopViewAngle, 0f, 0f);
     }
 
     private void HandleGunRebound()
@@ -226,15 +264,23 @@ public class FPSTPSCameraController : MonoBehaviour
     {
         Vector3 targetPosition;
 
-        if (_isFPS)
+        switch (_currentMode)
         {
-            // FPS: 플레이어 위치 + 눈 높이 오프셋
-            targetPosition = player.position + player.TransformDirection(FpsOffset);
-        }
-        else
-        {
-            // TPS: 플레이어 위치 + 뒤쪽 오프셋
-            targetPosition = player.position + player.TransformDirection(TpsOffset);
+            case CameraMode.FPS:
+                targetPosition = player.position + player.TransformDirection(FpsOffset);
+                break;
+
+            case CameraMode.TPS:
+                targetPosition = player.position + player.TransformDirection(TpsOffset);
+                break;
+
+            case CameraMode.TopView:
+                targetPosition = player.position + player.TransformDirection(TopViewOffset);
+                break;
+
+            default:
+                targetPosition = player.position;
+                break;
         }
 
         _cam.transform.position = targetPosition;
@@ -248,24 +294,54 @@ public class FPSTPSCameraController : MonoBehaviour
             _currentTween.Kill();
         }
 
-        // 모드 전환
-        _isFPS = !_isFPS;
+        // 모드 순환: FPS -> TPS -> TopView -> FPS...
+        switch (_currentMode)
+        {
+            case CameraMode.FPS:
+                _currentMode = CameraMode.TPS;
+                break;
+            
+            case CameraMode.TPS:
+                _currentMode = CameraMode.TopView;
+                break;
+
+            case CameraMode.TopView:
+                _currentMode = CameraMode.FPS;
+                break;
+        }
 
         // 목표 위치와 FOV 계산
         Vector3 targetPosition;
         float targetFOV;
+        Quaternion targetRotation;
 
-        if (_isFPS)
+        switch (_currentMode)
         {
-            targetPosition = player.position + player.TransformDirection(FpsOffset);
-            targetFOV = FpsFOV;
-            Debug.Log("FPS 1인칭");
-        }
-        else
-        {
-            targetPosition = player.position + player.TransformDirection(TpsOffset);
-            targetFOV = TpsFOV;
-            Debug.Log("TPS 3인칭");
+            case CameraMode.FPS:
+                targetPosition = player.position + player.TransformDirection(FpsOffset);
+                targetFOV = FpsFOV;
+                targetRotation = player.rotation * Quaternion.Euler(_verticalRotation - _currentGunVertical, _currentGunHorizontal, 0f);
+                break;
+
+            case CameraMode.TPS:
+                targetPosition = player.position + player.TransformDirection(TpsOffset);
+                targetFOV = TpsFOV;
+                targetRotation = player.rotation * Quaternion.Euler(_verticalRotation - _currentGunVertical, _currentGunHorizontal, 0f);
+                break;
+
+            case CameraMode.TopView:
+                targetPosition = player.position + player.TransformDirection(TopViewOffset);
+                targetFOV = TopViewFOV;
+                targetRotation = player.rotation * Quaternion.Euler(TopViewAngle, 0f, 0f);
+                // 탑뷰로 전환 시 수직 회전 초기화
+                _verticalRotation = 0f;
+                break;
+
+            default:
+                targetPosition = player.position;
+                targetFOV = FpsFOV;
+                targetRotation = Quaternion.identity;
+                break;
         }
 
         // DOTween 시퀀스로 부드러운 전환
@@ -276,6 +352,9 @@ public class FPSTPSCameraController : MonoBehaviour
 
         // FOV 전환
         sequence.Join(_cam.DOFieldOfView(targetFOV, TransitionDuration).SetEase(TransitionEase));
+
+        // 카메라 회전 전환
+        sequence.Join(_cam.transform.DORotateQuaternion(targetRotation, TransitionDuration).SetEase(TransitionEase));
 
         _currentTween = sequence; // 새 애니메이션으로 교체, 저장해서 다음 전환 시 중단 가능하게
     }

@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 829581925701347787}
   - component: {fileID: 695690177666721642}
   - component: {fileID: 534760252327745474}
+  - component: {fileID: 1577900590452005981}
   m_Layer: 9
   m_Name: Zombie
   m_TagString: Untagged
@@ -133,12 +134,13 @@ MonoBehaviour:
   _player: {fileID: 0}
   _controller: {fileID: 4030999293760258691}
   _knockback: {fileID: 695690177666721642}
+  _agent: {fileID: 1577900590452005981}
   Health:
     _maxValue: 100
     _value: 100
     _regenValue: 0
-  DetectDistance: 4
-  AttackDistance: 2
+  DetectDistance: 5
+  AttackDistance: 2.5
   MoveSpeed: 5
   AttackSpeed: 2
   AttackTimer: 0
@@ -184,6 +186,28 @@ MonoBehaviour:
   _shakeAmount: 10
   _shortDelay: 0.2
   _longDelay: 0.5
+--- !u!195 &1577900590452005981
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2400928593390294703}
+  m_Enabled: 1
+  m_AgentTypeID: -1372625422
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 0
+  m_AutoBraking: 0
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &2630819283889610172
 GameObject:
   m_ObjectHideFlags: 0
@@ -363,7 +387,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &937449775308120283
 RectTransform:
   m_ObjectHideFlags: 0
@@ -416,7 +440,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 using static UnityEngine.UI.Image;
 
@@ -37,12 +38,14 @@ public class Monster : MonoBehaviour
     [SerializeField] private CharacterController _controller;
     [SerializeField] private MonsterKnockBack _knockback;
 
+    [SerializeField] private NavMeshAgent _agent;
+
     public ConsumableStat Health;
 
     private Vector3 _originPos;
 
-    public float DetectDistance = 4f;
-    public float AttackDistance = 2f;
+    public float DetectDistance = 5f;
+    public float AttackDistance = 2.5f;
 
     public float MoveSpeed = 5f;
     public float AttackSpeed = 2f;
@@ -65,11 +68,17 @@ public class Monster : MonoBehaviour
     private float _patrolTimer = 0f;
     private bool _isWaitingAtPatrolPoint = false;
 
+    private Vector3 _jumpStartPosition;
+    private Vector3 _jumpEndPosition;
+
     private void Start()
     {
         _originPos = transform.position;
         _playerStats = FindAnyObjectByType<PlayerStats>();
         _knockback = GetComponent<MonsterKnockBack>();
+
+        _agent.speed = MoveSpeed;
+        _agent.stoppingDistance = AttackDistance;
 
         // 순찰 시스템 초기화
         if (_usePatrol)
@@ -100,6 +109,10 @@ public class Monster : MonoBehaviour
 
             case EMonsterState.Trace:
                 Trace();
+                break;
+
+            case EMonsterState.Jump:
+                Jump();
                 break;
 
             case EMonsterState.Comeback:
@@ -231,10 +244,13 @@ public class Monster : MonoBehaviour
 
         float distance = Vector3.Distance(transform.position, _player.transform.position);
 
-        // 1. 플레이어를 향하는 방향을 구한다.
-        Vector3 direction = (_player.transform.position - transform.position).normalized;
-        // 2. 방향에 따라 이동한다.
-        _controller.Move(direction * MoveSpeed * Time.deltaTime);
+        /*        // 1. 플레이어를 향하는 방향을 구한다.
+                Vector3 direction = (_player.transform.position - transform.position).normalized;
+                // 2. 방향에 따라 이동한다.
+                _controller.Move(direction * MoveSpeed * Time.deltaTime);*/
+
+        // 방향 설정 필요 없이 도착지만 설정해주면 네비게이션 시스템에 의해 자동으로 이동한다.
+        _agent.SetDestination(_player.transform.position);
 
         // 플레이어와의 거리가 공격범위내라면
         if (distance <= AttackDistance)
@@ -242,11 +258,66 @@ public class Monster : MonoBehaviour
             State = EMonsterState.Attack;
         }
 
+        if (_agent.isOnOffMeshLink)
+        {
+            Debug.Log("링크를 만남");
+            OffMeshLinkData linkData = _agent.currentOffMeshLinkData;
+            _jumpStartPosition = transform.position;
+            _jumpEndPosition = linkData.endPos;
+            _jumpEndPosition.y += _agent.baseOffset;
+
+            if (_jumpEndPosition.y > _jumpStartPosition.y)
+            {
+                Debug.Log("상태 전환: Trace -> Jump");
+                State = EMonsterState.Jump;
+                return;
+            }
+        }
+
         if (distance > DetectDistance)
         {
             State = EMonsterState.Comeback;
             Debug.Log("집에 돌아왔습니다");
         }
+    }
+
+    private void Jump()
+    {
+        // 순간이동
+        _agent.isStopped = true;
+        _agent.ResetPath();
+        _agent.CompleteOffMeshLink();
+
+        StartCoroutine(Jump_Coroutine());
+
+        // 1. 점프 거리와 내 이동속도를 계산해서 점프 시간을 구한다.
+        // 2. 점프 시간동안 포물선으로 이동한다.
+        // 3. 이동 후 다시 Trace
+    }
+
+    private IEnumerator Jump_Coroutine()
+    {
+        float distance = Vector3.Distance(transform.position, _jumpEndPosition);
+        float jumpTime = distance/MoveSpeed;
+        float jumpHeight = Mathf.Max(1.5f, distance * 0.3f);
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < jumpTime)
+        {
+            float t = elapsedTime / jumpTime;
+
+            Vector3 newPosition = Vector3.Lerp(_jumpStartPosition, _jumpEndPosition, t);
+            newPosition.y += Mathf.Sin(t * Mathf.PI) * jumpHeight;
+            transform.position = newPosition;
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+
+        transform.position = _jumpEndPosition;
+        State = EMonsterState.Trace;
     }
 
     private void Comeback()
@@ -276,9 +347,11 @@ public class Monster : MonoBehaviour
             return;
         }
 
-        // 원래 위치로 돌아가기
-        Vector3 direction = (_originPos - transform.position).normalized;
-        _controller.Move(direction * MoveSpeed * Time.deltaTime);
+        /*        // 원래 위치로 돌아가기
+                Vector3 direction = (_originPos - transform.position).normalized;
+                _controller.Move(direction * MoveSpeed * Time.deltaTime);*/
+
+        _agent.SetDestination(_originPos);
 
         // 복귀 중에 플레이어가 다시 가까워지면 추적 재개
         if (distanceToPlayer <= DetectDistance)
@@ -332,6 +405,9 @@ public class Monster : MonoBehaviour
         }
 
         Health.Consume(damage);
+
+        _agent.isStopped = true; // 이동 일시정지
+        _agent.ResetPath();      // 경로(=목적지) 삭제
 
         _lastAttackerPos = attackerPos; // 공격자 위치저장
 

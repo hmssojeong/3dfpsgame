@@ -31,7 +31,7 @@ public class PlayerBombFire : MonoBehaviour
         HandleReload();
 
         // 마우스 우클릭으로 폭탄 발사
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetKeyDown(KeyCode.F))
         {
             TryThrowBomb();
         }
