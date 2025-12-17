@@ -78,6 +78,8 @@ public class FPSTPSCameraController : MonoBehaviour
     private float _horizontalRotation = 0f;
     private Tween _currentTween;
 
+    public CameraMode CurrentMode => _currentMode;
+
     // 반동 변수
     private float _currentGunVertical = 0f;
     private float _currentGunHorizontal = 0f;

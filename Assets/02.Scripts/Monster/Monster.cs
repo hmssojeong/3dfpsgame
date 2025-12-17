@@ -262,8 +262,9 @@ public class Monster : MonoBehaviour
         {
             Debug.Log("링크를 만남");
             OffMeshLinkData linkData = _agent.currentOffMeshLinkData;
-            _jumpStartPosition= linkData.startPos;
+            _jumpStartPosition = transform.position;
             _jumpEndPosition = linkData.endPos;
+            _jumpEndPosition.y += _agent.baseOffset;
 
             if (_jumpEndPosition.y > _jumpStartPosition.y)
             {
@@ -296,11 +297,12 @@ public class Monster : MonoBehaviour
 
     private IEnumerator Jump_Coroutine()
     {
-        float distance = Vector3.Distance(_player.transform.position, _jumpEndPosition);
+        float distance = Vector3.Distance(transform.position, _jumpEndPosition);
         float jumpTime = distance/MoveSpeed;
-        float jumpHeight = Mathf.Max(1f, distance * 0.3f);
+        float jumpHeight = Mathf.Max(1.5f, distance * 0.3f);
 
         float elapsedTime = 0f;
+
         while (elapsedTime < jumpTime)
         {
             float t = elapsedTime / jumpTime;
@@ -313,10 +315,9 @@ public class Monster : MonoBehaviour
             yield return null;
         }
 
+
         transform.position = _jumpEndPosition;
         State = EMonsterState.Trace;
-
-
     }
 
     private void Comeback()

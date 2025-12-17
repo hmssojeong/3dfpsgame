@@ -20,6 +20,7 @@ public class PlayerMove : MonoBehaviour
 
     private CharacterController _controller;
     private PlayerStats _stats;
+    private FPSTPSCameraController _cameraController;
 
     private float _yVelocity = 0f;   // 중력에 의해 누적될 y값 변수
 
@@ -31,11 +32,18 @@ public class PlayerMove : MonoBehaviour
     {
         _controller = GetComponent<CharacterController>();
         _stats = GetComponent<PlayerStats>();
+        _cameraController = Camera.main.GetComponent<FPSTPSCameraController>();
     }
 
     private void Update()
     {
         if(GameManager.Instance == null || GameManager.Instance.State != EGameState.Playing)
+        {
+            return;
+        }
+
+        // 탑뷰일 때는 키보드 이동을 하지 않음 (ClickMove 사용)
+        if (_cameraController != null && _cameraController.CurrentMode == FPSTPSCameraController.CameraMode.TopView)
         {
             return;
         }
