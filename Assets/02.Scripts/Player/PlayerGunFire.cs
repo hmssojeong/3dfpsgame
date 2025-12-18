@@ -10,6 +10,7 @@ public class PlayerGunFire : MonoBehaviour
     [SerializeField] private Transform _fireTransform; // 총알이 발사될 위치
     [SerializeField] private ParticleSystem _hitEffect; // 피격 이펙트 프리팹
     [SerializeField] private List<GameObject> _muzzleEffects;
+    [SerializeField] private Animator _animator;
 
     [SerializeField] private float _fireRate = 0.1f;
     private float _playerAttackDamage = 10f;
@@ -46,8 +47,14 @@ public class PlayerGunFire : MonoBehaviour
         // 1. 마우스 왼쪽 버튼이 눌린다면.. 
         if (Input.GetMouseButton(0) && _fireTimer <= 0f)
         {
+            _animator.SetBool("Fire", true);
+
             Shoot();
             StartCoroutine(MuzzleFlash_Coroutine());
+        }
+        else
+        {
+            _animator.SetBool("Fire", false);
         }
        
     }
