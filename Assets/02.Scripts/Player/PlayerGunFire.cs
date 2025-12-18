@@ -47,9 +47,8 @@ public class PlayerGunFire : MonoBehaviour
         if (Input.GetMouseButton(0) && _fireTimer <= 0f)
         {
             Shoot();
+            StartCoroutine(MuzzleFlash_Coroutine());
         }
-
-        StartCoroutine(MuzzleFlash_Coroutine());
        
     }
 
