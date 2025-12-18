@@ -3907,6 +3907,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _monster: {fileID: 4643638813202847066}
+--- !u!95 &1453349467 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 17936326599804216, guid: c48d199a5053765468236a67a8e1daac, type: 3}
+  m_PrefabInstance: {fileID: 4643638813202847061}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1508516335
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5827,6 +5832,10 @@ PrefabInstance:
       propertyPath: _player
       value: 
       objectReference: {fileID: 368773321}
+    - target: {fileID: 829581925701347787, guid: c48d199a5053765468236a67a8e1daac, type: 3}
+      propertyPath: _animator
+      value: 
+      objectReference: {fileID: 1453349467}
     - target: {fileID: 2400928593390294703, guid: c48d199a5053765468236a67a8e1daac, type: 3}
       propertyPath: m_Name
       value: Zombie

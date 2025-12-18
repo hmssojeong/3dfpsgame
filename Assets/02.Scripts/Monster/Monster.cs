@@ -235,13 +235,14 @@ public class Monster : MonoBehaviour
     {
         // 대기하는 상태
         // Todo. Idle 애니메이션 실행
-        _animator.SetTrigger("Hit");
+        _animator.SetTrigger("Idle");
 
         // 플레이어가 탐지범위 안에 있다면...
         if (Vector3.Distance(transform.position, _player.transform.position) <= DetectDistance)
         {
             State = EMonsterState.Trace;
             Debug.Log("상태 전환: Idle -> Trace");
+            _animator.SetTrigger("IdleToTrace");
         }
     }
 
@@ -249,7 +250,7 @@ public class Monster : MonoBehaviour
     {
         // 플레이어를 쫓아가는 상태
         // Todo. Run 애니메이션 실행
-
+        
         // Comback 과제
 
         float distance = Vector3.Distance(transform.position, _player.transform.position);
@@ -267,9 +268,11 @@ public class Monster : MonoBehaviour
         {
             State = EMonsterState.Attack;
             _animator.SetTrigger("TraceToAttackIdle");
+            _animator.SetTrigger("Attack");
             Debug.Log("상태 전환: Trace -> Attack");
             return;
         }
+
 
         if (_agent.isOnOffMeshLink)
         {
@@ -283,6 +286,7 @@ public class Monster : MonoBehaviour
             {
                 Debug.Log("상태 전환: Trace -> Jump");
                 State = EMonsterState.Jump;
+                _animator.SetTrigger("TraceToJump");
                 return;
             }
         }
@@ -386,6 +390,7 @@ public class Monster : MonoBehaviour
         {
             State = EMonsterState.Trace;
             Debug.Log("상태 전환: Attack -> Trace");
+            _animator.SetTrigger("AttackIdleToTrace");
             return;
         }
 
@@ -424,6 +429,7 @@ public class Monster : MonoBehaviour
             State = EMonsterState.Hit;
             StartCoroutine(Hit_Coroutine());
             Debug.Log("히트중입니다");
+            _animator.SetTrigger("Hit");
         }
         else
         {
@@ -431,6 +437,7 @@ public class Monster : MonoBehaviour
             Debug.Log($"상태 전환: {State} -> Death");
             State = EMonsterState.Death;
             StartCoroutine(Death_Coroutine());
+            _animator.SetTrigger("Death");
         }
 
         return true;
