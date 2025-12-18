@@ -1,11 +1,15 @@
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
+using System.Collections;
 
 public class PlayerGunFire : MonoBehaviour
 {
     // 목표: 마우스의 왼쪽 버튼을 누르면 바라보는 방향으로 총을 발사하고 싶다. (총알을 날리고 싶다.)
     [SerializeField] private Transform _fireTransform; // 총알이 발사될 위치
     [SerializeField] private ParticleSystem _hitEffect; // 피격 이펙트 프리팹
+    [SerializeField] private List<GameObject> _muzzleEffects;
 
     [SerializeField] private float _fireRate = 0.1f;
     private float _playerAttackDamage = 10f;
@@ -42,16 +46,35 @@ public class PlayerGunFire : MonoBehaviour
         // 1. 마우스 왼쪽 버튼이 눌린다면.. 
         if (Input.GetMouseButton(0) && _fireTimer <= 0f)
         {
-            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
-            {
-                return;
-            }
+            Shoot();
+        }
 
-            if (_ammo != null && _ammo.TryConsume())
-            {
-                Fire();
-                _fireTimer = _fireRate;
-            }
+        StartCoroutine(MuzzleFlash_Coroutine());
+       
+    }
+
+    private IEnumerator MuzzleFlash_Coroutine()
+    {
+        GameObject muzzleEffect = _muzzleEffects[Random.Range(0, _muzzleEffects.Count)];
+
+        muzzleEffect.SetActive(true);
+
+        yield return new WaitForSeconds(0.06f);
+
+        muzzleEffect.SetActive(false);
+    }
+
+    private void Shoot()
+    {
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
+        if (_ammo != null && _ammo.TryConsume())
+        {
+            Fire();
+            _fireTimer = _fireRate;
         }
     }
 
