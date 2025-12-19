@@ -5,7 +5,7 @@ using UnityEngine.AI;
 using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 using static UnityEngine.UI.Image;
 
-public class Monster : MonoBehaviour
+public class Monster : MonoBehaviour, IDamageable
 {
     #region Comment
     // 목표: 처음에는 가만히 있지만 플레이어가 다가가면 쫓아오는 좀비 몬스터를 만들고 싶다.
@@ -56,6 +56,8 @@ public class Monster : MonoBehaviour
     private const float _patrolNearby = 1.5f;
 
     private float _originNearby = 0.5f;
+
+    public GameObject bloodEffectPrefab;
 
     [Header("순찰 시스템")]
     [SerializeField] private bool _usePatrol = true;
@@ -409,19 +411,24 @@ public class Monster : MonoBehaviour
 
     private Vector3 _lastAttackerPos;
 
-    public bool TryTakeDamage(float damage, Vector3 attackerPos)
+    public bool TryTakeDamage(Damage damage)
     {
+        // 데미지를 받으면 "데미지를 받은 위치"에 혈흔 이펙트를 생성해서 플레이 하고 싶다.
+        // 그런데 그 이펙트는 "몬스터를 따라다녀야" 한다.
+        GameObject bloodEffect = Instantiate(bloodEffectPrefab,transform.position, Quaternion.identity, transform);
+        bloodEffect.transform.forward = damage.Normal;
+
         if (State == EMonsterState.Hit || State == EMonsterState.Death)
         {
             return false;
         }
 
-        Health.Consume(damage);
+        Health.Consume(damage.Value);
 
         _agent.isStopped = true; // 이동 일시정지
         _agent.ResetPath();      // 경로(=목적지) 삭제
 
-        _lastAttackerPos = attackerPos; // 공격자 위치저장
+        _lastAttackerPos = damage.AttackerPos; // 공격자 위치저장
 
         if (Health.Value > 0)
         {

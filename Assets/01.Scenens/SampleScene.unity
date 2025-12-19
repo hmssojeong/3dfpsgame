@@ -6476,6 +6476,10 @@ PrefabInstance:
       propertyPath: _animator
       value: 
       objectReference: {fileID: 1453349467}
+    - target: {fileID: 829581925701347787, guid: c48d199a5053765468236a67a8e1daac, type: 3}
+      propertyPath: bloodEffectPrefab
+      value: 
+      objectReference: {fileID: 1000013355911406, guid: d32aa916f50cac94db11e6f19821a58f, type: 3}
     - target: {fileID: 2400928593390294703, guid: c48d199a5053765468236a67a8e1daac, type: 3}
       propertyPath: m_Name
       value: Zombie
