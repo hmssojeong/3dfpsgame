@@ -39,6 +39,7 @@ public class Monster : MonoBehaviour
     [SerializeField] private MonsterKnockBack _knockback;
 
     [SerializeField] private NavMeshAgent _agent;
+    [SerializeField] private Animator _animator;
 
     public ConsumableStat Health;
 
@@ -71,6 +72,13 @@ public class Monster : MonoBehaviour
     private Vector3 _jumpStartPosition;
     private Vector3 _jumpEndPosition;
 
+    private void Awake()
+    {
+        if(_animator == null)
+        {
+            _animator = GetComponentInChildren<Animator>();
+        }
+    }
     private void Start()
     {
         _originPos = transform.position;
@@ -178,6 +186,7 @@ public class Monster : MonoBehaviour
             _isWaitingAtPatrolPoint = false;
             _patrolTimer = 0f;
             Debug.Log("상태 전환: Patrol -> Trace");
+            _animator.SetTrigger("IdleToTrace");
             return;
         }
 
@@ -226,12 +235,14 @@ public class Monster : MonoBehaviour
     {
         // 대기하는 상태
         // Todo. Idle 애니메이션 실행
+        _animator.SetTrigger("Idle");
 
         // 플레이어가 탐지범위 안에 있다면...
         if (Vector3.Distance(transform.position, _player.transform.position) <= DetectDistance)
         {
             State = EMonsterState.Trace;
             Debug.Log("상태 전환: Idle -> Trace");
+            _animator.SetTrigger("IdleToTrace");
         }
     }
 
@@ -239,7 +250,7 @@ public class Monster : MonoBehaviour
     {
         // 플레이어를 쫓아가는 상태
         // Todo. Run 애니메이션 실행
-
+        
         // Comback 과제
 
         float distance = Vector3.Distance(transform.position, _player.transform.position);
@@ -256,7 +267,12 @@ public class Monster : MonoBehaviour
         if (distance <= AttackDistance)
         {
             State = EMonsterState.Attack;
+            _animator.SetTrigger("TraceToAttackIdle");
+            _animator.SetTrigger("Attack");
+            Debug.Log("상태 전환: Trace -> Attack");
+            return;
         }
+
 
         if (_agent.isOnOffMeshLink)
         {
@@ -270,6 +286,7 @@ public class Monster : MonoBehaviour
             {
                 Debug.Log("상태 전환: Trace -> Jump");
                 State = EMonsterState.Jump;
+                _animator.SetTrigger("TraceToJump");
                 return;
             }
         }
@@ -277,6 +294,7 @@ public class Monster : MonoBehaviour
         if (distance > DetectDistance)
         {
             State = EMonsterState.Comeback;
+            _animator.SetTrigger("TraceToComeback");
             Debug.Log("집에 돌아왔습니다");
         }
     }
@@ -357,6 +375,7 @@ public class Monster : MonoBehaviour
         if (distanceToPlayer <= DetectDistance)
         {
             State = EMonsterState.Trace;
+            _animator.SetTrigger("ComebackToTrace");
             Debug.Log("다시 쫒아갑니다.");
         }
     }
@@ -371,25 +390,18 @@ public class Monster : MonoBehaviour
         {
             State = EMonsterState.Trace;
             Debug.Log("상태 전환: Attack -> Trace");
+            _animator.SetTrigger("AttackIdleToTrace");
             return;
         }
+
 
         AttackTimer += Time.deltaTime;
         if (AttackTimer >= AttackSpeed)
         {
+            _animator.SetTrigger("Attack");
+
             AttackTimer = 0f;
             Debug.Log("플레이어 공격!");
-
-            if(_playerStats == null)
-            {
-                Debug.Log("playerStat이 없습니다.");
-            }
-
-            if(_playerStats != null)
-            {
-                // 과제 2번. 플레이어 공격하기
-                _playerStats.PlayerTakeDamage(AttackDamage);
-            }
 
         }
 
@@ -417,6 +429,7 @@ public class Monster : MonoBehaviour
             State = EMonsterState.Hit;
             StartCoroutine(Hit_Coroutine());
             Debug.Log("히트중입니다");
+            _animator.SetTrigger("Hit");
         }
         else
         {
@@ -424,6 +437,7 @@ public class Monster : MonoBehaviour
             Debug.Log($"상태 전환: {State} -> Death");
             State = EMonsterState.Death;
             StartCoroutine(Death_Coroutine());
+            _animator.SetTrigger("Death");
         }
 
         return true;

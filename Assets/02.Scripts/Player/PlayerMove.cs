@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -27,12 +28,15 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private int _maxJumps = 2; // 2단 점프
     private int _jumpCount = 0;
 
+    [SerializeField] private Animator _animator;
+
 
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
         _stats = GetComponent<PlayerStats>();
         _cameraController = Camera.main.GetComponent<FPSTPSCameraController>();
+        _animator = GetComponentInChildren<Animator>();
     }
 
     private void Update()
@@ -57,7 +61,7 @@ public class PlayerMove : MonoBehaviour
         }
 
         // 1. 키보드 입력 받기
-        float x = Input.GetAxis("Horizontal");
+        float x = Input.GetAxis("Horizontal"); // -1 ~ 1
         float y = Input.GetAxis("Vertical");
 
         // 2. 입력에 따른 방향 구하기 
@@ -66,6 +70,7 @@ public class PlayerMove : MonoBehaviour
 
         // - 글로벌 좌표 방향을 구한다. 
         Vector3 direction = new Vector3(x, 0, y);
+        _animator.SetFloat("Speed", direction.magnitude);
         direction.Normalize();
 
          // - 점프! : 점프 키를 누르고 && 땅이라면
@@ -73,6 +78,7 @@ public class PlayerMove : MonoBehaviour
         {
             _yVelocity = _stats.JumpPower.Value;
             _jumpCount = 1;  // 첫 점프
+            _animator.SetTrigger("Jump");
         }
 
 
