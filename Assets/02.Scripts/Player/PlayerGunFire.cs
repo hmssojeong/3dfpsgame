@@ -12,6 +12,10 @@ public class PlayerGunFire : MonoBehaviour
     [SerializeField] private List<GameObject> _muzzleEffects;
     [SerializeField] private Animator _animator;
 
+    private EZoomMode _zoomMode = EZoomMode.Normal;
+    [SerializeField] private GameObject _normalCrosshair;
+    [SerializeField] private GameObject _zoomInCrosshair;
+
     [SerializeField] private float _fireRate = 0.1f;
     private float _playerAttackDamage = 10f;
 
@@ -49,6 +53,8 @@ public class PlayerGunFire : MonoBehaviour
 
         }
 
+        ZoomModeCheck();
+
         // 1. 마우스 왼쪽 버튼이 눌린다면.. 
         if (Input.GetMouseButton(0) && _fireTimer <= 0f)
         {
@@ -62,6 +68,24 @@ public class PlayerGunFire : MonoBehaviour
             _animator.SetBool("Fire", false);
         }
 
+    }
+
+    private void ZoomModeCheck()
+    {
+         if (Input.GetMouseButton(1))
+         {
+            _zoomMode = EZoomMode.ZoomIn;
+            _normalCrosshair.SetActive(false);
+            _zoomInCrosshair.SetActive(true);
+            Camera.main.fieldOfView = 10f;
+         }
+        else
+        {
+            _zoomMode = EZoomMode.Normal;
+            _normalCrosshair.SetActive(true);
+            _zoomInCrosshair.SetActive(false);
+            Camera.main.fieldOfView = 60f;
+        }
     }
 
     private IEnumerator MuzzleFlash_Coroutine()
