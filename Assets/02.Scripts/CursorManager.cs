@@ -1,3 +1,6 @@
+using NUnit.Framework.Interfaces;
+using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 
 public class CursorManager : MonoBehaviour
@@ -37,3 +40,7 @@ public class CursorManager : MonoBehaviour
         isLockCursor = false;
     }
 }
+
+
+
+
