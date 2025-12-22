@@ -57,6 +57,12 @@ public class EliteMonster : MonoBehaviour
     private const float _patrolNearby = 1.5f;
     private const float _originNearby = 0.5f;
 
+    [Header("골드")]
+    [SerializeField] private GameObject _goldPrefab;
+    [SerializeField] private int _minGoldDrop = 10;
+    [SerializeField] private int _maxGoldDrop = 20; 
+    [SerializeField] private int _goldValue = 10;
+
     private void Awake()
     {
         if (_animator == null)
@@ -135,7 +141,6 @@ public class EliteMonster : MonoBehaviour
         }
     }
 
-    #region 순찰 시스템
     private void InitializePatrolPoints()
     {
         List<Vector3> possibleOffsets = new List<Vector3>
@@ -209,9 +214,7 @@ public class EliteMonster : MonoBehaviour
         Vector3 direction = (targetPoint - transform.position).normalized;
         _controller.Move(direction * _patrolSpeed * Time.deltaTime);
     }
-    #endregion
 
-    #region 기본 상태들
     private void Idle()
     {
         _animator.SetTrigger("Idle");
@@ -224,9 +227,7 @@ public class EliteMonster : MonoBehaviour
             _animator.SetTrigger("IdleToDetect");
         }
     }
-    #endregion
 
-    #region 엘리트 전용 상태들
     private void Detect()
     {
         Vector3 directionToPlayer = (_player.transform.position - transform.position).normalized;
@@ -354,9 +355,7 @@ public class EliteMonster : MonoBehaviour
         State = EEliteMonsterState.Trace;
         Debug.Log("상태 전환: HeavyAttack -> Trace");
     }
-    #endregion
 
-    #region 공통 상태들
     private void Comeback()
     {
         float distanceToPlayer = Vector3.Distance(transform.position, _player.transform.position);
@@ -390,9 +389,7 @@ public class EliteMonster : MonoBehaviour
             _animator.SetTrigger("ComebackToDetect");
         }
     }
-    #endregion
 
-    #region 피격 처리
     public bool TryTakeDamage(float damage, Vector3 attackerPos)
     {
         if (State == EEliteMonsterState.Death)
@@ -435,10 +432,43 @@ public class EliteMonster : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
 
-        // TODO: 보상 아이템 드롭
-        Debug.Log("골드 드랍");
+        DropGold();
 
         Destroy(gameObject);
     }
-    #endregion
+
+    private void DropGold()
+    {
+        if (_goldPrefab == null)
+        {
+            Debug.LogWarning("[엘리트] 골드 프리팹이 설정되지 않았습니다!");
+            return;
+        }
+
+        // 드랍할 골드 개수 랜덤 결정
+        int dropCount = Random.Range(_minGoldDrop, _maxGoldDrop + 1);
+        Vector3 baseDropPosition = transform.position + Vector3.up * 0.3f; // 엘리트는 더 높이
+
+        for (int i = 0; i < dropCount; i++)
+        {
+            // 약간씩 다른 위치에서 생성 (자연스러운 퍼짐)
+            Vector3 randomOffset = new Vector3(
+                Random.Range(-0.2f, 0.2f),
+                Random.Range(0f, 0.1f),
+                Random.Range(-0.2f, 0.2f)
+            );
+            Vector3 dropPosition = baseDropPosition + randomOffset;
+
+            GameObject goldObject = Instantiate(_goldPrefab, dropPosition, Quaternion.identity);
+            GoldItem goldItem = goldObject.GetComponent<GoldItem>();
+
+            if (goldItem != null)
+            {
+                goldItem.SetGoldAmount(_goldValue);
+                goldItem.Drop(dropPosition);
+            }
+        }
+
+        Debug.Log($"[엘리트] 골드 {dropCount}개 드랍!");
+    }
 }

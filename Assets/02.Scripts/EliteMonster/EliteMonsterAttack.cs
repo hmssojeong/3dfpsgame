@@ -3,6 +3,7 @@ using UnityEngine;
 public class EliteMonsterAttack : MonoBehaviour
 {
     [SerializeField] private EliteMonster _eliteMonster;
+    private Animator _animator;
 
     private void Awake()
     {
@@ -25,11 +26,11 @@ public class EliteMonsterAttack : MonoBehaviour
 
     public void PerformHeavyAttack()
     {
-        //공격 애니메이션
+        _animator.SetTrigger("HeavyAttack");
     }
 
     public void PerformChargeAttack()
     {
-        //돌진 애니메이션
+        _animator.SetTrigger("ChargeAttack");
     }
 }

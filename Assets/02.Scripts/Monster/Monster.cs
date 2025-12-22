@@ -74,6 +74,12 @@ public class Monster : MonoBehaviour, IDamageable
     private Vector3 _jumpStartPosition;
     private Vector3 _jumpEndPosition;
 
+    [Header("골드")]
+    [SerializeField] private GameObject _goldPrefab;
+    [SerializeField] private int _miniGoldDrop = 3;
+    [SerializeField] private int _maxGoldDrop = 7;
+    [SerializeField] private int _goldValue = 10;
+
     private void Awake()
     {
         if(_animator == null)
@@ -463,8 +469,43 @@ public class Monster : MonoBehaviour, IDamageable
     private IEnumerator Death_Coroutine()
     {
         yield return new WaitForSeconds(2F);
+
+        DropGold();
+
         State = EMonsterState.Idle;
         Debug.Log("몬스터 죽음");
         Destroy(gameObject);
+    }
+
+    private void DropGold()
+    {
+        if(_goldPrefab == null)
+        {
+            Debug.Log("골드 프리팹 설정");
+            return;
+        }
+
+        int dropCount = Random.Range(_miniGoldDrop, _maxGoldDrop + 1);
+        Vector3 baseDropPosition = transform.position + Vector3.up * 0.3f;
+
+        for (int i = 0; i < dropCount; i++)
+        {
+            //약간씩 다른 위치에서 생성 (자연스러운 퍼짐)
+            Vector3 randomOffset = new Vector3(
+                Random.Range(-0.2f, 0.2f),
+                Random.Range(0f, 0.1f),
+                Random.Range(-0.2f, 0.2f)
+            );
+            Vector3 dropPosition = baseDropPosition + randomOffset;
+
+            GameObject goldObject = Instantiate(_goldPrefab, dropPosition, Quaternion.identity);
+            GoldItem goldItem = goldObject.GetComponent<GoldItem>();
+
+            if (goldItem != null)
+            {
+                goldItem.SetGoldAmount(_goldValue);
+                goldItem.Drop(dropPosition);
+            }
+        }
     }
 }
