@@ -12,6 +12,10 @@ public class PlayerGunFire : MonoBehaviour
     [SerializeField] private List<GameObject> _muzzleEffects;
     [SerializeField] private Animator _animator;
 
+    private EZoomMode _zoomMode = EZoomMode.Normal;
+    [SerializeField] private GameObject _normalCrosshair;
+    [SerializeField] private GameObject _zoomInCrosshair;
+
     [SerializeField] private float _fireRate = 0.1f;
     private float _playerAttackDamage = 10f;
 
@@ -49,6 +53,8 @@ public class PlayerGunFire : MonoBehaviour
 
         }
 
+        ZoomModeCheck();
+
         // 1. 마우스 왼쪽 버튼이 눌린다면.. 
         if (Input.GetMouseButton(0) && _fireTimer <= 0f)
         {
@@ -62,6 +68,24 @@ public class PlayerGunFire : MonoBehaviour
             _animator.SetBool("Fire", false);
         }
 
+    }
+
+    private void ZoomModeCheck()
+    {
+         if (Input.GetMouseButton(1))
+         {
+            _zoomMode = EZoomMode.ZoomIn;
+            _normalCrosshair.SetActive(false);
+            _zoomInCrosshair.SetActive(true);
+            Camera.main.fieldOfView = 10f;
+         }
+        else
+        {
+            _zoomMode = EZoomMode.Normal;
+            _normalCrosshair.SetActive(true);
+            _zoomInCrosshair.SetActive(false);
+            Camera.main.fieldOfView = 60f;
+        }
     }
 
     private IEnumerator MuzzleFlash_Coroutine()
@@ -129,16 +153,29 @@ public class PlayerGunFire : MonoBehaviour
 
             _hitEffect.Play();
 
-            Monster monster = hitInfo.collider.gameObject.GetComponent<Monster>();
-            if (monster != null)
-            {
-                monster.TryTakeDamage(_playerAttackDamage, transform.position);
-            }
 
-            Drum drum = hitInfo.collider.gameObject.GetComponent<Drum>();
-            if (drum != null)
+            Damage damage = new Damage()
             {
-                drum.TryTakeDamage(10);
+                Value = hitInfo.distance,
+                HitPoint = hitInfo.point,
+                Normal = hitInfo.normal,
+                Who = gameObject,
+                Critical = false,
+            };
+
+            // 단점
+            // - [0] 같은 기능인데 중복된 코드가 많다. (다형성)
+            // - [O] 같은 기능인데 기능의 이름과 매개변수가 다르다.
+
+            // 인터페이스를 사용하면 된다. -> 약속을 강제한다.
+            // 인터페이스를 설계 한다는 것은 중급 개발의 시작
+
+            // 플레이어 - 약속 - IDamageable - (몬스터, 드럼통, 나무, 장애물)
+
+            IDamageable damagable = hitInfo.collider.GetComponent<IDamageable>();
+            if (damagable != null)
+            {
+                damagable.TryTakeDamage(damage);
             }
 
             if (_bulletTrailPrefab != null)

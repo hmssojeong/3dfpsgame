@@ -1,3 +1,4 @@
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class Bomb : MonoBehaviour
@@ -6,8 +7,8 @@ public class Bomb : MonoBehaviour
     public GameObject _explosionEffectPrefab;
     [SerializeField] private float _explosionDelay = 0f;
     [SerializeField] private float _explosionRadius = 5f;  
-    [SerializeField] private float _explosionDamage = 50f; 
-
+    [SerializeField] private float _explosionDamage = 50f;
+    [SerializeField] private GameObject _player;
 
     private BombPool _pool;
 
@@ -65,9 +66,12 @@ public class Bomb : MonoBehaviour
 
                 // 거리에 따라 데미지 감쇠 (가까울수록 높은 데미지)
                 float finalDamage = _explosionDamage / distance;
-
+                 Damage damage = new Damage()
+                {
+                    Value = finalDamage,
+                 };
                 // 몬스터에게 데미지 적용
-                monster.TryTakeDamage(finalDamage, transform.position);
+                monster.TryTakeDamage(damage);
             }
         }
     }

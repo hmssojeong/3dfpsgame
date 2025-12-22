@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Drum : MonoBehaviour
+public class Drum : MonoBehaviour, IDamageable
 {
     private Rigidbody _rigidbody;
 
@@ -20,10 +20,10 @@ public class Drum : MonoBehaviour
         _health.Initialize();
     }
 
-    public bool TryTakeDamage(float damage)
+    public bool TryTakeDamage(Damage damage)
     {
         if (_health.Value <= 0) return false;
-        _health.Decrease(damage);
+        _health.Decrease(damage.Value);
 
         Debug.Log("사망" + gameObject.name);
         if (_health.Value <= 0)
@@ -46,19 +46,29 @@ public class Drum : MonoBehaviour
         _rigidbody.AddForce(Vector3.up * 1200f);
         _rigidbody.AddTorque(UnityEngine.Random.insideUnitSphere * 90f); //회전하면서 날라간다.
 
+        Damage damage = new Damage()
+        {
+            Value = _damage.Value,
+            HitPoint = transform.position,
+            Who = this.gameObject,
+            Critical = false,
+        };
+
         Collider[] colliders = Physics.OverlapSphere(transform.position, _explosionRadius.Value, DamageLayer);
         for (int i = 0; i < colliders.Length; i++)
         {
             if (colliders[i].TryGetComponent<Monster>(out Monster monster))
             {
-                monster.TryTakeDamage(_damage.Value, transform.position);
+                monster.TryTakeDamage(damage);
+                // monster.TryTakeDamage(_damage.Value, transform.position);
             }
 
             if (colliders[i].TryGetComponent<Drum>(out Drum drum))
             {
                 Debug.Log("찾음" + drum.name);
-                drum.TryTakeDamage(_damage.Value);
-                
+                drum.TryTakeDamage(damage);
+                //drum.TryTakeDamage(_damage.Value);
+
             }
         }
 
