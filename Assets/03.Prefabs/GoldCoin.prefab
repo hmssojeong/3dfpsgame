@@ -139,9 +139,9 @@ MonoBehaviour:
   _collectDistance: 1
   _attractSpeed: 8
   _bezierHeight: 2
-  _dropForce: 1
-  _dropUpForce: 0.1
-  _groundCheckDistance: 0.1
+  _dropForce: 5
+  _dropUpForce: 3
+  _groundCheckDistance: 2
   _rotationSpeed: 360
 --- !u!54 &1335323568735193580
 Rigidbody:

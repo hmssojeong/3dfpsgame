@@ -13,7 +13,7 @@ public class GoldItem : MonoBehaviour
     //물리
     [SerializeField] private float _dropForce = 5f;
     [SerializeField] private float _dropUpForce = 3f;
-    [SerializeField] private float _groundCheckDistance = 0.1f;
+    [SerializeField] private float _groundCheckDistance = 2f;
 
     private Transform _player;
     private Rigidbody _rigidbody;
@@ -32,6 +32,7 @@ public class GoldItem : MonoBehaviour
         {
             _rigidbody = gameObject.AddComponent<Rigidbody>();
         }
+        _player = GameObject.FindGameObjectWithTag("Player")?.transform;
     }
 
     private void Start()
@@ -65,11 +66,22 @@ public class GoldItem : MonoBehaviour
             if (Physics.Raycast(transform.position, Vector3.down, _groundCheckDistance))
             {
                 _isGrounded = true;
-                _rigidbody.isKinematic = true;
+                _rigidbody.isKinematic = false;
                 _rigidbody.linearVelocity = Vector3.zero;
                 _rigidbody.angularVelocity = Vector3.zero;
             }
             yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!_isGrounded)
+        {
+            _isGrounded = true;
+            _rigidbody.isKinematic = true;
+            _rigidbody.linearVelocity = Vector3.zero;
+            _rigidbody.angularVelocity = Vector3.zero;
         }
     }
 
@@ -125,7 +137,7 @@ public class GoldItem : MonoBehaviour
 
         transform.position = newPosition;
 
-        if (t >= 5f)
+        if (t >= 1f)
         {
             CollectGold();
         }
