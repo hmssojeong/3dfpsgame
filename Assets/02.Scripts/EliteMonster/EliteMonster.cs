@@ -57,10 +57,10 @@ public class EliteMonster : MonoBehaviour, IDamageable
     private const float _patrolNearby = 1.5f;
     private const float _originNearby = 0.5f;
 
-    [Header("골드")]
+    [Header("골드 드랍")]
     [SerializeField] private GameObject _goldPrefab;
     [SerializeField] private int _minGoldDrop = 10;
-    [SerializeField] private int _maxGoldDrop = 20; 
+    [SerializeField] private int _maxGoldDrop = 20;
     [SerializeField] private int _goldValue = 10;
 
     private void Awake()
@@ -184,7 +184,7 @@ public class EliteMonster : MonoBehaviour, IDamageable
             _detectTimer = 0f;
             _isWaitingAtPatrolPoint = false;
             _patrolTimer = 0f;
-            Debug.Log("상태 전환: Patrol -> Detect");
+            Debug.Log("[엘리트] 상태 전환: Patrol -> Detect");
             _animator.SetTrigger("PatrolToDetect");
             return;
         }
@@ -223,7 +223,7 @@ public class EliteMonster : MonoBehaviour, IDamageable
         {
             State = EEliteMonsterState.Detect;
             _detectTimer = 0f;
-            Debug.Log("상태 전환: Idle -> Detect");
+            Debug.Log("[엘리트] 상태 전환: Idle -> Detect");
             _animator.SetTrigger("IdleToDetect");
         }
     }
@@ -240,7 +240,7 @@ public class EliteMonster : MonoBehaviour, IDamageable
         if (distance > DetectDistance)
         {
             State = EEliteMonsterState.Idle;
-            Debug.Log("상태 전환: Detect -> Idle (플레이어 멀어짐)");
+            Debug.Log("[엘리트] 상태 전환: Detect -> Idle (플레이어 멀어짐)");
             _animator.SetTrigger("DetectToIdle");
             return;
         }
@@ -250,14 +250,13 @@ public class EliteMonster : MonoBehaviour, IDamageable
             State = EEliteMonsterState.Charge;
             _chargeDistanceTraveled = 0f;
             _chargeDirection = directionToPlayer;
-            Debug.Log("상태 전환: Detect -> Charge");
+            Debug.Log("[엘리트] 상태 전환: Detect -> Charge");
             _animator.SetTrigger("DetectToCharge");
         }
     }
 
     private void Charge()
     {
-        // 돌진 공격
         float chargeStep = _chargeSpeed * Time.deltaTime;
         _controller.Move(_chargeDirection * chargeStep);
         _chargeDistanceTraveled += chargeStep;
@@ -266,7 +265,7 @@ public class EliteMonster : MonoBehaviour, IDamageable
         if (distanceToPlayer <= AttackDistance)
         {
             _playerStats.PlayerTakeDamage(_chargeDamage);
-            Debug.Log($"돌진 데미지: {_chargeDamage}");
+            Debug.Log($"[엘리트] 돌진 데미지: {_chargeDamage}");
 
             State = EEliteMonsterState.Attack;
             _animator.SetTrigger("ChargeToAttack");
@@ -276,7 +275,7 @@ public class EliteMonster : MonoBehaviour, IDamageable
         if (_chargeDistanceTraveled >= _chargeDistance)
         {
             State = EEliteMonsterState.Trace;
-            Debug.Log("상태 전환: Charge -> Trace");
+            Debug.Log("[엘리트] 상태 전환: Charge -> Trace");
             _animator.SetTrigger("ChargeToTrace");
         }
     }
@@ -292,13 +291,13 @@ public class EliteMonster : MonoBehaviour, IDamageable
             if (_heavyAttackTimer <= 0f)
             {
                 State = EEliteMonsterState.HeavyAttack;
-                Debug.Log("상태 전환: Trace -> HeavyAttack");
+                Debug.Log("[엘리트] 상태 전환: Trace -> HeavyAttack");
                 _animator.SetTrigger("TraceToHeavyAttack");
             }
             else
             {
                 State = EEliteMonsterState.Attack;
-                Debug.Log("상태 전환: Trace -> Attack");
+                Debug.Log("[엘리트] 상태 전환: Trace -> Attack");
                 _animator.SetTrigger("TraceToAttack");
             }
             return;
@@ -307,7 +306,7 @@ public class EliteMonster : MonoBehaviour, IDamageable
         if (distance > DetectDistance)
         {
             State = EEliteMonsterState.Comeback;
-            Debug.Log("상태 전환: Trace -> Comeback");
+            Debug.Log("[엘리트] 상태 전환: Trace -> Comeback");
             _animator.SetTrigger("TraceToComeback");
         }
     }
@@ -319,7 +318,7 @@ public class EliteMonster : MonoBehaviour, IDamageable
         if (distance > AttackDistance)
         {
             State = EEliteMonsterState.Trace;
-            Debug.Log("상태 전환: Attack -> Trace");
+            Debug.Log("[엘리트] 상태 전환: Attack -> Trace");
             _animator.SetTrigger("AttackToTrace");
             return;
         }
@@ -329,7 +328,7 @@ public class EliteMonster : MonoBehaviour, IDamageable
         {
             _animator.SetTrigger("Attack");
             AttackTimer = 0f;
-            Debug.Log($"공격 데미지: {AttackDamage}");
+            Debug.Log($"[엘리트] 공격 데미지: {AttackDamage}");
         }
     }
 
@@ -341,7 +340,7 @@ public class EliteMonster : MonoBehaviour, IDamageable
         if (distanceToPlayer <= _heavyAttackRange)
         {
             _playerStats.PlayerTakeDamage(_heavyAttackDamage);
-            Debug.Log($"공격 데미지: {_heavyAttackDamage}");
+            Debug.Log($"[엘리트] 강공격 데미지: {_heavyAttackDamage}");
         }
 
         _heavyAttackTimer = _heavyAttackCooldown;
@@ -353,7 +352,7 @@ public class EliteMonster : MonoBehaviour, IDamageable
     {
         yield return new WaitForSeconds(1.5f);
         State = EEliteMonsterState.Trace;
-        Debug.Log("상태 전환: HeavyAttack -> Trace");
+        Debug.Log("[엘리트] 상태 전환: HeavyAttack -> Trace");
     }
 
     private void Comeback()
@@ -369,12 +368,12 @@ public class EliteMonster : MonoBehaviour, IDamageable
                 _currentPatrolIndex = 0;
                 _isWaitingAtPatrolPoint = false;
                 _patrolTimer = 0f;
-                Debug.Log("상태 전환: Comeback -> Patrol");
+                Debug.Log("[엘리트] 상태 전환: Comeback -> Patrol");
             }
             else
             {
                 State = EEliteMonsterState.Idle;
-                Debug.Log("상태 전환: Comeback -> Idle");
+                Debug.Log("[엘리트] 상태 전환: Comeback -> Idle");
             }
             return;
         }
@@ -385,10 +384,11 @@ public class EliteMonster : MonoBehaviour, IDamageable
         {
             State = EEliteMonsterState.Detect;
             _detectTimer = 0f;
-            Debug.Log("상태 전환: Comeback -> Detect");
+            Debug.Log("[엘리트] 상태 전환: Comeback -> Detect");
             _animator.SetTrigger("ComebackToDetect");
         }
     }
+
     private Vector3 _lastAttackerPos;
 
     public bool TryTakeDamage(Damage damage)
@@ -400,22 +400,25 @@ public class EliteMonster : MonoBehaviour, IDamageable
 
         Health.Consume(damage.Value);
 
-        _agent.isStopped = true;
-        _agent.ResetPath();
+        // ⭐ 핵심 수정 1: NavMeshAgent 완전히 비활성화
+        _agent.enabled = false;
 
-        _lastAttackerPos = damage.AttackerPos; // 공격자 위치저장
+        _lastAttackerPos = damage.AttackerPos;
 
         if (Health.Value > 0)
         {
+            _stateBeforeHit = State;
             State = EEliteMonsterState.Hit;
             StartCoroutine(Hit_Coroutine());
             _animator.SetTrigger("Hit");
+            Debug.Log("[엘리트] 피격");
         }
         else
         {
             State = EEliteMonsterState.Death;
             StartCoroutine(Death_Coroutine());
             _animator.SetTrigger("Death");
+            Debug.Log("[엘리트] 사망");
         }
 
         return true;
@@ -423,17 +426,28 @@ public class EliteMonster : MonoBehaviour, IDamageable
 
     private IEnumerator Hit_Coroutine()
     {
+        // 넉백 적용
         _knockback.ApplyKnockback(_player.transform.position);
+
         yield return new WaitForSeconds(0.3f);
 
-        _agent.isStopped = false;
+        _agent.enabled = true;
+
         State = _stateBeforeHit;
+        Debug.Log($"[엘리트] 상태 복구: Hit -> {_stateBeforeHit}");
     }
 
     private IEnumerator Death_Coroutine()
     {
+        if (_controller != null)
+        {
+            _controller.enabled = false;
+        }
+
+        // 죽는 애니메이션 재생 시간
         yield return new WaitForSeconds(3f);
 
+        // 골드 드랍
         DropGold();
 
         Destroy(gameObject);
@@ -447,13 +461,11 @@ public class EliteMonster : MonoBehaviour, IDamageable
             return;
         }
 
-        // 드랍할 골드 개수 랜덤 결정
         int dropCount = Random.Range(_minGoldDrop, _maxGoldDrop + 1);
-        Vector3 dropPosition = transform.position + Vector3.up * 1f; // 엘리트는 더 높이
+        Vector3 dropPosition = transform.position + Vector3.up * 1f;
 
         for (int i = 0; i < dropCount; i++)
         {
-            // 골드 아이템 생성
             GameObject goldObject = Instantiate(_goldPrefab, dropPosition, Quaternion.identity);
             GoldItem goldItem = goldObject.GetComponent<GoldItem>();
 
