@@ -50,7 +50,7 @@ public class GoldItem : MonoBehaviour
         _rigidbody.AddForce(force, ForceMode.Impulse);
 
         //회전
-        _rigidbody.AddTorque(Random.insideUnitSphere * 10f, ForceMode.Impulse);
+        _rigidbody.AddTorque(Random.insideUnitSphere * 1f, ForceMode.Impulse);
 
         StartCoroutine(GroundCheck_Coroutine());
     }
@@ -125,7 +125,7 @@ public class GoldItem : MonoBehaviour
 
         transform.position = newPosition;
 
-        if (t >= 1f)
+        if (t >= 5f)
         {
             CollectGold();
         }

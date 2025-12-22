@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EliteMonster : MonoBehaviour
+public class EliteMonster : MonoBehaviour, IDamageable
 {
     public EEliteMonsterState State = EEliteMonsterState.Idle;
 
@@ -33,12 +33,12 @@ public class EliteMonster : MonoBehaviour
 
     [SerializeField] private float _chargeSpeed = 8f;
     [SerializeField] private float _chargeDistance = 15f;
-    [SerializeField] private float _chargeDamage = 50f;
+    [SerializeField] private float _chargeDamage = 20f;
     private float _chargeDistanceTraveled = 0f;
     private Vector3 _chargeDirection;
 
     [SerializeField] private float _heavyAttackRange = 5f;
-    [SerializeField] private float _heavyAttackDamage = 60f;
+    [SerializeField] private float _heavyAttackDamage = 20f;
     [SerializeField] private float _heavyAttackCooldown = 6f;
     private float _heavyAttackTimer = 0f;
 
@@ -389,22 +389,24 @@ public class EliteMonster : MonoBehaviour
             _animator.SetTrigger("ComebackToDetect");
         }
     }
+    private Vector3 _lastAttackerPos;
 
-    public bool TryTakeDamage(float damage, Vector3 attackerPos)
+    public bool TryTakeDamage(Damage damage)
     {
         if (State == EEliteMonsterState.Death)
         {
             return false;
         }
 
-        Health.Consume(damage);
+        Health.Consume(damage.Value);
 
         _agent.isStopped = true;
         _agent.ResetPath();
 
+        _lastAttackerPos = damage.AttackerPos; // 공격자 위치저장
+
         if (Health.Value > 0)
         {
-            _stateBeforeHit = State;
             State = EEliteMonsterState.Hit;
             StartCoroutine(Hit_Coroutine());
             _animator.SetTrigger("Hit");
@@ -441,13 +443,12 @@ public class EliteMonster : MonoBehaviour
     {
         if (_goldPrefab == null)
         {
-            Debug.LogWarning("[엘리트] 골드 프리팹이 설정되지 않았습니다!");
             return;
         }
 
         // 드랍할 골드 개수 랜덤 결정
         int dropCount = Random.Range(_minGoldDrop, _maxGoldDrop + 1);
-        Vector3 baseDropPosition = transform.position + Vector3.up * 0.3f; // 엘리트는 더 높이
+        Vector3 baseDropPosition = transform.position + Vector3.up * 0.2f;
 
         for (int i = 0; i < dropCount; i++)
         {

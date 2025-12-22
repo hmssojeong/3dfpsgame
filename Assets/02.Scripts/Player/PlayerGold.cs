@@ -7,13 +7,12 @@ public class PlayerGold : MonoBehaviour
     [SerializeField] private int _currentGold = 0;
 
     [Header("이벤트")]
-    public UnityEvent<int> OnGoldChanged; // 골드 변경 시 이벤트 (UI 업데이트용)
+    public UnityEvent<int> OnGoldChanged;
 
     public int CurrentGold => _currentGold;
 
     private void Start()
     {
-        // 초기 골드 UI 업데이트
         OnGoldChanged?.Invoke(_currentGold);
     }
 

@@ -82,6 +82,10 @@ MonoBehaviour:
   _patrolRadius: 8
   _patrolWaitTime: 3
   _patrolSpeed: 2
+  _goldPrefab: {fileID: 0}
+  _minGoldDrop: 10
+  _maxGoldDrop: 20
+  _goldValue: 10
 --- !u!114 &6263313123223215767
 MonoBehaviour:
   m_ObjectHideFlags: 0
