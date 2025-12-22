@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8648357873667248377
 Transform:
   m_ObjectHideFlags: 0
@@ -95,9 +95,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4101422887859227081}
-  - component: {fileID: 6291649771542265239}
   - component: {fileID: 1335323568735193580}
   - component: {fileID: 3088995999599647927}
+  - component: {fileID: 2102374970431041072}
   m_Layer: 0
   m_Name: GoldCoin
   m_TagString: Untagged
@@ -122,27 +122,6 @@ Transform:
   - {fileID: 904616997413767514}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6291649771542265239
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9099863779925412880}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 311682b014c59a7479dc24346c91c713, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _goldAmount: 10
-  _attractDistance: 5
-  _collectDistance: 1
-  _attractSpeed: 8
-  _bezierHeight: 2
-  _dropForce: 5
-  _dropUpForce: 3
-  _groundCheckDistance: 2
-  _rotationSpeed: 360
 --- !u!54 &1335323568735193580
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -191,6 +170,27 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.2
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2102374970431041072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9099863779925412880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 311682b014c59a7479dc24346c91c713, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _goldAmount: 10
+  _attractDistance: 5
+  _collectDistance: 1
+  _attractSpeed: 8
+  _bezierHeight: 2
+  _dropForce: 3
+  _dropUpForce: 4
+  _settleTime: 1
+  _rotationSpeed: 360
 --- !u!1001 &909103440550967794
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -202,6 +202,10 @@ PrefabInstance:
     - target: {fileID: 1950871307682000, guid: 01348926c7cbb3347a006c37204131c3, type: 3}
       propertyPath: m_Name
       value: GoldCoins
+      objectReference: {fileID: 0}
+    - target: {fileID: 1950871307682000, guid: 01348926c7cbb3347a006c37204131c3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4521874486784168, guid: 01348926c7cbb3347a006c37204131c3, type: 3}
       propertyPath: m_LocalScale.x

@@ -443,23 +443,17 @@ public class EliteMonster : MonoBehaviour, IDamageable
     {
         if (_goldPrefab == null)
         {
+            Debug.LogWarning("[엘리트] 골드 프리팹이 설정되지 않았습니다!");
             return;
         }
 
         // 드랍할 골드 개수 랜덤 결정
         int dropCount = Random.Range(_minGoldDrop, _maxGoldDrop + 1);
-        Vector3 baseDropPosition = transform.position + Vector3.up * 0.2f;
+        Vector3 dropPosition = transform.position + Vector3.up * 1f; // 엘리트는 더 높이
 
         for (int i = 0; i < dropCount; i++)
         {
-            // 약간씩 다른 위치에서 생성 (자연스러운 퍼짐)
-            Vector3 randomOffset = new Vector3(
-                Random.Range(-0.2f, 0.2f),
-                Random.Range(0f, 0.1f),
-                Random.Range(-0.2f, 0.2f)
-            );
-            Vector3 dropPosition = baseDropPosition + randomOffset;
-
+            // 골드 아이템 생성
             GameObject goldObject = Instantiate(_goldPrefab, dropPosition, Quaternion.identity);
             GoldItem goldItem = goldObject.GetComponent<GoldItem>();
 

@@ -13,9 +13,13 @@ public class PlayerGold : MonoBehaviour
 
     private void Start()
     {
+        // 초기 골드 UI 업데이트
         OnGoldChanged?.Invoke(_currentGold);
     }
 
+    /// <summary>
+    /// 골드 추가
+    /// </summary>
     public void AddGold(int amount)
     {
         if (amount <= 0) return;
