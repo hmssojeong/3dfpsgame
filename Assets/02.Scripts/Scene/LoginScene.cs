@@ -32,6 +32,7 @@ public class LoginScene : MonoBehaviour
     {
         AddButtonEvents();
         Refresh();
+        Debug.Log("fdsf");
     }
 
     private void AddButtonEvents()
