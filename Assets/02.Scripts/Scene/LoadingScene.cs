@@ -29,6 +29,10 @@ public class LoadingScene : MonoBehaviour
             _progressSlider.value = ao.progress;
             _progressText.text = $"{ao.progress * 100}";
 
+            if(ao.progress >= 0.9f)
+            {
+                ao.allowSceneActivation=true;
+            }
             yield return null;
         }
     }
