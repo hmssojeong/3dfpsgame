@@ -400,7 +400,6 @@ public class EliteMonster : MonoBehaviour, IDamageable
 
         Health.Consume(damage.Value);
 
-        // ⭐ 핵심 수정 1: NavMeshAgent 완전히 비활성화
         _agent.enabled = false;
 
         _lastAttackerPos = damage.AttackerPos;
