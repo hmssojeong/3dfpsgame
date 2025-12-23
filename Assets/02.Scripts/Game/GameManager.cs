@@ -12,11 +12,28 @@ public class GameManager : MonoBehaviour
     public EGameState State => _state;
 
     [SerializeField] private TextMeshProUGUI _stateTextUI;
+    [SerializeField] private UI_OptionPopup _optionPopupUI;
 
     private void Awake()
     {
         _instance = this;
+
+        LockCursor();
     }
+
+    public void LockCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    public void UnlockCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+
 
     private void Start()
     {
@@ -56,6 +73,30 @@ public class GameManager : MonoBehaviour
         _stateTextUI.text = "GameOver";
 
         yield return null;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Pause();
+
+            _optionPopupUI.Show();
+        }
+    }
+
+    private void Pause()
+    {
+        Time.timeScale = 0;
+
+        UnlockCursor();
+    }
+
+    public void Continue()
+    {
+        Time.timeScale = 1;
+
+        LockCursor();
     }
 }
 
