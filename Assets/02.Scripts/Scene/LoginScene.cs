@@ -1,8 +1,10 @@
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using System.Text.RegularExpressions;
 
 public class LoginScene : MonoBehaviour
 {
@@ -53,10 +55,32 @@ public class LoginScene : MonoBehaviour
         }
     }
 
+
     private void SaveLastLoginID(string id)
     {
         PlayerPrefs.SetString(LAST_LOGIN_ID_KEY, id);
         PlayerPrefs.Save(); // 즉시 저장
+    }
+
+    private string HashPassword(string password)
+    {
+        using (SHA256 sha256 = SHA256.Create())
+        {
+            // 1. 비밀번호를 바이트 배열로 변환
+            byte[] bytes = Encoding.UTF8.GetBytes(password);
+
+            // 2. SHA256 해시 계산 (256비트 = 32바이트)
+            byte[] hashBytes = sha256.ComputeHash(bytes);
+
+            // 3. 바이트 배열을 16진수 문자열로 변환 (64자리)
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < hashBytes.Length; i++)
+            {
+                builder.Append(hashBytes[i].ToString("x2"));
+            }
+
+            return builder.ToString();
+        }
     }
 
     private void AddButtonEvents()
@@ -152,13 +176,18 @@ public class LoginScene : MonoBehaviour
             return;
         }
 
-        string myPassword = PlayerPrefs.GetString(id);
-        if (myPassword != password)
+        // 3-2. 저장된 해시된 비밀번호를 가져온다
+        string savedHashedPassword = PlayerPrefs.GetString(id);
+
+        // 3-3. 입력된 비밀번호를 해싱한다
+        string inputHashedPassword = HashPassword(password);
+
+        // 3-4. 해시값을 비교한다 (원본 비밀번호는 알 수 없음)
+        if (savedHashedPassword != inputHashedPassword)
         {
             _messageTextUI.text = "비밀번호를 확인해주세요.";
             return;
         }
-
         SaveLastLoginID(id);
 
         // 4. 있다면 씬 이동
@@ -215,6 +244,12 @@ public class LoginScene : MonoBehaviour
             return;
         }
 
+        // 5. 비밀번호를 해싱하여 저장 (원본 비밀번호는 저장하지 않음)
+        string hashedPassword = HashPassword(password);
+        PlayerPrefs.SetString(id, hashedPassword);
+        PlayerPrefs.Save();
+
+
         PlayerPrefs.SetString(id, password);
         _messageTextUI.text = "회원가입이 완료되었습니다!";
 
@@ -238,7 +273,4 @@ public class LoginScene : MonoBehaviour
         _passwordConfirmInputField.text = "";
         Refresh();
     }
-
-
-
 }
