@@ -7297,6 +7297,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GoldCoin
       objectReference: {fileID: 0}
+    - target: {fileID: 9099863779925412880, guid: 2fdb49798cc133a4cb1cfaf466ea116b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7344,7 +7348,7 @@ PrefabInstance:
       objectReference: {fileID: 437500354}
     - target: {fileID: 4134569741945429874, guid: 01bab9170c22d05448c6b51cb4e70406, type: 3}
       propertyPath: AttackDamage
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4134569741945429874, guid: 01bab9170c22d05448c6b51cb4e70406, type: 3}
       propertyPath: Health._value
@@ -7352,6 +7356,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4134569741945429874, guid: 01bab9170c22d05448c6b51cb4e70406, type: 3}
       propertyPath: _chargeDamage
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4134569741945429874, guid: 01bab9170c22d05448c6b51cb4e70406, type: 3}
+      propertyPath: AttackDistance
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4134569741945429874, guid: 01bab9170c22d05448c6b51cb4e70406, type: 3}
+      propertyPath: DetectDistance
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4134569741945429874, guid: 01bab9170c22d05448c6b51cb4e70406, type: 3}
@@ -7372,7 +7384,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8293539459990417665, guid: 01bab9170c22d05448c6b51cb4e70406, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.7
+      value: 15.95
       objectReference: {fileID: 0}
     - target: {fileID: 8293539459990417665, guid: 01bab9170c22d05448c6b51cb4e70406, type: 3}
       propertyPath: m_LocalPosition.y
@@ -7380,7 +7392,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8293539459990417665, guid: 01bab9170c22d05448c6b51cb4e70406, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.66
+      value: 15.02
       objectReference: {fileID: 0}
     - target: {fileID: 8293539459990417665, guid: 01bab9170c22d05448c6b51cb4e70406, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7626,11 +7638,11 @@ PrefabInstance:
       objectReference: {fileID: 925410190}
     - target: {fileID: 6354005408824982587, guid: b870e971667e95444991bb1696788374, type: 3}
       propertyPath: Health._value
-      value: 500
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 6354005408824982587, guid: b870e971667e95444991bb1696788374, type: 3}
       propertyPath: Health._maxValue
-      value: 500
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 6914402241721318999, guid: b870e971667e95444991bb1696788374, type: 3}
       propertyPath: m_Name

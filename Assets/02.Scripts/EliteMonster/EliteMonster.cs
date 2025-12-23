@@ -33,12 +33,12 @@ public class EliteMonster : MonoBehaviour, IDamageable
 
     [SerializeField] private float _chargeSpeed = 8f;
     [SerializeField] private float _chargeDistance = 15f;
-    [SerializeField] private float _chargeDamage = 20f;
+    [SerializeField] private float _chargeDamage = 5f;
     private float _chargeDistanceTraveled = 0f;
     private Vector3 _chargeDirection;
 
     [SerializeField] private float _heavyAttackRange = 5f;
-    [SerializeField] private float _heavyAttackDamage = 20f;
+    [SerializeField] private float _heavyAttackDamage = 10f;
     [SerializeField] private float _heavyAttackCooldown = 6f;
     private float _heavyAttackTimer = 0f;
 
@@ -369,16 +369,19 @@ public class EliteMonster : MonoBehaviour, IDamageable
                 _isWaitingAtPatrolPoint = false;
                 _patrolTimer = 0f;
                 Debug.Log("[엘리트] 상태 전환: Comeback -> Patrol");
+                _animator.SetTrigger("ComebackToPatrol");
             }
             else
             {
                 State = EEliteMonsterState.Idle;
                 Debug.Log("[엘리트] 상태 전환: Comeback -> Idle");
+                _animator.SetTrigger("ComebackToIdle");
             }
             return;
         }
 
         _agent.SetDestination(_originPos);
+        _animator.SetTrigger("Comeback");
 
         if (distanceToPlayer <= DetectDistance)
         {
