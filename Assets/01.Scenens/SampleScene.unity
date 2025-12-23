@@ -646,6 +646,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stateTextUI: {fileID: 2036150347}
+  _optionPopupUI: {fileID: 1474120616}
 --- !u!4 &132969215
 Transform:
   m_ObjectHideFlags: 0
@@ -5418,6 +5419,7 @@ GameObject:
   - component: {fileID: 1474120613}
   - component: {fileID: 1474120615}
   - component: {fileID: 1474120614}
+  - component: {fileID: 1474120616}
   m_Layer: 5
   m_Name: UI_OptionPopup
   m_TagString: Untagged
@@ -5484,6 +5486,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1474120612}
   m_CullTransparentMesh: 1
+--- !u!114 &1474120616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474120612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c1d43a91cceb5d48991f7813c986b5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _continueButton: {fileID: 1291223812}
+  _restartButton: {fileID: 1695434416}
+  _gameExitButton: {fileID: 1469798878}
 --- !u!1001 &1508516335
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6482,13 +6499,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 80
-  m_fontSizeBase: 80
+  m_fontSize: 90
+  m_fontSizeBase: 90
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -8941,6 +8958,7 @@ SceneRoots:
   - {fileID: 5205512089796498519}
   - {fileID: 927152616}
   - {fileID: 111865764}
+  - {fileID: 1758158662}
   - {fileID: 1535958485}
   - {fileID: 71524391}
   - {fileID: 1161892615}
@@ -8956,4 +8974,3 @@ SceneRoots:
   - {fileID: 1795459221267137174}
   - {fileID: 870818687}
   - {fileID: 453486477913122447}
-  - {fileID: 1758158662}

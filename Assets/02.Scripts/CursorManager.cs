@@ -12,20 +12,7 @@ public class CursorManager : MonoBehaviour
         LockCursor();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (isLockCursor)
-            {
-                UnlockCursor();
-            }
-            else
-            {
-                LockCursor();
-            }
-        }
-    }
+   
     public void LockCursor()
     {
         Cursor.lockState = CursorLockMode.Locked;
