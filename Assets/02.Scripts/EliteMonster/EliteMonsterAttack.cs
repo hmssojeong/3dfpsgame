@@ -26,11 +26,11 @@ public class EliteMonsterAttack : MonoBehaviour
 
     public void PerformHeavyAttack()
     {
-        _animator.SetTrigger("HeavyAttack");
+        
     }
 
     public void PerformChargeAttack()
     {
-        _animator.SetTrigger("ChargeAttack");
+       
     }
 }

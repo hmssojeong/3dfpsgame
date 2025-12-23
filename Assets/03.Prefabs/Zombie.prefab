@@ -136,6 +136,7 @@ MonoBehaviour:
   _controller: {fileID: 4030999293760258691}
   _knockback: {fileID: 695690177666721642}
   _agent: {fileID: 1577900590452005981}
+  _animator: {fileID: 17936326599804216}
   Health:
     _maxValue: 100
     _value: 100
@@ -146,11 +147,16 @@ MonoBehaviour:
   AttackSpeed: 2
   AttackTimer: 0
   AttackDamage: 10
+  bloodEffectPrefab: {fileID: 1000013355911406, guid: d32aa916f50cac94db11e6f19821a58f, type: 3}
   _usePatrol: 1
   _patrolPointCount: 3
   _patrolRadius: 5
   _patrolWaitTime: 2
   _patrolSpeed: 2
+  _goldPrefab: {fileID: 9099863779925412880, guid: 2fdb49798cc133a4cb1cfaf466ea116b, type: 3}
+  _minGoldDrop: 3
+  _maxGoldDrop: 7
+  _goldValue: 10
 --- !u!114 &695690177666721642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -789,6 +795,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 38503e86e7d6d104ba69d69e2b38e06e, type: 2}
+    - target: {fileID: -6057140222963153312, guid: 8f7380da49034cd488ddff94b1ac35d1, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 8f7380da49034cd488ddff94b1ac35d1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -836,8 +846,34 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: -927199367670048503, guid: 8f7380da49034cd488ddff94b1ac35d1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5987892601852477084}
   m_SourcePrefab: {fileID: 100100000, guid: 8f7380da49034cd488ddff94b1ac35d1, type: 3}
+--- !u!95 &17936326599804216 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: -6057140222963153312, guid: 8f7380da49034cd488ddff94b1ac35d1, type: 3}
+  m_PrefabInstance: {fileID: 3156759393048167256}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6408308802466929233 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 8f7380da49034cd488ddff94b1ac35d1, type: 3}
+  m_PrefabInstance: {fileID: 3156759393048167256}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5987892601852477084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6408308802466929233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64617551af12cab4ba834afe94f74b0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _monster: {fileID: 829581925701347787}
 --- !u!4 &7977488197864794178 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 8f7380da49034cd488ddff94b1ac35d1, type: 3}

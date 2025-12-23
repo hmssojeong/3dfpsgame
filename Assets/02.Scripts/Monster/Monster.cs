@@ -74,11 +74,11 @@ public class Monster : MonoBehaviour, IDamageable
     private Vector3 _jumpStartPosition;
     private Vector3 _jumpEndPosition;
 
-    [Header("골드")]
+    [Header("골드 드랍")]
     [SerializeField] private GameObject _goldPrefab;
-    [SerializeField] private int _miniGoldDrop = 3;
-    [SerializeField] private int _maxGoldDrop = 7;
-    [SerializeField] private int _goldValue = 10;
+    [SerializeField] private int _minGoldDrop = 3; 
+    [SerializeField] private int _maxGoldDrop = 7; 
+    [SerializeField] private int _goldValue = 10; 
 
     private void Awake()
     {
@@ -479,25 +479,19 @@ public class Monster : MonoBehaviour, IDamageable
 
     private void DropGold()
     {
-        if(_goldPrefab == null)
+        if (_goldPrefab == null)
         {
-            Debug.Log("골드 프리팹 설정");
+            Debug.LogWarning("[몬스터] 골드 프리팹이 설정되지 않았습니다!");
             return;
         }
 
-        int dropCount = Random.Range(_miniGoldDrop, _maxGoldDrop + 1);
-        Vector3 baseDropPosition = transform.position + Vector3.up * 0.3f;
+        // 드랍할 골드 개수 랜덤 결정
+        int dropCount = Random.Range(_minGoldDrop, _maxGoldDrop + 1);
+        Vector3 dropPosition = transform.position + Vector3.up * 0.5f;
 
         for (int i = 0; i < dropCount; i++)
         {
-            //약간씩 다른 위치에서 생성 (자연스러운 퍼짐)
-            Vector3 randomOffset = new Vector3(
-                Random.Range(-0.2f, 0.2f),
-                Random.Range(0f, 0.1f),
-                Random.Range(-0.2f, 0.2f)
-            );
-            Vector3 dropPosition = baseDropPosition + randomOffset;
-
+            // 골드 아이템 생성
             GameObject goldObject = Instantiate(_goldPrefab, dropPosition, Quaternion.identity);
             GoldItem goldItem = goldObject.GetComponent<GoldItem>();
 
@@ -507,5 +501,7 @@ public class Monster : MonoBehaviour, IDamageable
                 goldItem.Drop(dropPosition);
             }
         }
+
+        Debug.Log($"[몬스터] 골드 {dropCount}개 드랍!");
     }
 }
