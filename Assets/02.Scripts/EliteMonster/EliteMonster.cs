@@ -168,6 +168,13 @@ public class EliteMonster : MonoBehaviour, IDamageable
         }
 
         _currentPatrolIndex = 0;
+
+        Debug.Log($"[엘리트] 순찰 지점 {_patrolPoints.Count}개 생성 완료");
+        for (int i = 0; i < _patrolPoints.Count; i++)
+        {
+            Debug.Log($"[엘리트] 순찰 지점 {i}: {_patrolPoints[i]}");
+        }
+
     }
 
     private void Patrol()
@@ -191,6 +198,8 @@ public class EliteMonster : MonoBehaviour, IDamageable
 
         if (_isWaitingAtPatrolPoint)
         {
+            _agent.isStopped = true;
+
             _patrolTimer += Time.deltaTime;
             if (_patrolTimer >= _patrolWaitTime)
             {
@@ -202,17 +211,20 @@ public class EliteMonster : MonoBehaviour, IDamageable
         }
 
         Vector3 targetPoint = _patrolPoints[_currentPatrolIndex];
-        float distanceToTarget = Vector3.Distance(transform.position, targetPoint);
 
-        if (distanceToTarget <= _originNearby)
+        if (_agent.enabled && !_agent.isStopped)
+        {
+            _agent.SetDestination(targetPoint);
+        }
+
+        if (_agent.remainingDistance <= _originNearby)
         {
             _isWaitingAtPatrolPoint = true;
             _patrolTimer = 0f;
             return;
         }
-
-        Vector3 direction = (targetPoint - transform.position).normalized;
-        _controller.Move(direction * _patrolSpeed * Time.deltaTime);
+        /*        Vector3 direction = (targetPoint - transform.position).normalized;
+                _controller.Move(direction * _patrolSpeed * Time.deltaTime);*/
     }
 
     private void Idle()
