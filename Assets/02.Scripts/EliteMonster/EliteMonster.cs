@@ -17,7 +17,6 @@ public class EliteMonster : MonoBehaviour, IDamageable
     public ConsumableStat Health;
 
     private Vector3 _originPos;
-    private EEliteMonsterState _stateBeforeHit;
 
     [Header("기본 스탯")]
     public float DetectDistance = 7.5f;
@@ -169,12 +168,6 @@ public class EliteMonster : MonoBehaviour, IDamageable
 
         _currentPatrolIndex = 0;
 
-        Debug.Log($"[엘리트] 순찰 지점 {_patrolPoints.Count}개 생성 완료");
-        for (int i = 0; i < _patrolPoints.Count; i++)
-        {
-            Debug.Log($"[엘리트] 순찰 지점 {i}: {_patrolPoints[i]}");
-        }
-
     }
 
     private void Patrol()
@@ -214,6 +207,7 @@ public class EliteMonster : MonoBehaviour, IDamageable
 
         if (_agent.enabled && !_agent.isStopped)
         {
+            Debug.Log(targetPoint);
             _agent.SetDestination(targetPoint);
         }
 
@@ -416,39 +410,38 @@ public class EliteMonster : MonoBehaviour, IDamageable
         Health.Consume(damage.Value);
 
         _agent.enabled = false;
+        Invoke("EnableAgent", 5f);
 
         _lastAttackerPos = damage.AttackerPos;
 
         if (Health.Value > 0)
         {
-            _stateBeforeHit = State;
+       
             State = EEliteMonsterState.Hit;
             StartCoroutine(Hit_Coroutine());
             _animator.SetTrigger("Hit");
-            Debug.Log("[엘리트] 피격");
         }
         else
         {
             State = EEliteMonsterState.Death;
             StartCoroutine(Death_Coroutine());
             _animator.SetTrigger("Death");
-            Debug.Log("[엘리트] 사망");
         }
 
         return true;
     }
-
+    private void EnableAgent()
+    {
+        _agent.enabled = true;
+    }
     private IEnumerator Hit_Coroutine()
     {
         // 넉백 적용
         _knockback.ApplyKnockback(_player.transform.position);
 
         yield return new WaitForSeconds(0.3f);
+        State = EEliteMonsterState.Idle;
 
-        _agent.enabled = true;
-
-        State = _stateBeforeHit;
-        Debug.Log($"[엘리트] 상태 복구: Hit -> {_stateBeforeHit}");
     }
 
     private IEnumerator Death_Coroutine()

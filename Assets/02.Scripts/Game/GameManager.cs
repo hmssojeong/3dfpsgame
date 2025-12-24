@@ -78,12 +78,12 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Pause();
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    Pause();
 
-            _optionPopupUI.Show();
-        }
+        //    _optionPopupUI.Show();
+        //}
     }
 
     private void Pause()

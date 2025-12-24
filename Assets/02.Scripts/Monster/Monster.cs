@@ -76,13 +76,13 @@ public class Monster : MonoBehaviour, IDamageable
 
     [Header("골드 드랍")]
     [SerializeField] private GameObject _goldPrefab;
-    [SerializeField] private int _minGoldDrop = 3; 
-    [SerializeField] private int _maxGoldDrop = 7; 
-    [SerializeField] private int _goldValue = 10; 
+    [SerializeField] private int _minGoldDrop = 3;
+    [SerializeField] private int _maxGoldDrop = 7;
+    [SerializeField] private int _goldValue = 10;
 
     private void Awake()
     {
-        if(_animator == null)
+        if (_animator == null)
         {
             _animator = GetComponentInChildren<Animator>();
         }
@@ -107,7 +107,7 @@ public class Monster : MonoBehaviour, IDamageable
     private void Update()
     {
 
-        if(GameManager.Instance.State != EGameState.Playing)
+        if (GameManager.Instance.State != EGameState.Playing)
         {
             return;
         }
@@ -208,7 +208,7 @@ public class Monster : MonoBehaviour, IDamageable
                 // 대기 완료, 다음 지점으로
                 _isWaitingAtPatrolPoint = false;
                 _patrolTimer = 0f;
-                
+
                 _currentPatrolIndex++;
 
                 if (_currentPatrolIndex >= _patrolPoints.Count)
@@ -258,7 +258,7 @@ public class Monster : MonoBehaviour, IDamageable
     {
         // 플레이어를 쫓아가는 상태
         // Todo. Run 애니메이션 실행
-        
+
         // Comback 과제
 
         float distance = Vector3.Distance(transform.position, _player.transform.position);
@@ -324,7 +324,7 @@ public class Monster : MonoBehaviour, IDamageable
     private IEnumerator Jump_Coroutine()
     {
         float distance = Vector3.Distance(transform.position, _jumpEndPosition);
-        float jumpTime = distance/MoveSpeed;
+        float jumpTime = distance / MoveSpeed;
         float jumpHeight = Mathf.Max(1.5f, distance * 0.3f);
 
         float elapsedTime = 0f;
@@ -421,7 +421,7 @@ public class Monster : MonoBehaviour, IDamageable
     {
         // 데미지를 받으면 "데미지를 받은 위치"에 혈흔 이펙트를 생성해서 플레이 하고 싶다.
         // 그런데 그 이펙트는 "몬스터를 따라다녀야" 한다.
-        GameObject bloodEffect = Instantiate(bloodEffectPrefab,transform.position, Quaternion.identity, transform);
+        GameObject bloodEffect = Instantiate(bloodEffectPrefab, transform.position, Quaternion.identity, transform);
         bloodEffect.transform.forward = damage.Normal;
 
         if (State == EMonsterState.Hit || State == EMonsterState.Death)
@@ -431,8 +431,11 @@ public class Monster : MonoBehaviour, IDamageable
 
         Health.Consume(damage.Value);
 
-        _agent.isStopped = true; // 이동 일시정지
-        _agent.ResetPath();      // 경로(=목적지) 삭제
+        /*        _agent.isStopped = true; // 이동 일시정지
+                _agent.ResetPath();      // 경로(=목적지) 삭제*/
+
+        _agent.enabled = false;
+        Invoke("EnableAgent", 3f);
 
         _lastAttackerPos = damage.AttackerPos; // 공격자 위치저장
 
@@ -457,6 +460,10 @@ public class Monster : MonoBehaviour, IDamageable
 
     }
 
+    private void EnableAgent()
+    {
+       _agent.enabled = true;
+    }
     private IEnumerator Hit_Coroutine()
     {
         _knockback.ApplyKnockback(_player.transform.position);
