@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class EliteMonster : MonoBehaviour, IDamageable
 {
@@ -273,8 +274,8 @@ public class EliteMonster : MonoBehaviour, IDamageable
             _playerStats.PlayerTakeDamage(_chargeDamage);
             Debug.Log($"[엘리트] 돌진 데미지: {_chargeDamage}");
 
-            State = EEliteMonsterState.Attack;
-            _animator.SetTrigger("ChargeToAttack");
+            State = EEliteMonsterState.Charge;
+            _animator.SetTrigger("Charge");
             return;
         }
 
@@ -332,9 +333,9 @@ public class EliteMonster : MonoBehaviour, IDamageable
         AttackTimer += Time.deltaTime;
         if (AttackTimer >= AttackSpeed)
         {
-            _animator.SetTrigger("Attack");
             AttackTimer = 0f;
             Debug.Log($"[엘리트] 공격 데미지: {AttackDamage}");
+            _animator.SetTrigger("Attack");
         }
     }
 
@@ -356,9 +357,10 @@ public class EliteMonster : MonoBehaviour, IDamageable
 
     private IEnumerator HeavyAttack_Coroutine()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(3f);
         State = EEliteMonsterState.Trace;
         Debug.Log("[엘리트] 상태 전환: HeavyAttack -> Trace");
+        _animator.SetTrigger("Trace");
     }
 
     private void Comeback()
