@@ -37786,6 +37786,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 30775854311241647, guid: 01bab9170c22d05448c6b51cb4e70406, type: 3}
+      propertyPath: m_Height
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 30775854311241647, guid: 01bab9170c22d05448c6b51cb4e70406, type: 3}
+      propertyPath: m_BaseOffset
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1015181109842988201, guid: 01bab9170c22d05448c6b51cb4e70406, type: 3}
       propertyPath: m_Name
       value: EliteMonster
