@@ -61,21 +61,21 @@ MonoBehaviour:
   _agent: {fileID: 30775854311241647}
   _animator: {fileID: 0}
   Health:
-    _maxValue: 500
-    _value: 500
+    _maxValue: 100
+    _value: 100
     _regenValue: 0
-  DetectDistance: 7.5
-  AttackDistance: 3.5
+  DetectDistance: 10
+  AttackDistance: 3
   MoveSpeed: 4
   AttackSpeed: 3
-  AttackTimer: 0
-  AttackDamage: 30
+  AttackTimer: 10
+  AttackDamage: 10
   _detectWarningTime: 2
   _chargeSpeed: 8
   _chargeDistance: 15
-  _chargeDamage: 50
+  _chargeDamage: 5
   _heavyAttackRange: 5
-  _heavyAttackDamage: 60
+  _heavyAttackDamage: 10
   _heavyAttackCooldown: 6
   _usePatrol: 1
   _patrolPointCount: 5
@@ -153,13 +153,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
+  m_Height: 3
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1.5, z: 0}
 --- !u!195 &30775854311241647
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -168,7 +168,7 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1015181109842988201}
   m_Enabled: 1
-  m_AgentTypeID: 0
+  m_AgentTypeID: -334000983
   m_Radius: 0.7
   m_Speed: 3.5
   m_Acceleration: 8
@@ -179,7 +179,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 1
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!33 &5093475742512846715
@@ -423,7 +423,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 225}
+  m_AnchoredPosition: {x: 0, y: 330}
   m_SizeDelta: {x: 200, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7578383175050227212
@@ -829,7 +829,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4b11d0901d1e3f04da6b00a4ff5d74dd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4b11d0901d1e3f04da6b00a4ff5d74dd, type: 3}
       propertyPath: m_LocalPosition.z
@@ -875,6 +875,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 84a22c16b9dc801498e1425b3ea66f28, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 4b11d0901d1e3f04da6b00a4ff5d74dd, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class EliteMonster : MonoBehaviour, IDamageable
 {
@@ -17,7 +18,6 @@ public class EliteMonster : MonoBehaviour, IDamageable
     public ConsumableStat Health;
 
     private Vector3 _originPos;
-    private EEliteMonsterState _stateBeforeHit;
 
     [Header("기본 스탯")]
     public float DetectDistance = 7.5f;
@@ -168,6 +168,7 @@ public class EliteMonster : MonoBehaviour, IDamageable
         }
 
         _currentPatrolIndex = 0;
+
     }
 
     private void Patrol()
@@ -191,6 +192,8 @@ public class EliteMonster : MonoBehaviour, IDamageable
 
         if (_isWaitingAtPatrolPoint)
         {
+            _agent.isStopped = true;
+
             _patrolTimer += Time.deltaTime;
             if (_patrolTimer >= _patrolWaitTime)
             {
@@ -202,17 +205,21 @@ public class EliteMonster : MonoBehaviour, IDamageable
         }
 
         Vector3 targetPoint = _patrolPoints[_currentPatrolIndex];
-        float distanceToTarget = Vector3.Distance(transform.position, targetPoint);
 
-        if (distanceToTarget <= _originNearby)
+        if (_agent.enabled && !_agent.isStopped)
+        {
+            Debug.Log(targetPoint);
+            _agent.SetDestination(targetPoint);
+        }
+
+        if (_agent.remainingDistance <= _originNearby)
         {
             _isWaitingAtPatrolPoint = true;
             _patrolTimer = 0f;
             return;
         }
-
-        Vector3 direction = (targetPoint - transform.position).normalized;
-        _controller.Move(direction * _patrolSpeed * Time.deltaTime);
+        /*        Vector3 direction = (targetPoint - transform.position).normalized;
+                _controller.Move(direction * _patrolSpeed * Time.deltaTime);*/
     }
 
     private void Idle()
@@ -267,8 +274,8 @@ public class EliteMonster : MonoBehaviour, IDamageable
             _playerStats.PlayerTakeDamage(_chargeDamage);
             Debug.Log($"[엘리트] 돌진 데미지: {_chargeDamage}");
 
-            State = EEliteMonsterState.Attack;
-            _animator.SetTrigger("ChargeToAttack");
+            State = EEliteMonsterState.Charge;
+            _animator.SetTrigger("Charge");
             return;
         }
 
@@ -326,9 +333,9 @@ public class EliteMonster : MonoBehaviour, IDamageable
         AttackTimer += Time.deltaTime;
         if (AttackTimer >= AttackSpeed)
         {
-            _animator.SetTrigger("Attack");
             AttackTimer = 0f;
             Debug.Log($"[엘리트] 공격 데미지: {AttackDamage}");
+            _animator.SetTrigger("Attack");
         }
     }
 
@@ -350,9 +357,10 @@ public class EliteMonster : MonoBehaviour, IDamageable
 
     private IEnumerator HeavyAttack_Coroutine()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(3f);
         State = EEliteMonsterState.Trace;
         Debug.Log("[엘리트] 상태 전환: HeavyAttack -> Trace");
+        _animator.SetTrigger("Trace");
     }
 
     private void Comeback()
@@ -404,39 +412,38 @@ public class EliteMonster : MonoBehaviour, IDamageable
         Health.Consume(damage.Value);
 
         _agent.enabled = false;
+        Invoke("EnableAgent", 5f);
 
         _lastAttackerPos = damage.AttackerPos;
 
         if (Health.Value > 0)
         {
-            _stateBeforeHit = State;
+       
             State = EEliteMonsterState.Hit;
             StartCoroutine(Hit_Coroutine());
             _animator.SetTrigger("Hit");
-            Debug.Log("[엘리트] 피격");
         }
         else
         {
             State = EEliteMonsterState.Death;
             StartCoroutine(Death_Coroutine());
             _animator.SetTrigger("Death");
-            Debug.Log("[엘리트] 사망");
         }
 
         return true;
     }
-
+    private void EnableAgent()
+    {
+        _agent.enabled = true;
+    }
     private IEnumerator Hit_Coroutine()
     {
         // 넉백 적용
         _knockback.ApplyKnockback(_player.transform.position);
 
         yield return new WaitForSeconds(0.3f);
+        State = EEliteMonsterState.Idle;
 
-        _agent.enabled = true;
-
-        State = _stateBeforeHit;
-        Debug.Log($"[엘리트] 상태 복구: Hit -> {_stateBeforeHit}");
     }
 
     private IEnumerator Death_Coroutine()
